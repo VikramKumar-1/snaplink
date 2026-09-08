@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { AnalyticsService } from "./analytics.service";
 import { apiHandler } from "@/backend/shared/utils/apiHandler";
+import { BRAND_CONFIG } from "@/frontend/shared/config/brand";
 
 /**
  * Pure Laravel-Style Skinny AnalyticsController
@@ -54,7 +55,7 @@ export class AnalyticsController {
       status: 200,
       headers: {
         "Content-Type": "text/csv; charset=utf-8",
-        "Content-Disposition": `attachment; filename="smartlink-${code}-analytics.csv"`,
+        "Content-Disposition": `attachment; filename="${BRAND_CONFIG.name.toLowerCase()}-${code}-analytics.csv"`,
       },
     });
   });

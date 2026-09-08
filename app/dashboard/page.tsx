@@ -1,9 +1,10 @@
 import { Metadata } from "next";
 import { Navbar } from "@/frontend/shared/Navbar";
 import { CreatorDashboard } from "@/frontend/modules/dashboard/CreatorDashboard";
+import { BRAND_CONFIG } from "@/frontend/shared/config/brand";
 
 export const metadata: Metadata = {
-  title: "Creator Dashboard | SmartDeepLink",
+  title: `Creator Dashboard | ${BRAND_CONFIG.name}`,
   description: "Manage your active smart deep links, edit dynamic destinations in real time, and monitor conversion analytics.",
 };
 
@@ -18,7 +19,7 @@ export default function DashboardPage() {
       <footer className="w-full border-t border-[#e7e5dc] py-8 text-center bg-[#f0eee6] mt-16">
         <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-[13px] font-medium text-zinc-600">
           <div className="font-mono font-bold text-black">
-            smartlink.to &middot; Creator Studio Infrastructure
+            {BRAND_CONFIG.shortDomain} &middot; Creator Studio Infrastructure
           </div>
           <div className="flex items-center gap-3">
             <span>Zero Ads</span>

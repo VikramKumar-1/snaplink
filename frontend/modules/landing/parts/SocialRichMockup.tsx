@@ -1,8 +1,8 @@
 "use client";
-
 import React, { memo } from "react";
 import { SocialPlatform } from "./SocialPreviewHeader";
 import { AmazonLogo } from "@/frontend/shared/icons/PlatformIcons";
+import { BRAND_CONFIG } from "@/frontend/shared/config/brand";
 
 export const SocialRichMockup: React.FC<{ platform: SocialPlatform }> = memo(({ platform }) => {
   if (platform === "x") {
@@ -20,7 +20,7 @@ export const SocialRichMockup: React.FC<{ platform: SocialPlatform }> = memo(({ 
             <span className="absolute top-2 left-2 bg-red-600 text-white font-bold text-[9px] px-1.5 py-0.5 rounded">60% OFF</span>
           </div>
           <div className="p-2 text-[10.5px] font-bold text-zinc-100 truncate">
-            <span className="text-zinc-400 font-mono text-[9px] block font-normal">smartlink.to</span>
+            <span className="text-zinc-400 font-mono text-[9px] block font-normal">{BRAND_CONFIG.shortDomain}</span>
             Sony Wireless Noise-Cancelling Earbuds
           </div>
         </div>
@@ -39,7 +39,7 @@ export const SocialRichMockup: React.FC<{ platform: SocialPlatform }> = memo(({ 
         </div>
         <div className="font-bold text-[11.5px] leading-tight">🔥 60% OFF - Sony Wireless Earbuds</div>
         <div className="text-[9.5px] text-zinc-300 font-mono pt-1 border-t border-white/10 flex justify-between">
-          <span>smartlink.to/sony-deal</span>
+          <span>{BRAND_CONFIG.shortDomain}/sony-deal</span>
           <span className={isTg ? "text-sky-300" : "text-[#53bdeb] font-bold"}>{isTg ? "11:42 • 👁 4.8K" : "11:42 AM ✓✓"}</span>
         </div>
       </div>

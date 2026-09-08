@@ -18,7 +18,7 @@ export const ComparisonTableHeader: React.FC = memo(() => {
         <th className="py-3 sm:py-4 px-3.5 sm:px-6 text-[#2c35af] font-bold text-[11px] sm:text-xs font-mono bg-[#2c35af]/10 border-x border-[#2c35af]/20">
           <span className="inline-flex items-center gap-1.5">
             <span className="h-1.5 w-1.5 rounded-full bg-[#2c35af]" />
-            SmartDeepLink
+            SnapLink
           </span>
         </th>
       </tr>

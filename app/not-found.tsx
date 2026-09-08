@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Zap, ArrowLeft, Plus } from "lucide-react";
+import { BRAND_CONFIG } from "@/frontend/shared/config/brand";
 
 export default function NotFound() {
   return (
@@ -19,7 +20,7 @@ export default function NotFound() {
       </h1>
 
       <p className="text-zinc-600 font-medium max-w-md mx-auto mb-8 text-[15px] leading-relaxed">
-        The Smart Deep Link you are trying to visit might have been deleted, expired, or typed incorrectly.
+        The {BRAND_CONFIG.name} you are trying to visit might have been deleted, expired, or typed incorrectly.
       </p>
 
       <div className="flex flex-col sm:flex-row items-center gap-3">
@@ -28,7 +29,7 @@ export default function NotFound() {
           className="btn-bento-primary px-6 py-3.5 rounded-2xl flex items-center gap-2 text-[14px] font-bold shadow-md shadow-indigo-900/10"
         >
           <Plus className="w-4 h-4" />
-          <span>Create Your Own Smart Link</span>
+          <span>Create Your Own {BRAND_CONFIG.name}</span>
         </Link>
         <Link
           href="/"
@@ -39,7 +40,7 @@ export default function NotFound() {
       </div>
 
       <div className="mt-16 text-[12px] font-mono font-bold text-zinc-400 uppercase tracking-widest">
-        SmartDeepLink Open Protocol
+        {BRAND_CONFIG.protocolName}
       </div>
     </div>
   );

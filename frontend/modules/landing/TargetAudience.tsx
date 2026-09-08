@@ -1,32 +1,32 @@
 "use client";
 
 import React from "react";
-import { YoutubeLogo, AmazonLogo, TelegramLogo } from "@/frontend/shared/icons/PlatformIcons";
-import { QrCode } from "lucide-react";
+import { ShoppingBag, Youtube, Radio, QrCode } from "lucide-react";
+import { BRAND_CONFIG } from "@/frontend/shared/config/brand";
 
 export const TargetAudience: React.FC = () => {
   const audiences = [
     {
-      title: "YouTubers & Video Creators",
-      role: "Grow Subscribers 5.4x Faster",
-      icon: YoutubeLogo,
-      color: "text-red-600 bg-red-50 border-red-200",
+      title: "Affiliate Marketers",
+      role: "E-Commerce & Amazon Influencers",
+      icon: ShoppingBag,
+      color: "text-amber-600 bg-amber-50 border-amber-200",
+      highlight: "+85% Checkout Rate",
+      desc: "Stop losing affiliate commissions when Amazon/Myntra prompts followers to log into mobile web. Route them instantly into pre-authenticated native apps.",
+    },
+    {
+      title: "Content Creators & YouTubers",
+      role: "Channel Subscriptions & Engagement",
+      icon: Youtube,
+      color: "text-rose-600 bg-rose-50 border-rose-200",
       highlight: "1-Tap Subscribe",
-      desc: "Stop losing 80% of your Instagram Bio and Story viewers to the webview login wall. Let followers Subscribe & Like with 1 tap inside the official YouTube app.",
+      desc: "Drive bio clicks straight into the YouTube native app with auto-subscribe dialogs, retaining high-intent viewers instead of bouncing them to browser login screens.",
     },
     {
-      title: "Amazon Affiliate Marketers",
-      role: "Boost Commission by 300%",
-      icon: AmazonLogo,
-      color: "text-[#121316] bg-amber-50 border-amber-200",
-      highlight: "1-Click UPI & Cookies",
-      desc: "Webviews frequently drop affiliate cookies. By launching the official Amazon Shopping App, users purchase using their saved UPI and 1-Click Buy instantly.",
-    },
-    {
-      title: "Community & Course Creators",
-      role: "Zero Drop-Off Conversions",
-      icon: TelegramLogo,
-      color: "text-sky-700 bg-sky-50 border-sky-200",
+      title: "Podcasters & Community Leads",
+      role: "Audience Growth & Group Invites",
+      icon: Radio,
+      color: "text-emerald-600 bg-emerald-50 border-emerald-200",
       highlight: "Direct Channel Join",
       desc: "Direct followers to VIP Telegram channels, exclusive Instagram posts, and Spotify podcasts without requiring them to log in again.",
     },
@@ -44,7 +44,7 @@ export const TargetAudience: React.FC = () => {
     <section className="w-full max-w-6xl mx-auto px-4">
       <div className="text-center mb-8 sm:mb-10">
         <h2 className="text-[24px] sm:text-[34px] font-bold tracking-tight text-[#121316] uppercase leading-tight max-w-4xl mx-auto">
-          Who Wins With <span className="text-[#2c35af]">SmartDeepLink?</span>
+          Who Wins With <span className="text-[#2c35af]">{BRAND_CONFIG.name}?</span>
         </h2>
       </div>
 

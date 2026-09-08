@@ -11,9 +11,9 @@ import { GalleryTelegramCard } from "./GalleryTelegramCard";
 export const GalleryMobileSnapTrack: React.FC = memo(() => (
   <div className="w-full sm:hidden">
     <div className="flex overflow-x-auto scrollbar-none snap-x snap-mandatory items-center gap-3 px-2 py-4">
+      <GalleryCenterHero />
       <GalleryYouTubeCard />
       <GalleryInstagramCard />
-      <GalleryCenterHero />
       <GalleryAmazonCard />
       <GalleryTelegramCard />
     </div>

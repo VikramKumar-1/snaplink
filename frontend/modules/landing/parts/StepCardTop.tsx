@@ -27,10 +27,10 @@ export const StepCardTop: React.FC<TopProps> = memo(({
         STEP {num}
       </span>
     </div>
-    <h3 className="text-[17px] sm:text-[18px] font-bold text-[#121316] tracking-tight group-hover:text-[#2c35af] transition-colors mb-1.5">
+    <h3 className="text-[16px] sm:text-[18px] font-bold text-[#121316] tracking-tight group-hover:text-[#2c35af] transition-colors mb-1.5">
       {title}
     </h3>
-    <p className="text-[12.5px] text-zinc-600 font-medium leading-relaxed">
+    <p className="text-[11.5px] sm:text-[12.5px] text-zinc-600 font-medium leading-relaxed">
       {subtitle}
     </p>
   </div>

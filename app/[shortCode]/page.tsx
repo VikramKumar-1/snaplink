@@ -4,6 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import { LinkRepository } from "@/backend/modules/links/link.repository";
 import { RedirectController } from "@/backend/modules/redirect/redirect.controller";
 import { SmartRedirectCard } from "@/frontend/modules/redirect/SmartRedirectCard";
+import { BRAND_CONFIG } from "@/frontend/shared/config/brand";
 
 interface Props {
   params: Promise<{ shortCode: string }>;
@@ -15,7 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!link) {
     return {
-      title: "Link Not Found | SmartDeepLink",
+      title: `Link Not Found | ${BRAND_CONFIG.name}`,
     };
   }
 

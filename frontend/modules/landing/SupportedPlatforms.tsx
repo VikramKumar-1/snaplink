@@ -13,10 +13,14 @@ export const SupportedPlatforms: React.FC = React.memo(() => (
       </h2>
     </div>
 
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+    {/* 📱 Mobile: Horizontal Snap Carousel | 🖥️ Desktop: 3-Col Grid */}
+    <div className="flex md:grid overflow-x-auto md:overflow-visible scrollbar-none snap-x snap-mandatory md:snap-none gap-4 md:gap-6 pb-3 md:pb-0 -mx-4 px-4 md:mx-0 md:px-0 md:grid-cols-2 lg:grid-cols-3">
       {platformList.map((platform) => (
         <PlatformCard key={platform.id} platform={platform} />
       ))}
+    </div>
+    <div className="md:hidden text-center text-[10.5px] font-mono text-zinc-400 font-bold uppercase tracking-wider mt-2 mb-4">
+      ← Swipe to see all platforms →
     </div>
 
     <MorePlatformsBanner />

@@ -10,7 +10,7 @@ export const ComparisonTable: React.FC = memo(() => {
     <section className="w-full max-w-6xl mx-auto px-4 transform-gpu">
       <div className="text-center mb-6 sm:mb-10">
         <h2 className="text-[24px] sm:text-[34px] font-bold tracking-tight text-[#121316] uppercase leading-tight max-w-4xl mx-auto">
-          How SmartDeepLink Beats <span className="text-[#2c35af]">Bitly & OpeninApp</span>
+          How SnapLink Beats <span className="text-[#2c35af]">Bitly & OpeninApp</span>
         </h2>
         <div className="sm:hidden text-center text-[10.5px] font-mono text-zinc-400 font-bold uppercase tracking-wider mt-2">
           ← Swipe horizontally to compare →

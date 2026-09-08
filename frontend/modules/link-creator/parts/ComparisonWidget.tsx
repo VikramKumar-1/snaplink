@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { AlertCircle, CheckCircle2, Smartphone, ShieldAlert, TrendingUp, Lock, Unlock, ArrowRight } from "lucide-react";
 import { YoutubeLogo } from "@/frontend/shared/icons/PlatformIcons";
+import { BRAND_CONFIG } from "@/frontend/shared/config/brand";
 
 export const ComparisonWidget: React.FC = React.memo(() => {
   const [activeTab, setActiveTab] = useState<"after" | "before">("after");
@@ -29,7 +30,7 @@ export const ComparisonWidget: React.FC = React.memo(() => {
                 : "text-zinc-600 hover:text-black"
             }`}
           >
-            Without SmartLink
+            Without {BRAND_CONFIG.name}
           </button>
           <button
             onClick={handleSetAfter}
@@ -39,7 +40,7 @@ export const ComparisonWidget: React.FC = React.memo(() => {
                 : "text-zinc-600 hover:text-black"
             }`}
           >
-            With SmartLink
+            With {BRAND_CONFIG.name}
           </button>
         </div>
       </div>

@@ -43,7 +43,7 @@ export const SocialPreviewOptions: React.FC<Props> = ({
               value={customTitle}
               onChange={(e) => setCustomTitle(e.target.value)}
               placeholder="e.g., 🔥 60% OFF - Sony Wireless Earbuds"
-              className="w-full px-3.5 py-2.5 text-[13px] text-slate-900 placeholder-slate-400 focus:outline-none clay-input-inset"
+              className="w-full px-3.5 py-2.5 text-[16px] sm:text-[13px] text-slate-900 placeholder-slate-400 focus:outline-none rounded-xl border border-[#d6d3c7] bg-[#faf9f5] focus:border-[#2c35af] focus:bg-white transition-colors"
             />
           </div>
           <div>
@@ -55,7 +55,7 @@ export const SocialPreviewOptions: React.FC<Props> = ({
               value={customDescription}
               onChange={(e) => setCustomDescription(e.target.value)}
               placeholder="e.g., Limited time deal for followers. Tap to buy."
-              className="w-full px-3.5 py-2.5 text-[13px] text-slate-900 placeholder-slate-400 focus:outline-none clay-input-inset"
+              className="w-full px-3.5 py-2.5 text-[16px] sm:text-[13px] text-slate-900 placeholder-slate-400 focus:outline-none rounded-xl border border-[#d6d3c7] bg-[#faf9f5] focus:border-[#2c35af] focus:bg-white transition-colors"
             />
           </div>
         </div>

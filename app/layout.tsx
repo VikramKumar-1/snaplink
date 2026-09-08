@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Poppins, JetBrains_Mono } from "next/font/google";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import "./globals.css";
+import { BRAND_CONFIG } from "@/frontend/shared/config/brand";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -19,7 +20,7 @@ const mono = JetBrains_Mono({
   preload: false,
 });
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://smartdeeplink.to";
+const baseUrl = BRAND_CONFIG.baseUrl;
 
 export const viewport: Viewport = {
   themeColor: "#2c35af",
@@ -31,8 +32,8 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "SmartDeepLink | 1-Click Native App Deep Links & Creator Analytics",
-    template: "%s | SmartDeepLink",
+    default: `${BRAND_CONFIG.name} | 1-Click Native App Deep Links & Creator Analytics`,
+    template: `%s | ${BRAND_CONFIG.name}`,
   },
   description:
     "Bypass slow in-app webview traps on Instagram, TikTok, and YouTube. Launch official apps directly on YouTube, Myntra, Amazon, and Spotify with real-time attribution and 100% free creator tools.",
@@ -48,9 +49,9 @@ export const metadata: Metadata = {
     "creator link attribution",
     "free deep link service"
   ],
-  authors: [{ name: "SmartDeepLink Team", url: baseUrl }],
-  creator: "SmartDeepLink",
-  publisher: "SmartDeepLink",
+  authors: [{ name: `${BRAND_CONFIG.name} Team`, url: baseUrl }],
+  creator: BRAND_CONFIG.name,
+  publisher: BRAND_CONFIG.name,
   formatDetection: {
     email: false,
     address: false,
@@ -60,17 +61,17 @@ export const metadata: Metadata = {
     canonical: baseUrl,
   },
   openGraph: {
-    title: "SmartDeepLink | Level Up Your Creator Links Directly into Native Apps",
+    title: `${BRAND_CONFIG.name} | Level Up Your Creator Links Directly into Native Apps`,
     description:
       "Bypass in-app browser traps on Instagram, TikTok, and YouTube. Launch official apps directly with zero ads and track clicks in real-time.",
     url: baseUrl,
-    siteName: "SmartDeepLink",
+    siteName: BRAND_CONFIG.name,
     images: [
       {
         url: "/og-preview.png",
         width: 1200,
         height: 630,
-        alt: "SmartDeepLink — 1-Click Native Mobile App Intent Engine",
+        alt: `${BRAND_CONFIG.name} — 1-Click Native Mobile App Intent Engine`,
       },
     ],
     locale: "en_US",
@@ -78,11 +79,11 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "SmartDeepLink | Direct App Launch & Creator Analytics",
+    title: `${BRAND_CONFIG.name} | Direct App Launch & Creator Analytics`,
     description:
       "Force-open native mobile apps directly from Instagram & YouTube. Boost affiliate commissions and conversions.",
     images: ["/og-preview.png"],
-    creator: "@smartdeeplink",
+    creator: `@${BRAND_CONFIG.name.toLowerCase()}`,
   },
   robots: {
     index: true,
@@ -110,7 +111,7 @@ export default function RootLayout({
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: "SmartDeepLink",
+    name: BRAND_CONFIG.name,
     applicationCategory: "BusinessApplication",
     operatingSystem: "Android, iOS, Windows, macOS, Linux",
     url: baseUrl,

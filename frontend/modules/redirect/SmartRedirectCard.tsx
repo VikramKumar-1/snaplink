@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Zap, ArrowRight, ShieldCheck } from "lucide-react";
+import { BRAND_CONFIG } from "@/frontend/shared/config/brand";
 
 interface Props {
   link: any;
@@ -97,7 +98,7 @@ export const SmartRedirectCard: React.FC<Props> = ({
           href="/"
           className="text-[11px] font-medium text-zinc-400 hover:text-indigo-400 transition flex items-center justify-center gap-1"
         >
-          ⚡ Powered by <span className="font-bold text-zinc-300">SmartDeepLink</span>
+          ⚡ Powered by <span className="font-bold text-zinc-300">{BRAND_CONFIG.name}</span>
         </a>
       </div>
     </div>

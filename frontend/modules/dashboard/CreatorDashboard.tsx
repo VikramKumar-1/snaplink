@@ -34,6 +34,7 @@ import { useLinkStore } from "@/frontend/shared/store/useLinkStore";
 import { getBaseUrl } from "@/frontend/shared/lib/utils";
 import { QRCodeModal } from "@/frontend/modules/qr-code/QRCodeModal";
 import { AnalyticsModal } from "@/frontend/modules/analytics/AnalyticsModal";
+import { BRAND_CONFIG } from "@/frontend/shared/config/brand";
 
 interface LinkItem {
   _id?: string;
@@ -384,7 +385,7 @@ export const CreatorDashboard: React.FC = () => {
               <div className="sm:col-span-4">
                 <div className="flex items-center bento-input px-3.5 py-3">
                   <span className="text-[12px] text-[#2c35af] font-mono font-bold pr-1 select-none">
-                    smartlink.to/
+                    {BRAND_CONFIG.shortDomain}/
                   </span>
                   <input
                     type="text"
@@ -617,7 +618,7 @@ export const CreatorDashboard: React.FC = () => {
             </div>
 
             <div className="p-3.5 rounded-2xl bg-amber-50 border border-amber-200 mb-5 text-[12px] text-amber-900 font-medium leading-relaxed">
-              💡 <strong>Instant Update:</strong> Your bio link (<code className="font-mono font-bold">smartlink.to/{editingLink.shortCode}</code>) stays the same. Followers will now immediately be redirected to this new destination!
+              💡 <strong>Instant Update:</strong> Your bio link (<code className="font-mono font-bold">{BRAND_CONFIG.shortDomain}/{editingLink.shortCode}</code>) stays the same. Followers will now immediately be redirected to this new destination!
             </div>
 
             <form onSubmit={handleSaveEdit} className="space-y-4">

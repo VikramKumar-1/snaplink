@@ -83,7 +83,7 @@ export default function Home() {
             KEEP <span className="underline decoration-[#ccff00] decoration-wavy decoration-4">CREATING</span> UNTIL YOU FIND YOUR OWN <span className="text-[#2c35af]">AUDIENCE.</span>
           </p>
           <div className="text-[12px] sm:text-[13px] font-mono text-zinc-500 font-bold uppercase mt-3 tracking-widest">
-            SmartDeepLink Open Protocol &middot; Built For Modern Creators
+            SnapLink Open Protocol &middot; Built For Modern Creators
           </div>
         </div>
       </main>
@@ -96,7 +96,7 @@ export default function Home() {
       <footer className="w-full border-t border-[#e7e5dc] py-8 text-center bg-[#f0eee6]">
         <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-[13px] font-medium text-zinc-600">
           <div className="font-mono font-bold text-black">
-            smartlink.to &middot; The Open Deep Link Infrastructure
+            snaplink.to &middot; The Open Deep Link Infrastructure
           </div>
           <div className="flex items-center gap-3">
             <span>Zero Ads</span>

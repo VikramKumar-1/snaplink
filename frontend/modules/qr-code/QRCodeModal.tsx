@@ -5,6 +5,7 @@ import { QRCodeSVG } from "qrcode.react";
 import { useLinkStore } from "@/frontend/shared/store/useLinkStore";
 import { X, Download, Copy, Check, QrCode, Image as ImageIcon, Trash2, Upload } from "lucide-react";
 import { getBaseUrl } from "@/frontend/shared/lib/utils";
+import { BRAND_CONFIG } from "@/frontend/shared/config/brand";
 
 const BRAND_COLORS = [
   { label: "Classic Black", hex: "#121316" },
@@ -68,7 +69,7 @@ export const QRCodeModal: React.FC = () => {
         ctx.drawImage(img, 100, 100, 1000, 1000);
         const pngFile = canvas.toDataURL("image/png");
         const downloadLink = document.createElement("a");
-        downloadLink.download = `smartlink-${activeQrLink.shortCode}-qr.png`;
+        downloadLink.download = `${BRAND_CONFIG.name.toLowerCase()}-${activeQrLink.shortCode}-qr.png`;
         downloadLink.href = pngFile;
         downloadLink.click();
       }
@@ -85,7 +86,7 @@ export const QRCodeModal: React.FC = () => {
     const blob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const downloadLink = document.createElement("a");
-    downloadLink.download = `smartlink-${activeQrLink.shortCode}-vector.svg`;
+    downloadLink.download = `${BRAND_CONFIG.name.toLowerCase()}-${activeQrLink.shortCode}-vector.svg`;
     downloadLink.href = url;
     downloadLink.click();
     URL.revokeObjectURL(url);

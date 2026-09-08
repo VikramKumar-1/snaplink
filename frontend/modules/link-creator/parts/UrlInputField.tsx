@@ -48,14 +48,14 @@ export const UrlInputField: React.FC<Props> = ({ url, setUrl, badge }) => {
         )}
       </div>
 
-      <div className="relative flex items-center clay-input-inset group">
+      <div className="relative flex items-center rounded-2xl bg-[#faf9f5] border-2 border-[#d6d3c7] hover:border-[#2c35af]/70 focus-within:border-[#2c35af] focus-within:bg-white focus-within:ring-4 focus-within:ring-[#2c35af]/10 shadow-[inset_0_2px_4px_rgba(0,0,0,0.03)] transition-all group">
         <Link2 className="absolute left-3.5 h-4 w-4 text-slate-400 group-focus-within:text-blue-600 transition-colors" />
         <input
           type="text"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
           placeholder="Paste destination link (Amazon, YouTube, etc.)..."
-          className="w-full pl-9 sm:pl-10 pr-20 sm:pr-24 py-3.5 bg-transparent text-[13px] sm:text-[13.5px] text-slate-900 placeholder-slate-400 focus:outline-none"
+          className="w-full pl-9 sm:pl-10 pr-20 sm:pr-24 py-3.5 bg-transparent text-[16px] sm:text-[13.5px] text-slate-900 placeholder-slate-400 focus:outline-none"
         />
         <button
           type="button"

@@ -14,6 +14,7 @@ import {
   Clock,
   ExternalLink,
 } from "lucide-react";
+import { BRAND_CONFIG } from "@/frontend/shared/config/brand";
 
 export const AnalyticsModal: React.FC = () => {
   const { activeAnalyticsCode, closeAnalyticsModal } = useLinkStore();
@@ -48,7 +49,7 @@ export const AnalyticsModal: React.FC = () => {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `smartlink-${activeAnalyticsCode}-analytics.csv`;
+      a.download = `${BRAND_CONFIG.name.toLowerCase()}-${activeAnalyticsCode}-analytics.csv`;
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);

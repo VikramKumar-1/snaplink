@@ -13,7 +13,7 @@ interface CardProps {
 /** Tactile Claymorphism + Glassmorphism Platform Showcase Card */
 export const PlatformCard: React.FC<CardProps> = React.memo(({ platform }) => (
   <div
-    className={`p-4 sm:p-6 rounded-[22px] sm:rounded-[28px] clay-glass-hybrid ${platform.hoverGlow} flex flex-col justify-between group transition-all duration-300 hover:-translate-y-1.5 transform-gpu`}
+    className={`w-[250px] sm:w-[270px] md:w-auto shrink-0 md:shrink snap-center p-4 sm:p-6 rounded-[22px] sm:rounded-[28px] clay-glass-hybrid ${platform.hoverGlow} flex flex-col justify-between group transition-all duration-300 hover:-translate-y-1.5 transform-gpu`}
   >
     <div>
       <PlatformCardHeader
