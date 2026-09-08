@@ -1,0 +1,20 @@
+# STRICT PROJECT ARCHITECTURE & SENIOR ENGINEER RULES
+
+1. Backend 5-Layer Rule:
+   - app/api/.../route.ts: 2-3 lines of router glue ONLY.
+   - backend/modules/<domain>/<domain>.controller.ts: Skinny controller wrapped in apiHandler.
+   - backend/modules/<domain>/<domain>.service.ts: All business logic, Zod validation, token issuance.
+   - backend/modules/<domain>/<domain>.repository.ts: All Mongoose queries & DB caching.
+   - backend/modules/<domain>/<domain>.model.ts: Mongoose schema and typed interfaces.
+
+2. Security:
+   - ZERO tokens in localStorage. Use HttpOnly Secure Cookies only.
+   - Strict rate limiting on all generation endpoints.
+
+3. Frontend:
+   - Atomic components (<50 lines each).
+   - Logic in use<Feature>.ts hooks, UI parts in parts/ folder.
+   - Mobile-first responsive design.
+
+4. Think like a 15+ years experience Principal Full-Stack Engineer:
+   - Handle all edge cases, race conditions, DB disconnects, and input sanitization defensively.
