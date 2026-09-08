@@ -54,13 +54,13 @@ export const UrlInputField: React.FC<Props> = ({ url, setUrl, badge }) => {
           type="text"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
-          placeholder="Paste Amazon, Myntra, Flipkart, YouTube, Instagram..."
-          className="w-full pl-10 pr-24 py-3.5 bg-transparent text-[13.5px] text-slate-900 placeholder-slate-400 focus:outline-none"
+          placeholder="Paste destination link (Amazon, YouTube, etc.)..."
+          className="w-full pl-9 sm:pl-10 pr-20 sm:pr-24 py-3.5 bg-transparent text-[13px] sm:text-[13.5px] text-slate-900 placeholder-slate-400 focus:outline-none"
         />
         <button
           type="button"
           onClick={handlePaste}
-          className="absolute right-2 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 hover:text-blue-600 text-[11.5px] font-bold flex items-center gap-1.5 transition shadow-xs active:scale-95 cursor-pointer"
+          className="absolute right-1.5 sm:right-2 px-2.5 sm:px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 hover:text-blue-600 text-[11px] sm:text-[11.5px] font-bold flex items-center gap-1.5 transition shadow-xs active:scale-95 cursor-pointer"
         >
           {pasted ? (
             <><Check className="h-3.5 w-3.5 text-emerald-600" />Pasted</>

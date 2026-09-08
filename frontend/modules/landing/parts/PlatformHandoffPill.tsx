@@ -16,12 +16,12 @@ export const PlatformHandoffPill: React.FC<HandoffProps> = ({
   accentColor,
 }) => (
   <div className="rounded-2xl bg-white/80 backdrop-blur-md border border-white/95 p-3 shadow-[inset_0_1.5px_1px_rgba(255,255,255,1),0_8px_18px_-4px_rgba(0,0,0,0.04)] mb-4">
-    <div className="flex items-center justify-between text-[11px] font-mono mb-2">
-      <span className="text-zinc-500 font-medium truncate max-w-[105px]">{sourceUrl}</span>
-      <div className="flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-black/[0.03]">
-        <ArrowRight className="h-3 w-3 text-zinc-400 shrink-0" />
+    <div className="flex items-center justify-between gap-2 text-[11px] font-mono mb-2">
+      <span className="text-zinc-500 font-medium truncate min-w-0 flex-1">{sourceUrl}</span>
+      <div className="flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-black/[0.03] shrink-0">
+        <ArrowRight className="h-3 w-3 text-zinc-400" />
       </div>
-      <span className={`font-bold truncate max-w-[120px] ${accentColor}`}>
+      <span className={`font-bold truncate min-w-0 flex-1 text-right ${accentColor}`}>
         {targetApp}
       </span>
     </div>

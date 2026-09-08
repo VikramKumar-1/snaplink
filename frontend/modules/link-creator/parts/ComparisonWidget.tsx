@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { AlertCircle, CheckCircle2, Smartphone, ShieldAlert, Zap, Lock, Unlock, ArrowRight } from "lucide-react";
+import { AlertCircle, CheckCircle2, Smartphone, ShieldAlert, TrendingUp, Lock, Unlock, ArrowRight } from "lucide-react";
 import { YoutubeLogo } from "@/frontend/shared/icons/PlatformIcons";
 
 export const ComparisonWidget: React.FC = React.memo(() => {
@@ -48,7 +48,7 @@ export const ComparisonWidget: React.FC = React.memo(() => {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8">
         {/* The Trap (Without SmartLink - Left Card) */}
         <div
-          className={`p-6 sm:p-7 rounded-[28px] clay-card-glass flex flex-col justify-between ${
+          className={`p-4 sm:p-6 md:p-7 rounded-[22px] sm:rounded-[28px] clay-card-glass flex flex-col justify-between ${
             activeTab === "before" ? "block" : "hidden sm:flex"
           }`}
         >
@@ -110,7 +110,7 @@ export const ComparisonWidget: React.FC = React.memo(() => {
 
         {/* The Solution (With SmartLink - Right Card) */}
         <div
-          className={`p-6 sm:p-7 rounded-[28px] clay-card-blue text-white flex flex-col justify-between relative overflow-hidden ${
+          className={`p-4 sm:p-6 md:p-7 rounded-[22px] sm:rounded-[28px] clay-card-blue text-white flex flex-col justify-between relative overflow-hidden ${
             activeTab === "after" ? "block" : "hidden sm:flex"
           }`}
         >
@@ -176,7 +176,7 @@ export const ComparisonWidget: React.FC = React.memo(() => {
 
           <div className="mt-5 pt-3.5 border-t border-white/20 flex items-center justify-between">
             <div className="flex items-center gap-1.5 text-[#ccff00] font-bold text-[12px] uppercase tracking-wide">
-              <Zap className="h-3.5 w-3.5" />
+              <TrendingUp className="h-3.5 w-3.5" />
               <span>Result: 3x More Followers & Sales</span>
             </div>
             <span className="text-[10.5px] font-mono font-bold text-black bg-[#ccff00] px-3 py-1 rounded-full clay-badge">

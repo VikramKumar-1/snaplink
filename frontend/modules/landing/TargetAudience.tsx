@@ -43,7 +43,7 @@ export const TargetAudience: React.FC = () => {
   return (
     <section className="w-full max-w-6xl mx-auto px-4">
       <div className="text-center mb-8 sm:mb-10">
-        <h2 className="text-[24px] sm:text-[34px] font-bold tracking-tight text-[#121316] uppercase leading-tight max-w-4xl mx-auto truncate sm:whitespace-nowrap">
+        <h2 className="text-[24px] sm:text-[34px] font-bold tracking-tight text-[#121316] uppercase leading-tight max-w-4xl mx-auto">
           Who Wins With <span className="text-[#2c35af]">SmartDeepLink?</span>
         </h2>
       </div>

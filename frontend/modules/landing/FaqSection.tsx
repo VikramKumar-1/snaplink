@@ -14,7 +14,7 @@ export const FaqSection: React.FC = memo(() => {
   return (
     <section className="w-full max-w-4xl mx-auto px-4 transform-gpu">
       <div className="text-center mb-8 sm:mb-10">
-        <h2 className="text-[24px] sm:text-[34px] font-bold tracking-tight text-[#121316] uppercase leading-tight max-w-4xl mx-auto truncate sm:whitespace-nowrap">
+        <h2 className="text-[24px] sm:text-[34px] font-bold tracking-tight text-[#121316] uppercase leading-tight max-w-4xl mx-auto">
           Frequently Asked <span className="text-[#2c35af]">Questions</span>
         </h2>
       </div>

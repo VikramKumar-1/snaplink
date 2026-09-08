@@ -16,32 +16,32 @@ export const SocialPreviewHeader: React.FC<HeaderProps> = ({ activeTab, onSelect
       Rich WhatsApp & <span className="text-[#2c35af]">Social Previews</span>
     </h2>
 
-    <div className="inline-flex p-1 rounded-2xl bg-white/80 backdrop-blur-md border border-black/[0.08] shadow-xs gap-1">
+    <div className="inline-flex p-1 rounded-2xl bg-white/80 backdrop-blur-md border border-black/[0.08] shadow-xs gap-1 max-w-full">
       <button
         onClick={() => onSelectTab("whatsapp")}
-        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+        className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold transition-all ${
           activeTab === "whatsapp" ? "bg-[#25D366] text-white shadow-xs" : "text-zinc-600 hover:text-black"
         }`}
       >
-        <WhatsAppLogo className="h-3.5 w-3.5" /> <span>WhatsApp</span>
+        <WhatsAppLogo className="h-3.5 w-3.5 shrink-0" /> <span>WhatsApp</span>
       </button>
 
       <button
         onClick={() => onSelectTab("telegram")}
-        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+        className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold transition-all ${
           activeTab === "telegram" ? "bg-[#229ED9] text-white shadow-xs" : "text-zinc-600 hover:text-black"
         }`}
       >
-        <TelegramLogo className="h-3.5 w-3.5" /> <span>Telegram</span>
+        <TelegramLogo className="h-3.5 w-3.5 shrink-0" /> <span>Telegram</span>
       </button>
 
       <button
         onClick={() => onSelectTab("x")}
-        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+        className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold transition-all ${
           activeTab === "x" ? "bg-[#121316] text-white shadow-xs" : "text-zinc-600 hover:text-black"
         }`}
       >
-        <span className="font-mono text-xs font-black">𝕏</span> <span>Twitter / X</span>
+        <span className="font-mono text-xs font-black">𝕏</span> <span><span className="hidden xs:inline sm:inline">Twitter / </span>X</span>
       </button>
     </div>
   </div>

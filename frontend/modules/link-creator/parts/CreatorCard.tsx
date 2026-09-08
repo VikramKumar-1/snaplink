@@ -16,7 +16,7 @@ export const CreatorCard: React.FC<CreatorCardProps> = memo(
   ({ activeTab, onTabChange, creator }) => (
     <div id="creator-card" className="w-full bento-card-light overflow-hidden transform-gpu">
       <CreatorTabs activeTab={activeTab} onTabChange={onTabChange} />
-      <div className="p-6 sm:p-7 bg-white">
+      <div className="p-4 sm:p-7 bg-white">
         <CreatorForm
           url={creator.url}
           setUrl={creator.setUrl}

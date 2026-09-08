@@ -6,7 +6,7 @@ import { SocialPlatform } from "./SocialPreviewHeader";
 import { SocialRawMockup } from "./SocialRawMockup";
 
 export const SocialRawCard: React.FC<{ platform: SocialPlatform }> = React.memo(({ platform }) => (
-  <div className="p-6 sm:p-7 rounded-[28px] bg-white/75 backdrop-blur-xl border border-rose-200/80 shadow-[inset_0_2px_2px_rgba(255,255,255,0.95),0_12px_28px_-8px_rgba(244,63,94,0.06)] flex flex-col justify-between group transform-gpu">
+  <div className="p-4 sm:p-6 md:p-7 rounded-[22px] sm:rounded-[28px] bg-white/75 backdrop-blur-xl border border-rose-200/80 shadow-[inset_0_2px_2px_rgba(255,255,255,0.95),0_12px_28px_-8px_rgba(244,63,94,0.06)] flex flex-col justify-between group transform-gpu">
     <div>
       <div className="flex items-center justify-between mb-4">
         <span className="text-xs font-bold uppercase tracking-wider text-rose-600 flex items-center gap-1.5">

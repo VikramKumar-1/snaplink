@@ -16,11 +16,11 @@ import { ServiceMarquee } from "@/frontend/modules/landing/ServiceMarquee";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#f5f4ef] text-[#121316] font-sans relative selection:bg-[#ccff00] selection:text-black">
+    <div className="min-h-screen bg-[#f5f4ef] text-[#121316] font-sans relative selection:bg-[#ccff00] selection:text-black overflow-x-hidden">
       {/* Top Sticky Navbar with Dribbble Styling */}
       <Navbar />
 
-      <main className="w-full flex flex-col items-center relative z-10">
+      <main className="w-full flex flex-col items-center relative z-10 overflow-x-hidden">
         {/* 1. HERO SECTION: Split Layout (Headline left, Creator Box right) */}
         <HeroSplitSection />
 
@@ -76,7 +76,7 @@ export default function Home() {
         <div className="w-full max-w-4xl mx-auto my-8 sm:my-10 px-4 text-center">
           <div className="flex items-center justify-center gap-3 select-none text-[#2c35af] text-[28px] font-black mb-3">
             <span>✱</span>
-            <span className="text-[#a8d900]">✦</span>
+            <span className="text-[#2c35af] text-[20px]">•</span>
             <span>✱</span>
           </div>
           <p className="font-display text-[20px] sm:text-[28px] md:text-[34px] font-extrabold tracking-tight uppercase leading-snug">

@@ -12,10 +12,10 @@ export const HeroCopy: React.FC = memo(() => (
       </span>
     </div>
 
-    <h1 className="text-[32px] sm:text-[42px] lg:text-[46px] font-bold tracking-tight text-[#121316] leading-[1.1] uppercase">
+    <h1 className="text-[27px] sm:text-[40px] lg:text-[46px] font-bold tracking-tight text-[#121316] leading-[1.12] uppercase">
       LEVEL UP YOUR LINKS{" "}
-      <span className="inline-flex items-center align-middle mx-1 px-3 py-0.5 rounded-full pill-lime text-[15px] sm:text-[18px]">
-        <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 stroke-[2.5]" />
+      <span className="inline-flex items-center align-middle mx-1 px-2.5 sm:px-3 py-0.5 rounded-full pill-lime text-[13px] sm:text-[17px]">
+        <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 stroke-[2.5]" />
       </span>{" "}
       DIRECT TO APPS
     </h1>
