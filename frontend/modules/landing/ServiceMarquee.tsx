@@ -38,7 +38,7 @@ export const ServiceMarquee: React.FC = memo(() => {
             <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-white/10 text-white/80 border border-white/10 hidden sm:inline-block">
               {item.badge}
             </span>
-            <span className="text-[#ccff00]/40 text-xs ml-4 select-none">✦</span>
+            <span className="text-[#ccff00]/40 text-xs ml-4 select-none">•</span>
           </div>
         ))}
       </motion.div>

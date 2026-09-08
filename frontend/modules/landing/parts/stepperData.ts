@@ -1,55 +1,40 @@
-import { Link2, Cpu, Zap, TrendingUp, LucideIcon } from "lucide-react";
+import { Link2, Layers, Smartphone, TrendingUp, LucideIcon } from "lucide-react";
 
 export interface StepItem {
   num: string;
-  badge: string;
   title: string;
   subtitle: string;
   icon: LucideIcon;
-  cardBg: string;
-  borderTint: string;
-  badgeBg: string;
+  accentColor: string;
 }
 
 export const stepperSteps: StepItem[] = [
   {
     num: "01",
-    badge: "INPUT",
-    title: "Paste Any Link",
-    subtitle: "Drop any Amazon, Instagram, YouTube, Flipkart, or custom web link.",
+    title: "Paste Destination Link",
+    subtitle: "Input any product, channel, or post URL from Amazon, YouTube, Instagram, or Myntra.",
     icon: Link2,
-    cardBg: "bg-[#f5f7fc]",
-    borderTint: "border-blue-200/80 hover:border-blue-400",
-    badgeBg: "bg-blue-100/90 text-blue-900 border-blue-200",
+    accentColor: "text-[#2c35af]",
   },
   {
     num: "02",
-    badge: "ROUTING",
-    title: "Smart Intent Engine",
-    subtitle: "Detects client OS (iOS / Android) and compiles official native deep link schemes.",
-    icon: Cpu,
-    cardBg: "bg-[#fcf8f0]",
-    borderTint: "border-amber-200/80 hover:border-amber-400",
-    badgeBg: "bg-amber-100/90 text-amber-900 border-amber-200",
+    title: "OS Deep-Link Routing",
+    subtitle: "Compiles official Android App Intents and iOS Universal Schemes with safe web fallback.",
+    icon: Layers,
+    accentColor: "text-[#2c35af]",
   },
   {
     num: "03",
-    badge: "INSTANT",
-    title: "Direct 0s App Open",
-    subtitle: "Bypasses slow in-app webview login traps to open official native apps directly.",
-    icon: Zap,
-    cardBg: "bg-[#f8f5fc]",
-    borderTint: "border-purple-200/80 hover:border-purple-400",
-    badgeBg: "bg-purple-100/90 text-purple-900 border-purple-200",
+    title: "Direct Native App Open",
+    subtitle: "Launches the official installed mobile app instantly, bypassing in-app webview login walls.",
+    icon: Smartphone,
+    accentColor: "text-[#2c35af]",
   },
   {
     num: "04",
-    badge: "SUCCESS",
-    title: "3x More Conversions",
-    subtitle: "Users stay logged in with active carts, Prime status, and 1-click checkout ready.",
+    title: "1-Click Native Conversion",
+    subtitle: "Retains active sessions, affiliate attribution cookies, and saved UPI payment methods.",
     icon: TrendingUp,
-    cardBg: "bg-[#f2f8f4]",
-    borderTint: "border-emerald-200/80 hover:border-emerald-400",
-    badgeBg: "bg-emerald-100/90 text-emerald-900 border-emerald-200",
+    accentColor: "text-emerald-600",
   },
 ];

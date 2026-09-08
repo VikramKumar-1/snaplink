@@ -39,12 +39,10 @@ export const MorePlatformsBanner: React.FC = memo(() => (
       </span>
       {HIGHLIGHT_SERVICES.map(({ icon: Icon, text }) => (
         <div key={text} className="flex items-center gap-2 text-[12px] font-semibold text-zinc-700">
-          <Icon className="h-3.5 w-3.5 text-[#2c35af]" />
-          <span>{text}</span>
+          <Icon className="h-3.5 w-3.5 text-[#2c35af]" /> <span>{text}</span>
         </div>
       ))}
     </div>
   </div>
 ));
-
 MorePlatformsBanner.displayName = "MorePlatformsBanner";
