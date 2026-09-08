@@ -50,7 +50,7 @@ export class LinkService {
           customDescription,
           customImage,
           clicks: 0,
-          ...(userId && { userId }),
+          ...(userId && { userId: userId as any }),
         });
       } catch (err: any) {
         if (err.code === 11000) {
@@ -79,7 +79,7 @@ export class LinkService {
             customDescription,
             customImage,
             clicks: 0,
-            ...(userId && { userId }),
+            ...(userId && { userId: userId as any }),
           });
           inserted = true;
         } catch (err: any) {

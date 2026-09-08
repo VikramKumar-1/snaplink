@@ -1,5 +1,6 @@
+import { NextRequest } from "next/server";
 import { AuthController } from "@/backend/modules/auth/auth.controller";
 
-export async function POST() {
-  return AuthController.handleRefreshToken();
+export async function POST(req: NextRequest) {
+  return AuthController.handleRefreshToken(req);
 }

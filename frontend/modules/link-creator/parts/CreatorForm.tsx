@@ -17,7 +17,7 @@ interface CreatorFormProps {
   setCustomTitle: (v: string) => void;
   customDescription: string;
   setCustomDescription: (v: string) => void;
-  badge: string;
+  badge: string | null;
   loading: boolean;
   error: string | null;
   onSubmit: (e: React.FormEvent) => void;

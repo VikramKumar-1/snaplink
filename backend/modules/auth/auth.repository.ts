@@ -41,13 +41,14 @@ export class AuthRepository {
       return await User.create(userData);
     } catch (err: any) {
       console.warn("MongoDB not active, persisting user to memory cache:", err.message);
+      const fallbackId = String(userData._id || "usr_" + Date.now());
       const fallback = {
-        _id: "usr_" + Date.now(),
         ...userData,
+        _id: fallbackId,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
-      memoryUsers.set(fallback._id, fallback);
+      memoryUsers.set(fallbackId, fallback);
       return fallback;
     }
   }

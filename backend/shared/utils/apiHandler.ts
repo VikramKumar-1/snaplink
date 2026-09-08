@@ -1,16 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ZodError } from "zod";
 
-type RouteHandler = (req: NextRequest) => Promise<NextResponse>;
-
 /**
  * Global API Exception & Zod Handler
  * Catches ALL exceptions, formats Zod validation errors, and returns clean JSON responses.
+ * Strictly types the first parameter as NextRequest to satisfy Next.js 15 route constraints.
  */
-export function apiHandler(handler: RouteHandler): RouteHandler {
-  return async (req: NextRequest) => {
+export function apiHandler<T extends any[]>(
+  handler: (req: NextRequest, ...args: T) => Promise<NextResponse>
+): (req: NextRequest, ...args: T) => Promise<NextResponse> {
+  return async (req: NextRequest, ...args: T) => {
     try {
-      return await handler(req);
+      return await handler(req, ...args);
     } catch (err: any) {
       // 1. Zod Validation Errors
       if (err instanceof ZodError) {

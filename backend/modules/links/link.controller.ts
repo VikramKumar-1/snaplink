@@ -22,7 +22,7 @@ export class LinkController {
     );
   });
 
-  static handleGetRecent = apiHandler(async (_req?: NextRequest, userId?: string | null) => {
+  static handleGetRecent = apiHandler(async (_req: NextRequest, userId?: string | null) => {
     const links = await LinkService.getRecentLinks(50, userId);
     return NextResponse.json({ links });
   });
@@ -49,7 +49,7 @@ export class LinkController {
     return NextResponse.json({ success: true, message: "Link deleted successfully." });
   });
 
-  static handleGetDashboardStats = apiHandler(async () => {
+  static handleGetDashboardStats = apiHandler(async (_req: NextRequest) => {
     const stats = await LinkService.getDashboardStats();
     return NextResponse.json({ success: true, stats });
   });

@@ -53,7 +53,7 @@ export class AuthController {
     return NextResponse.json({ success: true, user });
   });
 
-  static handleRefreshToken = apiHandler(async () => {
+  static handleRefreshToken = apiHandler(async (_req: NextRequest) => {
     const cookieStore = await cookies();
     const refreshToken = cookieStore.get("refreshToken")?.value;
     const { accessToken } = await AuthService.refreshAccessToken(refreshToken);
@@ -70,7 +70,7 @@ export class AuthController {
     return NextResponse.json({ success: true });
   });
 
-  static handleLogout = apiHandler(async () => {
+  static handleLogout = apiHandler(async (_req: NextRequest) => {
     const cookieStore = await cookies();
     const refreshToken = cookieStore.get("refreshToken")?.value;
     await AuthService.logout(refreshToken);
@@ -78,7 +78,7 @@ export class AuthController {
     return NextResponse.json({ success: true, message: "Logged out successfully." });
   });
 
-  static handleGetMe = apiHandler(async () => {
+  static handleGetMe = apiHandler(async (_req: NextRequest) => {
     const cookieStore = await cookies();
     const accessToken = cookieStore.get("accessToken")?.value;
     const user = await AuthService.getCurrentUser(accessToken);

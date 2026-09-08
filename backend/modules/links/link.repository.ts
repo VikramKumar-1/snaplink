@@ -34,9 +34,10 @@ export class LinkRepository {
       }
 
       console.warn("MongoDB connection not active, persisting to memory cache:", err.message);
+      const fallbackId = String(linkData._id || "mem_" + Date.now());
       const fallback = {
-        _id: "mem_" + Date.now(),
         ...linkData,
+        _id: fallbackId,
         clicks: 0,
         createdAt: new Date(),
         updatedAt: new Date(),
