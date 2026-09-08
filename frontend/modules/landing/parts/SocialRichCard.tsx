@@ -1,16 +1,17 @@
 "use client";
 
-import React from "react";
-import { Sparkles, TrendingUp } from "lucide-react";
+import React, { memo } from "react";
+import { TrendingUp } from "lucide-react";
 import { SocialPlatform } from "./SocialPreviewHeader";
 import { SocialRichMockup } from "./SocialRichMockup";
 
-export const SocialRichCard: React.FC<{ platform: SocialPlatform }> = React.memo(({ platform }) => (
+export const SocialRichCard: React.FC<{ platform: SocialPlatform }> = memo(({ platform }) => (
   <div className="p-6 sm:p-7 rounded-[28px] clay-glass-hybrid border-indigo-200/90 shadow-[inset_0_2px_2px_rgba(255,255,255,1),0_18px_40px_-10px_rgba(44,53,175,0.12)] flex flex-col justify-between group transition-all duration-300 hover:-translate-y-1.5 transform-gpu">
     <div>
       <div className="flex items-center justify-between mb-4">
-        <span className="text-xs font-bold uppercase tracking-wider text-[#2c35af] flex items-center gap-1.5">
-          <Sparkles className="h-4 w-4" /> SmartDeepLink Rich Card
+        <span className="text-xs font-bold uppercase tracking-wider text-[#2c35af] flex items-center gap-2">
+          <span className="h-2 w-2 rounded-full bg-[#2c35af]" />
+          SmartDeepLink Rich Card
         </span>
         <span className="pill-lime text-[10px] font-mono font-bold uppercase px-3 py-0.5 text-black">
           3X HIGHER CTR

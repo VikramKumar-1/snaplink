@@ -3,7 +3,7 @@
 import React, { useRef, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { useLinkStore } from "@/frontend/shared/store/useLinkStore";
-import { X, Download, Copy, Check, QrCode, Image as ImageIcon, Trash2, Sparkles } from "lucide-react";
+import { X, Download, Copy, Check, QrCode, Image as ImageIcon, Trash2, Upload } from "lucide-react";
 import { getBaseUrl } from "@/frontend/shared/lib/utils";
 
 const BRAND_COLORS = [
@@ -188,7 +188,7 @@ export const QRCodeModal: React.FC = () => {
                 onClick={() => fileInputRef.current?.click()}
                 className="px-3 py-1.5 rounded-lg bg-white border border-[#e7e5dc] hover:border-[#2c35af] text-[11.5px] font-bold text-[#121316] transition cursor-pointer flex items-center gap-1.5 shadow-xs"
               >
-                <Sparkles className="w-3 h-3 text-[#2c35af]" />
+                <Upload className="w-3 h-3 text-[#2c35af]" />
                 <span>Upload</span>
               </button>
             )}

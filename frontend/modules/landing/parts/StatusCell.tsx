@@ -1,7 +1,7 @@
 "use client";
 
 import React, { memo } from "react";
-import { Check, X, AlertCircle, Sparkles } from "lucide-react";
+import { Check, X, AlertCircle } from "lucide-react";
 
 interface StatusCellProps {
   type: "success" | "danger" | "warning" | "badge";
@@ -41,7 +41,7 @@ export const StatusCell: React.FC<StatusCellProps> = memo(({ type, text }) => {
   }
   return (
     <div className="inline-flex items-center gap-1.5 pill-lime px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider text-black shadow-xs">
-      <Sparkles className="h-3.5 w-3.5" />
+      <span className="h-1.5 w-1.5 rounded-full bg-black" />
       <span>{text}</span>
     </div>
   );

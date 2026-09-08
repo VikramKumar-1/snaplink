@@ -1,14 +1,13 @@
 "use client";
 
-import React from "react";
-import { ArrowUpRight } from "lucide-react";
+import React, { memo } from "react";
 
 interface FooterProps {
   bottomStat: string;
 }
 
-/** Minimalist Conversion Stat & Interactive Action Bar */
-export const PlatformCardFooter: React.FC<FooterProps> = ({ bottomStat }) => (
+/** Minimalist Conversion Stat without bottom arrow */
+export const PlatformCardFooter: React.FC<FooterProps> = memo(({ bottomStat }) => (
   <div className="pt-3 border-t border-black/[0.06] flex items-center justify-between">
     <div className="flex items-center gap-2">
       <span className="relative flex h-2 w-2">
@@ -19,8 +18,7 @@ export const PlatformCardFooter: React.FC<FooterProps> = ({ bottomStat }) => (
         {bottomStat}
       </span>
     </div>
-    <div className="h-7 w-7 rounded-full bg-black/[0.04] group-hover:bg-[#2c35af] group-hover:text-white flex items-center justify-center text-zinc-500 transition-all duration-300 group-hover:scale-110">
-      <ArrowUpRight className="h-3.5 w-3.5" />
-    </div>
   </div>
-);
+));
+
+PlatformCardFooter.displayName = "PlatformCardFooter";

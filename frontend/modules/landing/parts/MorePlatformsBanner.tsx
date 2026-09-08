@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import { Sparkles, QrCode, BarChart2, ShieldCheck, Layers } from "lucide-react";
+import React, { memo } from "react";
+import { QrCode, BarChart2, ShieldCheck, Layers } from "lucide-react";
 
 const OTHER_APPS = ["Spotify", "Telegram", "WhatsApp", "Ajio", "X (Twitter)", "LinkedIn", "Zomato", "Swiggy"];
 const HIGHLIGHT_SERVICES = [
@@ -12,11 +12,12 @@ const HIGHLIGHT_SERVICES = [
 ];
 
 /** Ecosystem Banner: 50+ Apps & All-in-One Platform Services */
-export const MorePlatformsBanner: React.FC = () => (
+export const MorePlatformsBanner: React.FC = memo(() => (
   <div className="mt-8 p-5 sm:p-7 rounded-[28px] clay-glass-hybrid border border-white/90 flex flex-col md:flex-row items-center justify-between gap-6">
     <div className="text-left max-w-xl">
-      <div className="inline-flex items-center gap-1.5 text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/80 border border-white text-[#2c35af] clay-badge mb-2">
-        <Sparkles className="h-3 w-3" /> Supports 50+ Platforms & Services
+      <div className="inline-flex items-center gap-2 text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/80 border border-white text-[#2c35af] clay-badge mb-2">
+        <span className="h-1.5 w-1.5 rounded-full bg-[#2c35af]" />
+        <span>Supports 50+ Platforms & Services</span>
       </div>
       <h3 className="text-[18px] sm:text-[20px] font-bold text-[#121316] tracking-tight mb-1">
         Need another app? Any link works instantly.
@@ -44,4 +45,6 @@ export const MorePlatformsBanner: React.FC = () => (
       ))}
     </div>
   </div>
-);
+));
+
+MorePlatformsBanner.displayName = "MorePlatformsBanner";
