@@ -69,6 +69,10 @@ Every feature in `backend/modules/<domain>/` MUST follow this exact flow. No exc
 - Never use fixed pixel widths that break mobile viewports.
 - No blurry font rendering (`font-black` on small text is forbidden; use `font-bold` with proper tracking).
 
+### 6. Zero Cliché AI Icons (Strict Anti-Sparkle Law)
+- **STRICTLY FORBIDDEN:** Do NOT use typical AI sparkle/glitter icons (`Sparkles`, magic wand) across any UI component or card.
+- Use clean, tactile, technical design cues: solid brand color dots (`h-2 w-2 rounded-full`), structural Lucide vectors (`Layers`, `Eye`, `Link2`, `ShieldCheck`), or pure typography badges.
+
 ---
 
 ## ⚛️ Frontend Atomic Module Rules

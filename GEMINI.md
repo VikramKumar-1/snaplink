@@ -31,4 +31,7 @@
    - Defensive typing: No `any` unless strictly justified.
    - Mobile-first responsiveness across all screen sizes.
 
+6. **Zero Cliché AI Sparkles (Strict Anti-Sparkle Law):**
+   - No `Sparkles` or cheesy glitter icons. Use clean brand color dots or structural technical icons.
+
 Refer to `ARCHITECTURE_RULES.md` and `AGENTS.md` for full implementation details.
