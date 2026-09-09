@@ -53,4 +53,10 @@ export class LinkController {
     const stats = await LinkService.getDashboardStats();
     return NextResponse.json({ success: true, stats });
   });
+
+  static handleVerifyPassword = apiHandler(async (req: NextRequest) => {
+    const body = await req.json();
+    const result = await LinkService.verifyLinkPassword(body);
+    return NextResponse.json(result);
+  });
 }

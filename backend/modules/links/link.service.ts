@@ -1,16 +1,18 @@
+import bcrypt from "bcryptjs";
 import { LinkRepository } from "./link.repository";
-import { detectPlatform } from "@/backend/modules/redirect/deepLink.service";
+import { detectPlatform, generateDeepLink } from "@/backend/modules/redirect/deepLink.service";
 import { generateShortCode } from "@/backend/shared/utils/codeGenerator";
 import { checkRateLimit } from "@/backend/shared/middlewares/rateLimiter";
-import { CreateLinkSchema } from "./link.validator";
+import { CreateLinkSchema, VerifyPasswordSchema } from "./link.validator";
 import { ILink } from "./link.model";
+import { buildAttributedUrl } from "@/backend/shared/utils/urlAttribution";
+import { WebhookService } from "@/backend/modules/webhooks/webhook.service";
 
 export class LinkService {
   /**
    * Orchestrates rate-limiting, Zod validation, platform detection, and persistence.
    */
   static async processCreateLink(ip: string, rawBody: any, userId?: string | null) {
-    // 1. Rate Limit Check
     const rateCheck = checkRateLimit(ip, "CREATE_LINK");
     if (!rateCheck.allowed) {
       const error: any = new Error(rateCheck.message);
@@ -18,40 +20,74 @@ export class LinkService {
       throw error;
     }
 
-    // 2. Strict Zod Validation (Throws ZodError automatically if invalid)
     const sanitizedData = CreateLinkSchema.parse(rawBody);
 
-    const { originalUrl, customSlug, title, customTitle, customDescription, customImage } =
-      sanitizedData;
+    const {
+      originalUrl,
+      customSlug,
+      customDomain,
+      smartRules,
+      title,
+      customTitle,
+      customDescription,
+      customImage,
+      ctaOverlay,
+      routing,
+      utm,
+      retargeting,
+    } = sanitizedData;
+
+    // Process routing parameters & password hashing
+    let routingPayload: any = undefined;
+    if (routing) {
+      const passwordHash =
+        routing.passwordProtected && routing.password
+          ? await bcrypt.hash(routing.password, await bcrypt.genSalt(10))
+          : null;
+      routingPayload = {
+        expiresAt: routing.expiresAt || null,
+        maxClicks: routing.maxClicks || null,
+        expiredFallbackUrl: routing.expiredFallbackUrl || "",
+        passwordProtected: Boolean(routing.passwordProtected),
+        passwordHash,
+      };
+    }
+
+    // Build attributed destination URL with UTM & Affiliate tags
+    const finalUrl = buildAttributedUrl(originalUrl, utm, retargeting);
 
     // 3. Platform Detection
-    const platform = detectPlatform(originalUrl);
+    const platform = detectPlatform(finalUrl);
     const linkTitle = title || `${platform.toUpperCase()} Smart Link`;
 
     // 4. Persistence with Atomic Collision Handling
+    const baseLinkData = {
+      originalUrl: finalUrl,
+      customDomain: customDomain ? customDomain.toLowerCase().trim() : undefined,
+      smartRules,
+      platform,
+      title: linkTitle,
+      customTitle,
+      customDescription,
+      customImage,
+      ctaOverlay,
+      routing: routingPayload,
+      utm,
+      retargeting,
+      clicks: 0,
+      ...(userId && { userId: userId as any }),
+    };
+
     let newLink: ILink | null = null;
 
     if (customSlug) {
-      // Custom alias check
-      const exists = await LinkRepository.existsByShortCode(customSlug);
-      if (exists) {
+      if (await LinkRepository.existsByShortCode(customSlug)) {
         const error: any = new Error("This custom alias is already taken. Please pick another one.");
         error.statusCode = 409;
         throw error;
       }
-
       try {
-        newLink = await LinkRepository.create({
-          shortCode: customSlug,
-          originalUrl,
-          platform,
-          title: linkTitle,
-          customTitle,
-          customDescription,
-          customImage,
-          clicks: 0,
-          ...(userId && { userId: userId as any }),
-        });
+        newLink = await LinkRepository.create({ shortCode: customSlug, ...baseLinkData });
       } catch (err: any) {
         if (err.code === 11000) {
           const error: any = new Error("This custom alias was just taken by another request.");
@@ -61,104 +97,149 @@ export class LinkService {
         throw err;
       }
     } else {
-      // Auto-generated 7-character Base62 code (3.52 Trillion pool)
       let inserted = false;
       let attempts = 0;
-
       while (!inserted && attempts < 3) {
-        // Start with ultra-compact 6 chars (56.8 Billion pool), step to 7 if repeated collision
         const codeLength = attempts < 2 ? 6 : 7;
         const shortCode = generateShortCode(codeLength);
         try {
-          newLink = await LinkRepository.create({
-            shortCode,
-            originalUrl,
-            platform,
-            title: linkTitle,
-            customTitle,
-            customDescription,
-            customImage,
-            clicks: 0,
-            ...(userId && { userId: userId as any }),
-          });
+          newLink = await LinkRepository.create({ shortCode, ...baseLinkData });
           inserted = true;
         } catch (err: any) {
-          if (err.code === 11000) {
-            // In the hyper-rare event of collision, retry with a fresh code
-            attempts++;
-            continue;
-          }
+          if (err.code === 11000) { attempts++; continue; }
           throw err;
         }
       }
-
-      if (!newLink) {
-        const error: any = new Error("Failed to allocate a unique short code after retries.");
-        error.statusCode = 500;
-        throw error;
-      }
     }
 
+    if (!newLink) {
+      const error: any = new Error("Failed to allocate a unique short code after retries.");
+      error.statusCode = 500;
+      throw error;
+    }
+
+    WebhookService.dispatch(
+      "link.created",
+      {
+        shortCode: newLink.shortCode,
+        originalUrl: newLink.originalUrl,
+        platform: newLink.platform,
+        title: newLink.title,
+        customDomain: newLink.customDomain,
+        createdAt: newLink.createdAt,
+      },
+      userId ? String(userId) : undefined
+    ).catch(console.error);
+
     return {
-      link: newLink,
+      link: newLink as ILink,
       remaining: rateCheck.remaining,
     };
   }
 
   static async getRecentLinks(limit: number = 50, userId?: string | null) {
-    if (userId) {
-      return await LinkRepository.findByUserId(userId, limit);
-    }
-    return await LinkRepository.findRecent(limit);
+    return userId ? await LinkRepository.findByUserId(userId, limit) : await LinkRepository.findRecent(limit);
   }
 
   static async getByShortCode(shortCode: string): Promise<ILink | any | null> {
     return await LinkRepository.findByShortCode(shortCode);
   }
 
-  static async updateLink(shortCode: string, body: any, userId?: string | null) {
-    const existing = await LinkRepository.findByShortCode(shortCode);
-    if (!existing) {
+  static async verifyLinkPassword(rawBody: any) {
+    const { shortCode, password } = VerifyPasswordSchema.parse(rawBody);
+    const link = await LinkRepository.findByShortCode(shortCode);
+    if (!link) {
       const error: any = new Error("Link not found.");
       error.statusCode = 404;
       throw error;
     }
 
-    // IDOR Security Protection: If link belongs to a user, enforce ownership
-    if (existing.userId && existing.userId.toString() !== userId) {
-      const error: any = new Error("Forbidden: You do not have permission to modify this link.");
-      error.statusCode = 403;
+    if (!link.routing?.passwordProtected) {
+      return {
+        success: true,
+        originalUrl: link.originalUrl,
+        deepLinkInfo: generateDeepLink(link.originalUrl),
+      };
+    }
+
+    if (!link.routing?.passwordHash) {
+      const error: any = new Error("Password protection is misconfigured for this link.");
+      error.statusCode = 500;
       throw error;
     }
 
+    if (!(await bcrypt.compare(password, link.routing.passwordHash))) {
+      const error: any = new Error("Incorrect password. Please try again.");
+      error.statusCode = 401;
+      throw error;
+    }
+
+    LinkRepository.incrementClicks(shortCode).catch(console.error);
+    return {
+      success: true,
+      originalUrl: link.originalUrl,
+      deepLinkInfo: generateDeepLink(link.originalUrl),
+    };
+  }
+
+  private static async assertLinkOwnership(shortCode: string, userId?: string | null) {
+    const link = await LinkRepository.findByShortCode(shortCode);
+    if (!link) {
+      const err: any = new Error("Link not found.");
+      err.statusCode = 404;
+      throw err;
+    }
+    if (link.userId && String(link.userId) !== String(userId)) {
+      const err: any = new Error("Forbidden: You do not have permission for this link.");
+      err.statusCode = 403;
+      throw err;
+    }
+    return link;
+  }
+
+  static async updateLink(shortCode: string, body: any, userId?: string | null) {
+    const existing = await this.assertLinkOwnership(shortCode, userId);
+
     const updates: any = {};
+    if (body.utm !== undefined) updates.utm = body.utm;
+    if (body.retargeting !== undefined) updates.retargeting = body.retargeting;
+
     if (body.originalUrl && body.originalUrl.trim() !== "") {
-      updates.originalUrl = body.originalUrl.trim();
+      const baseDest = body.originalUrl.trim();
+      const targetUtm = body.utm !== undefined ? body.utm : existing.utm;
+      const targetRetargeting = body.retargeting !== undefined ? body.retargeting : existing.retargeting;
+      updates.originalUrl = buildAttributedUrl(baseDest, targetUtm, targetRetargeting);
       updates.platform = detectPlatform(updates.originalUrl);
     }
-    if (body.title !== undefined) updates.title = body.title;
-    if (body.customTitle !== undefined) updates.customTitle = body.customTitle;
-    if (body.customDescription !== undefined) updates.customDescription = body.customDescription;
+    ["title", "customTitle", "customDescription", "ctaOverlay", "smartRules"].forEach((f) => {
+      if (body[f] !== undefined) updates[f] = body[f];
+    });
 
-    const updated = await LinkRepository.updateByShortCode(shortCode, updates);
-    return updated;
+    if (body.routing !== undefined) {
+      const ex = existing.routing || {};
+      let passwordHash = ex.passwordHash || null;
+      if (body.routing.password) {
+        const salt = await bcrypt.genSalt(10);
+        passwordHash = await bcrypt.hash(body.routing.password, salt);
+      } else if (body.routing.passwordProtected === false) {
+        passwordHash = null;
+      }
+
+      const r = body.routing;
+      updates.routing = {
+        expiresAt: r.expiresAt !== undefined ? (r.expiresAt ? new Date(r.expiresAt) : null) : (ex.expiresAt || null),
+        maxClicks: r.maxClicks !== undefined ? (r.maxClicks ? Number(r.maxClicks) : null) : (ex.maxClicks || null),
+        expiredFallbackUrl: r.expiredFallbackUrl ?? ex.expiredFallbackUrl ?? "",
+        passwordProtected: r.passwordProtected !== undefined ? Boolean(r.passwordProtected) : Boolean(ex.passwordProtected),
+        passwordHash,
+      };
+    }
+
+    return await LinkRepository.updateByShortCode(shortCode, updates);
   }
 
   static async deleteLink(shortCode: string, userId?: string | null) {
-    const existing = await LinkRepository.findByShortCode(shortCode);
-    if (!existing) {
-      const error: any = new Error("Link not found.");
-      error.statusCode = 404;
-      throw error;
-    }
-
-    // IDOR Security Protection: If link belongs to a user, enforce ownership
-    if (existing.userId && existing.userId.toString() !== userId) {
-      const error: any = new Error("Forbidden: You do not have permission to delete this link.");
-      error.statusCode = 403;
-      throw error;
-    }
-
+    await this.assertLinkOwnership(shortCode, userId);
     return await LinkRepository.deleteByShortCode(shortCode);
   }
 

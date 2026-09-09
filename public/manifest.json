@@ -1,0 +1,26 @@
+{
+  "name": "SnapLink — Smart Deep Links",
+  "short_name": "SnapLink",
+  "description": "Bypass in-app browser traps and launch official mobile apps directly with real-time attribution.",
+  "start_url": "/dashboard",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f5f4ef",
+  "theme_color": "#2c35af",
+  "categories": ["business", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

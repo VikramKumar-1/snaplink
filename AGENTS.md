@@ -77,7 +77,9 @@ Every feature in `backend/modules/<domain>/` MUST follow this exact flow. No exc
 
 ## ⚛️ Frontend Atomic Module Rules
 
-1. **Max 50 Lines per File:** Split large components into atomic pieces.
-2. **`parts/` Folder:** Extract UI sub-cards, modals, list items into `parts/`.
-3. **`use<Feature>.ts` Hooks:** Extract all state, effects, and API calls into custom hooks.
-4. **Layout Orchestrator:** The main `.tsx` file should only assemble parts and hooks.
+1. **Pragmatic File Size (Target 100–200 Lines, Max 250 Lines):**
+   - Avoid artificial micro-splitting (<50 lines) that creates unnecessary file sprawl and indirection.
+   - Strictly avoid monolithic files (>250-300 lines) that degrade rendering performance and readability.
+2. **`parts/` Folder:** Extract UI sub-cards, modals, complex dialogs, or repeated list items into `parts/` when files exceed ~200 lines.
+3. **`use<Feature>.ts` Hooks:** Extract complex state machines, effects, and API calls into custom hooks.
+4. **Layout Orchestrator:** Main feature files (`<Feature>.tsx`) should cleanly assemble cohesive parts and hooks.

@@ -6,14 +6,28 @@ import { useLinkCreator } from "./useLinkCreator";
 import { UrlInputField } from "./parts/UrlInputField";
 import { CustomAliasField } from "./parts/CustomAliasField";
 import { SocialPreviewOptions } from "./parts/SocialPreviewOptions";
+import { CtaOverlayOptions } from "./parts/CtaOverlayOptions";
 import { CreatedResultCard } from "./parts/CreatedResultCard";
+import { AdvancedRoutingOptions } from "./parts/AdvancedRoutingOptions";
+import { SmartRoutingRulesBuilder } from "./parts/SmartRoutingRulesBuilder";
+import { UtmCampaignBuilder } from "./parts/UtmCampaignBuilder";
 
 export const LinkCreatorForm: React.FC = () => {
   const {
     url, setUrl, customSlug, setCustomSlug,
+    selectedDomain, setSelectedDomain, availableDomains,
     showAdvanced, setShowAdvanced,
     customTitle, setCustomTitle,
     customDescription, setCustomDescription,
+    showCta, setShowCta,
+    cta, setCta,
+    showRouting, setShowRouting,
+    routing, setRouting,
+    showSmartRules, setShowSmartRules,
+    smartRules, setSmartRules,
+    showUtm, setShowUtm,
+    utm, setUtm,
+    retargeting, setRetargeting,
     badge, loading, error, createdResult, handleSubmit,
   } = useLinkCreator();
 
@@ -22,11 +36,37 @@ export const LinkCreatorForm: React.FC = () => {
       <div className="card-genz p-5 sm:p-7">
         <form onSubmit={handleSubmit} className="space-y-4">
           <UrlInputField url={url} setUrl={setUrl} badge={badge} />
-          <CustomAliasField customSlug={customSlug} setCustomSlug={setCustomSlug} />
+          <CustomAliasField
+            customSlug={customSlug}
+            setCustomSlug={setCustomSlug}
+            availableDomains={availableDomains}
+            selectedDomain={selectedDomain}
+            onSelectDomain={setSelectedDomain}
+          />
           <SocialPreviewOptions
             showAdvanced={showAdvanced} setShowAdvanced={setShowAdvanced}
             customTitle={customTitle} setCustomTitle={setCustomTitle}
             customDescription={customDescription} setCustomDescription={setCustomDescription}
+          />
+          <CtaOverlayOptions
+            showCta={showCta} setShowCta={setShowCta}
+            cta={cta} setCta={setCta}
+          />
+          <AdvancedRoutingOptions
+            showRouting={showRouting} setShowRouting={setShowRouting}
+            routing={routing} setRouting={setRouting}
+          />
+          <SmartRoutingRulesBuilder
+            showRules={showSmartRules}
+            setShowRules={setShowSmartRules}
+            rules={smartRules}
+            setRules={setSmartRules}
+          />
+          <UtmCampaignBuilder
+            showUtm={showUtm} setShowUtm={setShowUtm}
+            utm={utm} setUtm={setUtm}
+            retargeting={retargeting} setRetargeting={setRetargeting}
+            destinationUrl={url}
           />
 
           {error && (

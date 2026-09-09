@@ -60,6 +60,90 @@ export const CreateLinkSchema = z.object({
   customTitle: z.string().trim().max(100).optional(),
   customDescription: z.string().trim().max(250).optional(),
   customImage: z.string().trim().url().max(500).optional(),
+  customDomain: z.string().trim().toLowerCase().max(100).optional(),
+  smartRules: z
+    .array(
+      z.object({
+        id: z.string().min(1),
+        type: z.enum(["geo", "device", "language"]),
+        condition: z.string().min(1).trim(),
+        destinationUrl: z.string().trim().url("Destination must be a valid URL"),
+      })
+    )
+    .optional(),
+  ctaOverlay: z
+    .object({
+      enabled: z.boolean().default(false),
+      headline: z.string().trim().max(120).optional().default(""),
+      buttonText: z.string().trim().max(35).optional().default("Learn More"),
+      buttonUrl: z
+        .string()
+        .trim()
+        .refine(
+          (url) => url === "" || url.startsWith("http://") || url.startsWith("https://"),
+          "Only http:// and https:// URLs are allowed."
+        )
+        .optional()
+        .default(""),
+      theme: z.enum(["blue", "dark", "emerald", "amber"]).optional().default("blue"),
+      badgeText: z.string().trim().max(25).optional().default("Featured"),
+    })
+    .optional(),
+
+  routing: z
+    .object({
+      expiresAt: z
+        .string()
+        .nullable()
+        .optional()
+        .transform((val) => (val && val.trim() !== "" ? new Date(val) : null)),
+      maxClicks: z
+        .number()
+        .int()
+        .positive("Click limit must be greater than 0.")
+        .nullable()
+        .optional(),
+      expiredFallbackUrl: z
+        .string()
+        .trim()
+        .refine(
+          (url) => url === "" || url.startsWith("http://") || url.startsWith("https://"),
+          "Only http:// and https:// URLs are allowed for fallback destination."
+        )
+        .optional()
+        .default(""),
+      passwordProtected: z.boolean().optional().default(false),
+      password: z
+        .string()
+        .trim()
+        .max(50, "Password cannot exceed 50 characters.")
+        .optional(),
+    })
+    .optional(),
+
+  utm: z
+    .object({
+      source: z.string().trim().max(100).optional().default(""),
+      medium: z.string().trim().max(100).optional().default(""),
+      campaign: z.string().trim().max(100).optional().default(""),
+      term: z.string().trim().max(100).optional().default(""),
+      content: z.string().trim().max(100).optional().default(""),
+    })
+    .optional(),
+
+  retargeting: z
+    .object({
+      metaPixelId: z.string().trim().max(50).optional().default(""),
+      googleAnalyticsId: z.string().trim().max(50).optional().default(""),
+      affiliateTag: z.string().trim().max(50).optional().default(""),
+    })
+    .optional(),
+});
+
+export const VerifyPasswordSchema = z.object({
+  shortCode: z.string().trim().min(1, "Short code is required."),
+  password: z.string().min(1, "Password is required."),
 });
 
 export type CreateLinkInput = z.infer<typeof CreateLinkSchema>;
+export type VerifyPasswordInput = z.infer<typeof VerifyPasswordSchema>;

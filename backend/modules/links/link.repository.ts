@@ -4,9 +4,13 @@ import { Link, ILink } from "./link.model";
 const memoryLinks = new Map<string, any>();
 
 export class LinkRepository {
-  static async findByShortCode(shortCode: string): Promise<ILink | any | null> {
+  static async findByShortCode(shortCode: string, customDomain?: string): Promise<ILink | any | null> {
     try {
       await connectToDatabase();
+      if (customDomain) {
+        const scoped = await Link.findOne({ shortCode, customDomain: customDomain.toLowerCase() });
+        if (scoped) return scoped;
+      }
       return await Link.findOne({ shortCode });
     } catch {
       return memoryLinks.get(shortCode) || null;

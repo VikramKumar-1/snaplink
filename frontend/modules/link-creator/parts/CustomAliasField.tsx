@@ -1,15 +1,24 @@
 "use client";
 
 import React from "react";
-import { AtSign, Shuffle } from "lucide-react";
+import { AtSign, Shuffle, Globe } from "lucide-react";
 import { BRAND_CONFIG } from "@/frontend/shared/config/brand";
 
 interface Props {
   customSlug: string;
   setCustomSlug: (v: string) => void;
+  availableDomains?: string[];
+  selectedDomain?: string;
+  onSelectDomain?: (domain: string) => void;
 }
 
-export const CustomAliasField: React.FC<Props> = ({ customSlug, setCustomSlug }) => {
+export const CustomAliasField: React.FC<Props> = ({
+  customSlug,
+  setCustomSlug,
+  availableDomains = [],
+  selectedDomain = "",
+  onSelectDomain,
+}) => {
   const generateRandomSlug = () => {
     const prefixes = ["reel", "deal", "video", "drop", "shop", "vip", "post", "app"];
     const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
@@ -32,10 +41,41 @@ export const CustomAliasField: React.FC<Props> = ({ customSlug, setCustomSlug })
         </button>
       </div>
 
+      {availableDomains.length > 0 && (
+        <div className="flex items-center gap-1.5 mb-2 overflow-x-auto pb-1 text-xs">
+          <button
+            type="button"
+            onClick={() => onSelectDomain?.("")}
+            className={`px-2.5 py-1 rounded-lg font-mono text-[11px] font-bold transition-colors cursor-pointer ${
+              !selectedDomain
+                ? "bg-[#2c35af] text-white"
+                : "bg-zinc-100 text-zinc-600 hover:text-zinc-900 border border-zinc-200"
+            }`}
+          >
+            {BRAND_CONFIG.shortDomain} (Default)
+          </button>
+          {availableDomains.map((dom) => (
+            <button
+              key={dom}
+              type="button"
+              onClick={() => onSelectDomain?.(dom)}
+              className={`px-2.5 py-1 rounded-lg font-mono text-[11px] font-bold flex items-center gap-1 transition-colors cursor-pointer ${
+                selectedDomain === dom
+                  ? "bg-violet-600 text-white"
+                  : "bg-zinc-100 text-zinc-600 hover:text-zinc-900 border border-zinc-200"
+              }`}
+            >
+              <Globe className="h-3 w-3" />
+              <span>{dom}</span>
+            </button>
+          ))}
+        </div>
+      )}
+
       <div className="flex items-center rounded-2xl bg-[#faf9f5] border-2 border-[#d6d3c7] hover:border-[#2c35af]/70 focus-within:border-[#2c35af] focus-within:bg-white focus-within:ring-4 focus-within:ring-[#2c35af]/10 px-3.5 py-3 transition-all">
         <div className="flex items-center gap-1 text-[13px] text-[#2c35af] font-mono select-none pr-1.5 font-bold shrink-0">
           <AtSign className="h-3.5 w-3.5 text-[#2c35af]" />
-          {BRAND_CONFIG.shortDomain}/
+          {selectedDomain ? `${selectedDomain}/` : `${BRAND_CONFIG.shortDomain}/`}
         </div>
         <input
           type="text"

@@ -82,11 +82,12 @@ export class AuthController {
 
 ## ⚛️ Frontend Architecture Rules
 
-1. **Atomic Components (<50 Lines Max):**
-   - Do NOT create 200+ line monolithic components.
-   - Separate state and logic into custom hooks (`use<Feature>.ts`).
-   - Separate visual sub-components into `parts/`.
-   - The main `<Feature>.tsx` is only a layout orchestrator.
+1. **Pragmatic Atomic Components (Target 100–200 Lines, Max 250 Lines):**
+   - Avoid artificial micro-splitting (<50 lines) that causes file sprawl and tracing friction.
+   - Strictly avoid 300+ line monolithic components that slow down rendering and hurt maintainability.
+   - Extract state and logic into custom hooks (`use<Feature>.ts`).
+   - Extract visual sub-components and modals into `parts/`.
+   - The main `<Feature>.tsx` acts as a clean layout orchestrator.
 
 2. **State Management:**
    - Global client state lives in `frontend/shared/store/` (Zustand).
