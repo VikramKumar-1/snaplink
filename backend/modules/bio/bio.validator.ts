@@ -29,15 +29,17 @@ const SocialLinkValidator = z.object({
   platform: z.enum([
     "youtube",
     "instagram",
-    "twitter",
+    "x",
     "tiktok",
     "telegram",
     "spotify",
     "github",
     "linkedin",
+    "facebook",
     "website",
   ]),
   url: z.string().trim().url("Please provide a valid social profile URL."),
+  handle: z.string().trim().max(30, "Handle too long").optional(),
 });
 
 const CustomLinkValidator = z.object({
@@ -69,9 +71,10 @@ export const SaveBioPageSchema = z.object({
     .string({ required_error: "Display name is required." })
     .trim()
     .min(1, "Display name cannot be empty.")
-    .max(50, "Display name cannot exceed 50 characters."),
+    .max(32, "Display name cannot exceed 32 characters.")
+    .regex(/^[^\r\n]+$/, "Display name must be a single line without line breaks."),
 
-  bio: z.string().trim().max(250, "Bio cannot exceed 250 characters.").optional().default(""),
+  bio: z.string().trim().max(90, "Bio cannot exceed 90 characters.").optional().default(""),
   avatarUrl: z.string().trim().optional().default(""),
   theme: z.enum(["royal_blue", "glass_dark", "clay_light", "emerald", "sunset"]).default("royal_blue"),
   socialLinks: z.array(SocialLinkValidator).default([]),

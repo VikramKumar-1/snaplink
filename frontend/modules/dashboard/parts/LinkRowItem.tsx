@@ -23,6 +23,13 @@ import {
   InstagramLogo,
   AmazonLogo,
   MyntraLogo,
+  FlipkartLogo,
+  TwitterXLogo,
+  LinkedInLogo,
+  FacebookLogo,
+  RedditLogo,
+  DiscordLogo,
+  GitHubLogo,
   TelegramLogo,
   SpotifyLogo,
   WhatsAppLogo,
@@ -92,14 +99,23 @@ export const LinkRowItem: React.FC<LinkRowItemProps> = ({
 }) => {
   const getPlatformIcon = (platform: string) => {
     const p = platform?.toLowerCase();
-    if (p === "youtube") return <YoutubeLogo className="h-5 w-5 text-[#cc0000]" />;
-    if (p === "instagram") return <InstagramLogo className="h-5 w-5 text-[#c13584]" />;
-    if (p === "amazon") return <AmazonLogo className="h-5 w-5 text-[#121316]" />;
-    if (p === "myntra") return <MyntraLogo className="h-5 w-5 text-[#ff3f6c]" />;
-    if (p === "telegram") return <TelegramLogo className="h-5 w-5 text-[#229ed9]" />;
-    if (p === "spotify") return <SpotifyLogo className="h-5 w-5 text-[#1db954]" />;
-    if (p === "whatsapp") return <WhatsAppLogo className="h-5 w-5 text-[#25d366]" />;
-    return <Link2 className="h-5 w-5 text-[#2c35af]" />;
+    switch (p) {
+      case "youtube": return <YoutubeLogo className="h-5 w-5 text-[#cc0000]" />;
+      case "instagram": return <InstagramLogo className="h-5 w-5 text-[#c13584]" />;
+      case "amazon": return <AmazonLogo className="h-5 w-5 text-[#121316]" />;
+      case "flipkart": return <FlipkartLogo className="h-5 w-5" />;
+      case "myntra": return <MyntraLogo className="h-5 w-5 text-[#ff3f6c]" />;
+      case "twitter": return <TwitterXLogo className="h-5 w-5 text-black" />;
+      case "linkedin": return <LinkedInLogo className="h-5 w-5 text-[#0a66c2]" />;
+      case "facebook": return <FacebookLogo className="h-5 w-5 text-[#1877f2]" />;
+      case "reddit": return <RedditLogo className="h-5 w-5 text-[#ff4500]" />;
+      case "discord": return <DiscordLogo className="h-5 w-5 text-[#5865f2]" />;
+      case "github": return <GitHubLogo className="h-5 w-5 text-black" />;
+      case "telegram": return <TelegramLogo className="h-5 w-5 text-[#229ed9]" />;
+      case "spotify": return <SpotifyLogo className="h-5 w-5 text-[#1db954]" />;
+      case "whatsapp": return <WhatsAppLogo className="h-5 w-5 text-[#25d366]" />;
+      default: return <Link2 className="h-5 w-5 text-[#2c35af]" />;
+    }
   };
 
   const isExpired = Boolean(
@@ -139,8 +155,7 @@ export const LinkRowItem: React.FC<LinkRowItemProps> = ({
 
             {Boolean(link.smartRules && link.smartRules.length > 0) && (
               <span className="text-[10px] font-black uppercase text-[#2c35af] bg-indigo-50 border border-indigo-200 rounded-md px-2 py-0.5 flex items-center gap-1 font-mono">
-                <Compass className="h-3 w-3" />
-                {link.smartRules!.length} {link.smartRules!.length === 1 ? "Target" : "Targets"}
+                <Compass className="h-3 w-3" /> {link.smartRules!.length} {link.smartRules!.length === 1 ? "Target" : "Targets"}
               </span>
             )}
 

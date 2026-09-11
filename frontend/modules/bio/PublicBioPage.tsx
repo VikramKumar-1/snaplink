@@ -12,6 +12,7 @@ import {
   Twitter,
   ArrowUpRight,
   ShieldCheck,
+  Link2,
 } from "lucide-react";
 import {
   YoutubeLogo,
@@ -19,6 +20,8 @@ import {
   TelegramLogo,
   SpotifyLogo,
   WhatsAppLogo,
+  TwitterXLogo,
+  FacebookLogo,
 } from "@/frontend/shared/icons/PlatformIcons";
 import { BRAND_CONFIG } from "@/frontend/shared/config/brand";
 
@@ -29,7 +32,7 @@ export interface BioPageProps {
     bio?: string;
     avatarUrl?: string;
     theme?: "royal_blue" | "glass_dark" | "clay_light" | "emerald" | "sunset";
-    socialLinks: Array<{ platform: string; url: string }>;
+    socialLinks: Array<{ platform: string; url: string; handle?: string }>;
     customLinks: Array<{
       id: string;
       title: string;
@@ -42,45 +45,76 @@ export interface BioPageProps {
 
 const THEMES = {
   royal_blue: {
-    bg: "bg-gradient-to-b from-[#101438] via-[#0b0e29] to-[#060817] text-white",
-    card: "bg-white/10 hover:bg-white/15 border-white/15 hover:border-[#ccff00]/60 text-white shadow-lg",
-    cardHighlight: "bg-[#2c35af] hover:bg-[#3b47db] border-[#ccff00]/80 text-white shadow-xl ring-2 ring-[#ccff00]/30",
-    badge: "bg-[#ccff00] text-black",
-    avatarRing: "ring-4 ring-[#2c35af]/80 shadow-indigo-500/20",
-    socialBtn: "bg-white/10 hover:bg-white/20 border-white/15 text-white",
+    bg: "bg-[#0b0f19] text-white",
+    card: "bg-white/[0.06] hover:bg-white/[0.1] border-white/10 text-white shadow-xs",
+    cardHighlight: "bg-[#2c35af] hover:bg-[#343ebb] border-transparent text-white shadow-sm",
+    badge: "bg-[#2c35af] text-white",
+    avatarRing: "ring-1 ring-white/20",
+    socialBtn: "bg-white/[0.06] hover:bg-white/[0.1] border-white/10 text-white shadow-xs",
   },
   glass_dark: {
-    bg: "bg-zinc-950 text-white",
-    card: "bg-zinc-900/80 hover:bg-zinc-900 border-zinc-800 hover:border-zinc-700 text-white shadow-md",
-    cardHighlight: "bg-gradient-to-r from-zinc-800 to-zinc-900 border-white/30 text-white shadow-xl ring-2 ring-white/20",
-    badge: "bg-white text-black",
-    avatarRing: "ring-4 ring-zinc-700 shadow-black/40",
-    socialBtn: "bg-zinc-900 hover:bg-zinc-800 border-zinc-800 text-zinc-300",
+    bg: "bg-black text-white",
+    card: "bg-zinc-900/80 hover:bg-zinc-900 border-zinc-800/80 text-zinc-100 shadow-xs",
+    cardHighlight: "bg-zinc-100 hover:bg-white border-transparent text-black shadow-sm font-semibold",
+    badge: "bg-zinc-100 text-black",
+    avatarRing: "ring-1 ring-zinc-800",
+    socialBtn: "bg-zinc-900/80 hover:bg-zinc-800 border-zinc-800/80 text-zinc-300 shadow-xs",
   },
   clay_light: {
-    bg: "bg-[#f5f4ef] text-[#121316]",
-    card: "bg-white hover:bg-[#faf9f5] border-[#e7e5dc] hover:border-[#2c35af] text-[#121316] shadow-sm",
-    cardHighlight: "bg-[#2c35af] hover:bg-[#232b91] border-transparent text-white shadow-lg",
-    badge: "bg-[#ccff00] text-black",
-    avatarRing: "ring-4 ring-white shadow-zinc-400/30",
-    socialBtn: "bg-white hover:bg-[#ebe8dc] border-[#e7e5dc] text-zinc-700",
+    bg: "bg-[#fbfaf8] text-[#121316]",
+    card: "bg-white hover:bg-[#f7f5ef] border-[#e8e6df] text-[#121316] shadow-[0_1px_2px_rgba(0,0,0,0.03)]",
+    cardHighlight: "bg-[#121316] hover:bg-black border-transparent text-white shadow-sm font-semibold",
+    badge: "bg-[#121316] text-white",
+    avatarRing: "ring-1 ring-black/10",
+    socialBtn: "bg-white hover:bg-[#f7f5ef] border-[#e8e6df] text-[#121316] shadow-xs",
   },
   emerald: {
-    bg: "bg-gradient-to-b from-[#06241a] via-[#041710] to-[#020b08] text-white",
-    card: "bg-emerald-950/60 hover:bg-emerald-900/60 border-emerald-800/40 hover:border-emerald-500/60 text-white shadow-md",
-    cardHighlight: "bg-emerald-700 hover:bg-emerald-600 border-emerald-400 text-white shadow-xl ring-2 ring-emerald-400/30",
-    badge: "bg-emerald-300 text-emerald-950",
-    avatarRing: "ring-4 ring-emerald-600 shadow-emerald-900/40",
-    socialBtn: "bg-emerald-950/80 hover:bg-emerald-900 border-emerald-800/50 text-emerald-200",
+    bg: "bg-[#07130e] text-emerald-50",
+    card: "bg-emerald-950/40 hover:bg-emerald-950/60 border-emerald-900/40 text-emerald-100 shadow-xs",
+    cardHighlight: "bg-emerald-500 hover:bg-emerald-400 border-transparent text-emerald-950 shadow-sm font-semibold",
+    badge: "bg-emerald-500 text-emerald-950",
+    avatarRing: "ring-1 ring-emerald-800/40",
+    socialBtn: "bg-emerald-950/40 hover:bg-emerald-900/40 border-emerald-900/40 text-emerald-200 shadow-xs",
   },
   sunset: {
-    bg: "bg-gradient-to-b from-[#240e2b] via-[#17081c] to-[#0a030d] text-white",
-    card: "bg-white/10 hover:bg-white/15 border-white/15 hover:border-rose-400 text-white shadow-md",
-    cardHighlight: "bg-gradient-to-r from-rose-700 to-amber-700 border-rose-400 text-white shadow-xl ring-2 ring-rose-400/30",
-    badge: "bg-amber-300 text-amber-950",
-    avatarRing: "ring-4 ring-rose-500 shadow-rose-900/40",
-    socialBtn: "bg-white/10 hover:bg-white/20 border-white/15 text-rose-200",
+    bg: "bg-[#120a14] text-rose-50",
+    card: "bg-white/[0.06] hover:bg-white/[0.1] border-white/10 text-rose-100 shadow-xs",
+    cardHighlight: "bg-gradient-to-r from-rose-500 to-amber-500 border-transparent text-white shadow-sm font-semibold",
+    badge: "bg-rose-500 text-white",
+    avatarRing: "ring-1 ring-rose-800/30",
+    socialBtn: "bg-white/[0.06] hover:bg-white/[0.1] border-white/10 text-rose-200 shadow-xs",
   },
+};
+
+const getLinkDetails = (url: string) => {
+  let domain = "";
+  try {
+    const parsed = new URL(url.startsWith("http") ? url : `https://${url}`);
+    domain = parsed.hostname.replace(/^www\./, "");
+  } catch {
+    domain = "";
+  }
+
+  const d = domain.toLowerCase();
+  let icon = <Link2 className="h-4 w-4 opacity-70" />;
+
+  if (d.includes("youtube") || d.includes("youtu.be")) {
+    icon = <YoutubeLogo className="h-4 w-4" />;
+  } else if (d.includes("instagram")) {
+    icon = <InstagramLogo className="h-4 w-4" />;
+  } else if (d.includes("spotify")) {
+    icon = <SpotifyLogo className="h-4 w-4 text-emerald-500" />;
+  } else if (d.includes("x.com") || d.includes("twitter")) {
+    icon = <TwitterXLogo className="h-3.5 w-3.5" />;
+  } else if (d.includes("facebook")) {
+    icon = <FacebookLogo className="h-4 w-4 text-blue-600" />;
+  } else if (d.includes("github")) {
+    icon = <Github className="h-4 w-4" />;
+  } else if (d.includes("linkedin")) {
+    icon = <Linkedin className="h-4 w-4 text-blue-500" />;
+  }
+
+  return { domain, icon };
 };
 
 export const PublicBioPage: React.FC<BioPageProps> = ({ bio }) => {
@@ -116,10 +150,11 @@ export const PublicBioPage: React.FC<BioPageProps> = ({ bio }) => {
       case "telegram": return <TelegramLogo className="h-4 w-4 text-sky-400" />;
       case "spotify": return <SpotifyLogo className="h-4 w-4 text-emerald-400" />;
       case "whatsapp": return <WhatsAppLogo className="h-4 w-4 text-emerald-500" />;
-      case "twitter": return <Twitter className="h-4 w-4 text-sky-400" />;
+      case "x": return <TwitterXLogo className="h-4 w-4" />;
+      case "facebook": return <FacebookLogo className="h-4 w-4 text-blue-600" />;
       case "github": return <Github className="h-4 w-4" />;
       case "linkedin": return <Linkedin className="h-4 w-4 text-blue-400" />;
-      default: return <Globe className="h-4 w-4 text-zinc-400" />;
+      default: return <Globe className="h-4 w-4" />;
     }
   };
 
@@ -156,30 +191,45 @@ export const PublicBioPage: React.FC<BioPageProps> = ({ bio }) => {
           </div>
         </div>
 
-        <h1 className="text-xl sm:text-2xl font-black tracking-tight flex items-center gap-1.5">
+        {/* Single-line Display Name */}
+        <h1
+          title={bio.displayName}
+          className="text-xl sm:text-2xl font-bold tracking-tight max-w-full truncate whitespace-nowrap overflow-hidden text-center px-2"
+        >
           {bio.displayName}
         </h1>
-        <p className="text-[12px] font-mono opacity-70 mb-2">@{bio.username}</p>
+        <p className="text-[12px] font-mono opacity-70 mb-2 max-w-full truncate text-center">@{bio.username}</p>
 
         {bio.bio && (
-          <p className="text-[13px] leading-relaxed opacity-90 max-w-xs mb-4">
+          <p
+            style={{ wordBreak: "break-all", overflowWrap: "break-word", whiteSpace: "pre-wrap" }}
+            className="text-[13px] leading-relaxed opacity-90 max-w-xs mb-4 break-all whitespace-pre-wrap text-center"
+          >
             {bio.bio}
           </p>
         )}
 
         {/* Social Icons Bar */}
         {bio.socialLinks && bio.socialLinks.length > 0 && (
-          <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
+          <div className="flex flex-wrap items-center justify-center gap-2 mb-6 max-w-full px-2">
             {bio.socialLinks.map((s, idx) => (
               <a
                 key={idx}
                 href={s.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`p-2.5 rounded-full border transition-all active:scale-95 shadow-sm ${theme.socialBtn}`}
+                title={s.handle || s.platform}
+                className={`max-w-[160px] px-3 py-1.5 rounded-full border transition-all active:scale-95 shadow-sm flex items-center gap-1.5 overflow-hidden ${theme.socialBtn}`}
                 aria-label={s.platform}
               >
-                {renderSocialIcon(s.platform)}
+                <span className="shrink-0">{renderSocialIcon(s.platform)}</span>
+                {s.handle && (
+                  <span className="truncate max-w-[110px] text-[11px] font-bold tracking-wide pr-1 select-none">
+                    {s.handle.startsWith("@") || s.handle.startsWith("/")
+                      ? s.handle
+                      : `@${s.handle}`}
+                  </span>
+                )}
               </a>
             ))}
           </div>
@@ -190,21 +240,31 @@ export const PublicBioPage: React.FC<BioPageProps> = ({ bio }) => {
           {bio.customLinks && bio.customLinks.length > 0 ? (
             bio.customLinks.map((link) => {
               const isHighlight = link.isHighlighted;
+              const { domain, icon } = getLinkDetails(link.url);
               return (
                 <button
                   key={link.id}
                   onClick={() => handleLinkClick(link.id, link.url)}
-                  className={`w-full p-4 rounded-2xl border text-left font-bold text-[14px] flex items-center justify-between gap-3 transition-all active:scale-[0.98] cursor-pointer group ${
+                  className={`w-full p-3.5 px-4 rounded-2xl border text-left flex items-center gap-3.5 transition-all active:scale-[0.98] cursor-pointer group shadow-xs hover:shadow-md ${
                     isHighlight ? theme.cardHighlight : theme.card
                   }`}
                 >
-                  <span className="truncate flex-1">{link.title}</span>
-                  <div className="flex items-center gap-1.5 shrink-0">
-                    {isHighlight && (
-                      <span className={`text-[10px] font-mono uppercase px-2 py-0.5 rounded-md font-extrabold ${theme.badge}`}>
-                        Featured
-                      </span>
+                  <div className="w-10 h-10 rounded-xl bg-black/5 dark:bg-white/10 flex items-center justify-center shrink-0">
+                    {icon}
+                  </div>
+
+                  <div className="flex-1 min-w-0">
+                    <p className="truncate font-semibold text-[14px] tracking-tight leading-tight">
+                      {link.title}
+                    </p>
+                    {domain && (
+                      <p className="truncate text-[11px] font-mono opacity-50 mt-0.5">
+                        {domain}
+                      </p>
                     )}
+                  </div>
+
+                  <div className="w-7 h-7 rounded-full bg-black/5 dark:bg-white/10 flex items-center justify-center shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">
                     <ArrowUpRight className="h-4 w-4 opacity-60 group-hover:opacity-100 transition-opacity" />
                   </div>
                 </button>

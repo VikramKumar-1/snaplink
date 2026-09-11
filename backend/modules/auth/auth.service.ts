@@ -18,7 +18,7 @@ export class AuthService {
    */
   static async register(rawBody: any) {
     const validated = RegisterSchema.parse(rawBody);
-    const { name, email, password } = validated;
+    const { name, email, password, persona } = validated;
 
     const existingUser = await AuthRepository.findByEmail(email);
     if (existingUser) {
@@ -35,6 +35,7 @@ export class AuthService {
       email,
       password: hashedPassword,
       authProvider: "local",
+      persona,
     });
 
     const userId = newUser._id.toString();
@@ -51,6 +52,7 @@ export class AuthService {
         avatar: newUser.avatar,
         plan: newUser.plan || "free",
         role: newUser.role || "user",
+        persona: newUser.persona || "user",
       },
       accessToken,
       refreshToken,
@@ -98,6 +100,7 @@ export class AuthService {
         avatar: user.avatar,
         plan: user.plan || "free",
         role: user.role || "user",
+        persona: user.persona || "user",
       },
       accessToken,
       refreshToken,
@@ -160,6 +163,7 @@ export class AuthService {
         avatar: payload.picture || user.avatar,
         plan: user.plan || "free",
         role: user.role || "user",
+        persona: user.persona || "user",
       },
       accessToken,
       refreshToken,
@@ -238,6 +242,7 @@ export class AuthService {
       avatar: user.avatar,
       plan: user.plan || "free",
       role: user.role || "user",
+      persona: user.persona || "user",
     };
   }
 

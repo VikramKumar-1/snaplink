@@ -155,13 +155,20 @@ export default async function RedirectPage({ params }: Props) {
     notFound();
   }
 
-  // 3. FAST DESKTOP REDIRECT: Zero delay on PC / Laptop (unless creator attached a CTA Overlay)
+  // 3. ZERO-DELAY INSTANT REDIRECT: Immediate HTTP 307 for all standard traffic (Desktop, Mobile, QR Scanners)
+  const effectiveUrl = result.effectiveUrl || result.link.originalUrl;
   const hasCtaOverlay = Boolean(result.link.ctaOverlay?.enabled && result.link.ctaOverlay?.headline);
-  if (!hasCtaOverlay && (result.device === "windows" || result.device === "mac" || result.device === "linux")) {
-    redirect(result.link.originalUrl);
+  const hasRetargeting = Boolean(result.link?.retargeting?.metaPixelId || result.link?.retargeting?.googleAnalyticsId);
+
+  // If there is NO promotional CTA banner, NO retargeting pixel to fire,
+  // and the user is NOT trapped inside an in-app browser webview (Instagram, TikTok, etc.):
+  // REDIRECT IMMEDIATELY (<15ms) via HTTP 307!
+  // On iOS (Universal Links) & Android (App Links), the mobile OS directly launches YouTube, Instagram, Amazon, etc.!
+  if (!hasCtaOverlay && !hasRetargeting && !result.inAppBrowser) {
+    redirect(effectiveUrl);
   }
 
-  // 4. MOBILE OR CTA BRIDGE: Render SmartRedirectCard which fires app intent and presents CTA overlay
+  // 4. INTERACTIVE BRIDGE: For In-App Browsers (Instagram/TikTok), CTA Banners, or Retargeting Pixels
   return (
     <main className="min-h-screen bg-zinc-950 flex flex-col items-center justify-center p-4">
       {result.link?.retargeting && (

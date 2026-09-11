@@ -3,7 +3,7 @@ import { LinkRepository } from "./link.repository";
 import { detectPlatform, generateDeepLink } from "@/backend/modules/redirect/deepLink.service";
 import { generateShortCode } from "@/backend/shared/utils/codeGenerator";
 import { checkRateLimit } from "@/backend/shared/middlewares/rateLimiter";
-import { CreateLinkSchema, VerifyPasswordSchema } from "./link.validator";
+import { CreateLinkSchema, VerifyPasswordSchema, BulkCreateLinkSchema } from "./link.validator";
 import { ILink } from "./link.model";
 import { buildAttributedUrl } from "@/backend/shared/utils/urlAttribution";
 import { WebhookService } from "@/backend/modules/webhooks/webhook.service";
@@ -134,6 +134,48 @@ export class LinkService {
     return {
       link: newLink as ILink,
       remaining: rateCheck.remaining,
+    };
+  }
+
+  static async processBulkCreateLinks(ip: string, rawBody: any, userId?: string | null) {
+    const rateCheck = checkRateLimit(ip, "BULK_CREATE_LINK");
+    if (!rateCheck.allowed) {
+      const error: any = new Error(rateCheck.message);
+      error.statusCode = 429;
+      throw error;
+    }
+
+    const sanitizedData = BulkCreateLinkSchema.parse(rawBody);
+    const { urls } = sanitizedData;
+
+    if (!userId && urls.length > 5) {
+      const error: any = new Error("Guest users can only shorten up to 5 URLs at once. Please register for free to shorten up to 20 URLs.");
+      error.statusCode = 403;
+      throw error;
+    }
+
+    const docsToInsert = urls.map((originalUrl) => {
+      const platform = detectPlatform(originalUrl);
+      const linkTitle = `${platform.toUpperCase()} Smart Link`;
+      return {
+        shortCode: generateShortCode(6),
+        originalUrl,
+        platform,
+        title: linkTitle,
+        clicks: 0,
+        ...(userId && { userId: userId as any }),
+      };
+    });
+
+    const links = await LinkRepository.insertMany(docsToInsert);
+
+    // Provide a neat message if requested
+    const message = `Successfully shortened ${links.length} URLs.`;
+
+    return {
+      links,
+      remaining: rateCheck.remaining,
+      message,
     };
   }
 

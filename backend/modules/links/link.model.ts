@@ -41,7 +41,7 @@ export interface ISmartRule {
 export interface ILink extends Document {
   shortCode: string;
   originalUrl: string;
-  platform: "youtube" | "instagram" | "telegram" | "amazon" | "spotify" | "whatsapp" | "myntra" | "other";
+  platform: string;
   title?: string;
   customTitle?: string;
   customDescription?: string;
@@ -74,8 +74,8 @@ const LinkSchema: Schema<ILink> = new Schema(
     },
     platform: {
       type: String,
-      enum: ["youtube", "instagram", "telegram", "amazon", "spotify", "whatsapp", "myntra", "other"],
       default: "other",
+      index: true,
     },
     title: {
       type: String,

@@ -56,25 +56,28 @@ export const ConnectDomainModal: React.FC<Props> = ({ isOpen, onClose, onDomainA
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in">
-      <div className="relative w-full max-w-lg rounded-2xl border border-zinc-800 bg-zinc-950 p-6 shadow-2xl">
-        <div className="flex items-center justify-between border-b border-zinc-800/80 pb-4 mb-5">
-          <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-xl bg-violet-500/10 border border-violet-500/20 text-violet-400">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in">
+      <div className="relative w-full max-w-lg rounded-[28px] border border-[#e7e5dc] bg-white p-6 sm:p-7 shadow-2xl space-y-4">
+        <div className="flex items-center justify-between border-b border-[#e7e5dc] pb-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-[#2c35af]/10 border border-[#2c35af]/20 text-[#2c35af] flex items-center justify-center shrink-0">
               <Globe className="h-5 w-5" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-white tracking-tight">Connect Custom Domain</h2>
-              <p className="text-xs text-zinc-400">Brand all your smart links with your own custom URL</p>
+              <h2 className="text-base font-black text-[#121316] uppercase tracking-tight">Connect Custom Domain</h2>
+              <p className="text-xs text-zinc-500 font-medium">Brand your short links with your own personal URL</p>
             </div>
           </div>
-          <button onClick={onClose} className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-900 hover:text-white transition-colors">
+          <button
+            onClick={onClose}
+            className="rounded-xl p-1.5 text-zinc-400 hover:bg-[#f5f4ef] hover:text-[#121316] transition-colors cursor-pointer"
+          >
             <X className="h-5 w-5" />
           </button>
         </div>
 
         {error && (
-          <div className="mb-4 flex items-center gap-2 rounded-xl border border-rose-500/20 bg-rose-500/10 p-3 text-xs text-rose-400">
+          <div className="flex items-center gap-2 rounded-xl border border-rose-200 bg-rose-50 p-3 text-xs font-bold text-rose-700">
             <AlertCircle className="h-4 w-4 shrink-0" />
             <span>{error}</span>
           </div>
@@ -82,68 +85,71 @@ export const ConnectDomainModal: React.FC<Props> = ({ isOpen, onClose, onDomainA
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-zinc-300 uppercase tracking-wider mb-1.5">
+            <label className="block text-[11px] font-black text-[#121316] uppercase tracking-wider mb-1.5">
               Your Domain or Subdomain
             </label>
-            <div className="relative">
-              <input
-                type="text"
-                required
-                placeholder="links.yourbrand.com or go.domain.com"
-                value={domainInput}
-                onChange={(e) => setDomainInput(e.target.value)}
-                className="w-full rounded-xl border border-zinc-800 bg-zinc-900/90 px-3.5 py-2.5 text-sm text-white placeholder-zinc-500 focus:border-violet-500 focus:outline-none focus:ring-1 focus:ring-violet-500 transition-colors"
-              />
-            </div>
-            <p className="mt-1 text-[11px] text-zinc-500">We recommend using a subdomain like <code className="text-zinc-400">links.</code> or <code className="text-zinc-400">go.</code></p>
+            <input
+              type="text"
+              required
+              placeholder="links.yourbrand.com or go.domain.com"
+              value={domainInput}
+              onChange={(e) => setDomainInput(e.target.value)}
+              className="w-full rounded-xl border border-[#e7e5dc] bg-[#faf9f5] px-3.5 py-2.5 text-xs font-bold text-[#121316] placeholder-zinc-400 focus:border-[#2c35af] focus:bg-white focus:outline-none transition-colors"
+            />
+            <p className="mt-1 text-[11px] text-zinc-500 font-mono">
+              Tip: We recommend using a subdomain like <code className="text-[#2c35af] font-bold">links.</code> or <code className="text-[#2c35af] font-bold">go.</code>
+            </p>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-zinc-300 uppercase tracking-wider mb-1.5">
-              Default Fallback URL <span className="text-zinc-500 font-normal lowercase">(optional)</span>
+            <label className="block text-[11px] font-black text-[#121316] uppercase tracking-wider mb-1.5">
+              Default Fallback URL <span className="text-zinc-400 font-normal lowercase">(optional)</span>
             </label>
             <input
               type="url"
               placeholder="https://yourbrand.com"
               value={fallbackUrl}
               onChange={(e) => setFallbackUrl(e.target.value)}
-              className="w-full rounded-xl border border-zinc-800 bg-zinc-900/90 px-3.5 py-2.5 text-sm text-white placeholder-zinc-500 focus:border-violet-500 focus:outline-none focus:ring-1 focus:ring-violet-500 transition-colors"
+              className="w-full rounded-xl border border-[#e7e5dc] bg-[#faf9f5] px-3.5 py-2.5 text-xs font-bold text-[#121316] placeholder-zinc-400 focus:border-[#2c35af] focus:bg-white focus:outline-none transition-colors"
             />
-            <p className="mt-1 text-[11px] text-zinc-500">Where visitors go if they visit your root domain or an invalid slug.</p>
+            <p className="mt-1 text-[11px] text-zinc-500">
+              Where visitors are redirected if they hit your root domain or an invalid link slug.
+            </p>
           </div>
 
-          <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/50 p-3.5 space-y-2.5">
-            <div className="flex items-center gap-1.5 text-xs font-medium text-zinc-300">
-              <ShieldCheck className="h-4 w-4 text-emerald-400" />
+          <div className="rounded-xl border border-[#e7e5dc] bg-[#faf9f5] p-3.5 space-y-2">
+            <div className="flex items-center gap-1.5 text-xs font-bold text-[#121316]">
+              <ShieldCheck className="h-4 w-4 text-emerald-600" />
               <span>Required DNS CNAME Record</span>
             </div>
-            <div className="flex items-center justify-between rounded-lg bg-zinc-950 px-3 py-2 border border-zinc-800 text-xs">
-              <div className="font-mono text-zinc-300">
-                <span className="text-zinc-500 mr-2">Target:</span>cname.snaplink.to
+            <div className="flex items-center justify-between rounded-lg bg-white px-3 py-2 border border-[#e7e5dc] text-xs">
+              <div className="font-mono text-zinc-700">
+                <span className="text-zinc-400 mr-2">Target:</span>
+                <span className="text-[#2c35af] font-bold">cname.snaplink.to</span>
               </div>
               <button
                 type="button"
                 onClick={() => copyToClipboard("cname.snaplink.to", "cname")}
-                className="flex items-center gap-1 text-[11px] text-violet-400 hover:text-violet-300 transition-colors ml-2"
+                className="flex items-center gap-1 text-[11px] font-bold text-[#2c35af] hover:underline ml-2 cursor-pointer"
               >
-                {copiedKey === "cname" ? <Check className="h-3.5 w-3.5 text-emerald-400" /> : <Copy className="h-3.5 w-3.5" />}
+                {copiedKey === "cname" ? <Check className="h-3.5 w-3.5 text-emerald-600" /> : <Copy className="h-3.5 w-3.5" />}
                 <span>{copiedKey === "cname" ? "Copied" : "Copy"}</span>
               </button>
             </div>
           </div>
 
-          <div className="flex items-center justify-end gap-3 pt-2">
+          <div className="flex items-center justify-end gap-2.5 pt-2">
             <button
               type="button"
               onClick={onClose}
-              className="rounded-xl px-4 py-2.5 text-xs font-medium text-zinc-400 hover:bg-zinc-900 hover:text-white transition-colors"
+              className="rounded-xl px-4 py-2.5 text-xs font-bold text-zinc-500 hover:text-[#121316] transition cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading || !domainInput.trim()}
-              className="flex items-center gap-2 rounded-xl bg-violet-600 px-5 py-2.5 text-xs font-semibold text-white shadow-lg shadow-violet-600/20 hover:bg-violet-500 disabled:opacity-50 transition-all cursor-pointer"
+              className="btn-bento-primary flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider shadow-md disabled:opacity-50 cursor-pointer transition-all active:scale-95"
             >
               {loading ? (
                 <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/20 border-t-white" />

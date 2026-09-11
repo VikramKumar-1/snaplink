@@ -72,20 +72,26 @@ export const DomainManagementStudio: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-5">
-        <div>
-          <h2 className="text-xl font-bold text-white tracking-tight flex items-center gap-2">
-            <Globe className="h-5 w-5 text-violet-400" />
-            Custom Branded Domains
-          </h2>
-          <p className="text-xs text-zinc-400 mt-1 max-w-xl">
-            Point your own CNAME record to route your branded links (e.g. <code className="text-zinc-300">links.yourbrand.com</code>) directly through SnapLink with instant SSL.
-          </p>
+    <div className="space-y-4">
+      {/* Studio Header Banner */}
+      <div className="p-5 rounded-[22px] bento-card-light flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex items-start gap-3.5">
+          <div className="w-11 h-11 rounded-2xl bg-[#2c35af]/10 border border-[#2c35af]/20 text-[#2c35af] flex items-center justify-center shrink-0 shadow-xs">
+            <Globe className="h-5 w-5" />
+          </div>
+          <div>
+            <h2 className="text-[16px] font-black text-[#121316] uppercase tracking-tight flex items-center gap-2">
+              Custom Branded Domains
+            </h2>
+            <p className="text-xs text-zinc-500 font-medium mt-0.5 max-w-xl leading-relaxed">
+              Route your links through your own custom domain (e.g. <code className="px-1.5 py-0.5 rounded-md bg-[#f5f4ef] border border-[#e7e5dc] text-[#2c35af] font-mono text-[11px] font-bold">links.yourbrand.com</code>) with instant automated SSL.
+            </p>
+          </div>
         </div>
+
         <button
           onClick={() => setModalOpen(true)}
-          className="flex items-center gap-2 rounded-xl bg-violet-600 px-4 py-2.5 text-xs font-semibold text-white shadow-lg shadow-violet-600/20 hover:bg-violet-500 transition-all shrink-0 cursor-pointer"
+          className="btn-bento-primary px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-1.5 shadow-md cursor-pointer shrink-0 self-start sm:self-auto transition-all active:scale-95"
         >
           <Plus className="h-4 w-4" />
           <span>Connect Domain</span>
@@ -94,16 +100,16 @@ export const DomainManagementStudio: React.FC = () => {
 
       {notification && (
         <div
-          className={`flex items-center gap-2 rounded-xl border p-3.5 text-xs animate-in fade-in ${
+          className={`flex items-center gap-2.5 rounded-2xl border p-4 text-xs font-bold animate-in fade-in ${
             notification.type === "success"
-              ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-300"
+              ? "border-emerald-200 bg-emerald-50 text-emerald-800"
               : notification.type === "error"
-              ? "border-rose-500/20 bg-rose-500/10 text-rose-300"
-              : "border-amber-500/20 bg-amber-500/10 text-amber-300"
+              ? "border-rose-200 bg-rose-50 text-rose-800"
+              : "border-amber-200 bg-amber-50 text-amber-800"
           }`}
         >
           {notification.type === "success" ? (
-            <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-400" />
+            <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-600" />
           ) : (
             <AlertCircle className="h-4 w-4 shrink-0" />
           )}
@@ -112,29 +118,29 @@ export const DomainManagementStudio: React.FC = () => {
       )}
 
       {loading ? (
-        <div className="flex flex-col items-center justify-center py-16 text-zinc-500">
-          <RefreshCw className="h-6 w-6 animate-spin text-violet-500 mb-2" />
-          <p className="text-xs">Loading domains...</p>
+        <div className="flex flex-col items-center justify-center py-16 text-zinc-400 font-mono text-xs bento-card-light rounded-[24px]">
+          <RefreshCw className="h-6 w-6 animate-spin text-[#2c35af] mb-2" />
+          <p>Loading domains...</p>
         </div>
       ) : domains.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-zinc-800 bg-zinc-950/40 p-12 text-center">
-          <div className="mx-auto w-12 h-12 rounded-2xl bg-zinc-900 flex items-center justify-center border border-zinc-800 text-zinc-400 mb-4">
+        <div className="rounded-[28px] bento-card-light p-10 sm:p-14 text-center">
+          <div className="mx-auto w-14 h-14 rounded-2xl bg-[#f5f4ef] border border-[#e7e5dc] flex items-center justify-center text-[#2c35af] mb-3.5 shadow-inner">
             <Globe className="h-6 w-6" />
           </div>
-          <h3 className="text-sm font-semibold text-white">No Custom Domains Connected</h3>
-          <p className="text-xs text-zinc-400 mt-1 max-w-sm mx-auto">
-            Upgrade your audience experience with your own branded short URLs and full SSL coverage.
+          <h3 className="text-[17px] font-black text-[#121316] uppercase tracking-tight">No Custom Domains Connected</h3>
+          <p className="text-xs text-zinc-500 mt-1 max-w-sm mx-auto leading-relaxed">
+            Upgrade your audience trust with your own branded short URLs and automated zero-config SSL coverage.
           </p>
           <button
             onClick={() => setModalOpen(true)}
-            className="mt-5 inline-flex items-center gap-2 rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-2 text-xs font-semibold text-white hover:bg-zinc-700 transition-colors"
+            className="mt-5 btn-bento-primary px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider inline-flex items-center gap-2 shadow-md cursor-pointer transition-all active:scale-95"
           >
-            <Plus className="h-3.5 w-3.5" />
+            <Plus className="h-4 w-4" />
             <span>Connect First Domain</span>
           </button>
         </div>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-3">
           {domains.map((d) => (
             <DomainCardItem
               key={d._id}

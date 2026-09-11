@@ -37,13 +37,13 @@ export const BioProfileForm: React.FC<Props> = ({
   setTheme,
 }) => {
   return (
-    <div className="p-6 rounded-[24px] bento-card-light space-y-4">
+    <div className="p-4 rounded-[20px] bento-card-light space-y-3">
       <div>
-        <label className="text-[12px] font-black text-[#121316] uppercase tracking-wider block mb-1.5">
+        <label className="text-[11px] font-black text-[#121316] uppercase tracking-wider block mb-1">
           Bio Username Handle
         </label>
-        <div className="flex items-center bento-input px-3.5 py-2.5">
-          <span className="text-[13px] text-[#2c35af] font-mono font-bold pr-1 select-none">
+        <div className="flex items-center bento-input px-3 py-1.5">
+          <span className="text-xs text-[#2c35af] font-mono font-bold pr-1 select-none">
             {BRAND_CONFIG.shortDomain}/@
           </span>
           <input
@@ -52,28 +52,38 @@ export const BioProfileForm: React.FC<Props> = ({
             onChange={(e) => setUsername(e.target.value.toLowerCase().replace(/[^a-z0-9_-]/g, ""))}
             placeholder="yourname"
             required
-            className="w-full bg-transparent text-[13.5px] text-[#121316] font-mono font-bold focus:outline-none"
+            maxLength={30}
+            className="w-full bg-transparent text-xs text-[#121316] font-mono font-bold focus:outline-none"
           />
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
-          <label className="text-[12px] font-black text-[#121316] uppercase tracking-wider block mb-1.5">
-            Display Name
-          </label>
+          <div className="flex items-center justify-between mb-1">
+            <label className="text-[11px] font-black text-[#121316] uppercase tracking-wider block">
+              Display Name
+            </label>
+            <span className="text-[10px] font-mono font-medium text-zinc-400">
+              {displayName.length}/32
+            </span>
+          </div>
           <input
             type="text"
             value={displayName}
-            onChange={(e) => setDisplayName(e.target.value)}
+            onChange={(e) => setDisplayName(e.target.value.replace(/[\r\n]+/g, ""))}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") e.preventDefault();
+            }}
             placeholder="e.g. Vikram Tech"
             required
-            className="w-full bento-input px-3.5 py-2.5 text-[13.5px] text-[#121316] focus:outline-none"
+            maxLength={32}
+            className="w-full bento-input px-3 py-1.5 text-xs text-[#121316] focus:outline-none"
           />
         </div>
 
         <div>
-          <label className="text-[12px] font-black text-[#121316] uppercase tracking-wider block mb-1.5">
+          <label className="text-[11px] font-black text-[#121316] uppercase tracking-wider block mb-1">
             Avatar Image URL (Optional)
           </label>
           <input
@@ -81,42 +91,48 @@ export const BioProfileForm: React.FC<Props> = ({
             value={avatarUrl}
             onChange={(e) => setAvatarUrl(e.target.value)}
             placeholder="https://... image link"
-            className="w-full bento-input px-3.5 py-2.5 text-[13.5px] text-[#121316] focus:outline-none"
+            className="w-full bento-input px-3 py-1.5 text-xs text-[#121316] focus:outline-none"
           />
         </div>
       </div>
 
       <div>
-        <label className="text-[12px] font-black text-[#121316] uppercase tracking-wider block mb-1.5">
-          Short Bio (Max 250 characters)
-        </label>
+        <div className="flex items-center justify-between mb-1">
+          <label className="text-[11px] font-black text-[#121316] uppercase tracking-wider block">
+            Short Bio
+          </label>
+          <span className="text-[10px] font-mono font-medium text-zinc-400">
+            {bioText.length}/90
+          </span>
+        </div>
         <textarea
           value={bioText}
           onChange={(e) => setBioText(e.target.value)}
           placeholder="Tech reviewer, photographer, creator. Check out my latest gear and deals below!"
-          maxLength={250}
+          maxLength={90}
           rows={2}
-          className="w-full bento-input px-3.5 py-2.5 text-[13.5px] text-[#121316] focus:outline-none resize-none"
+          style={{ wordBreak: "break-all" }}
+          className="w-full bento-input px-3 py-1.5 text-xs text-[#121316] focus:outline-none resize-none break-all"
         />
       </div>
 
       <div>
-        <label className="text-[12px] font-black text-[#121316] uppercase tracking-wider block mb-2">
+        <label className="text-[11px] font-black text-[#121316] uppercase tracking-wider block mb-1.5">
           Page Visual Theme
         </label>
-        <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex items-center gap-1.5 flex-wrap">
           {THEMES.map((t) => (
             <button
               key={t.id}
               type="button"
               onClick={() => setTheme(t.id)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-2 border transition ${
+              className={`px-2.5 py-1 rounded-lg text-[11px] font-bold flex items-center gap-1.5 border transition ${
                 theme === t.id
                   ? "border-[#2c35af] bg-indigo-50 text-[#2c35af] ring-2 ring-[#2c35af]/20"
                   : "border-[#e7e5dc] bg-white text-zinc-600 hover:border-zinc-300"
               }`}
             >
-              <span className={`h-3 w-3 rounded-full ${t.color}`} />
+              <span className={`h-2.5 w-2.5 rounded-full ${t.color}`} />
               <span>{t.label}</span>
             </button>
           ))}

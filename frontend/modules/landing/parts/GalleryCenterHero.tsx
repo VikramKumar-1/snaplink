@@ -4,7 +4,7 @@ import React, { memo } from "react";
 import { Smartphone, CheckCircle2 } from "lucide-react";
 
 export const GalleryCenterHero: React.FC = memo(() => (
-  <div className="w-[215px] sm:w-60 md:w-72 h-[360px] sm:h-[440px] rounded-[30px] sm:rounded-[36px] bg-[#2c35af] border-2 border-white text-white p-4 sm:p-6 flex flex-col justify-between shadow-[0_20px_45px_-6px_rgba(44,53,175,0.4)] relative shrink-0 z-20 snap-center">
+  <div className="w-[215px] sm:w-52 md:w-56 lg:w-64 xl:w-72 h-[360px] sm:h-[400px] lg:h-[440px] rounded-[30px] sm:rounded-[36px] bg-[#2c35af] border-2 border-white text-white p-4 sm:p-6 flex flex-col justify-between shadow-[0_20px_45px_-6px_rgba(44,53,175,0.4)] relative shrink-0 z-20 snap-center">
     <div className="relative z-10 flex flex-col items-center">
       <div className="h-4 sm:h-4.5 w-20 sm:w-24 rounded-full bg-black border border-white/20 flex items-center justify-between px-2.5 mb-2 shadow-inner">
         <span className="h-1.5 w-1.5 rounded-full bg-[#ccff00] animate-pulse" />

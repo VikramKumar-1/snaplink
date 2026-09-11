@@ -7,6 +7,7 @@ export interface CreatedLink {
   title?: string;
   clicks: number;
   createdAt: string;
+  customDomain?: string;
 }
 
 interface LinkState {

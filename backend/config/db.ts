@@ -46,9 +46,9 @@ export async function connectToDatabase(): Promise<typeof mongoose> {
       bufferCommands: false,
       maxPoolSize: 10,             // Safe limit for Atlas M0 (500 max connections)
       minPoolSize: 1,              // Keep warm connection ready
-      serverSelectionTimeoutMS: 5000, // Fail fast in 5s instead of hanging Vercel serverless function
-      socketTimeoutMS: 45000,      // Close inactive sockets cleanly
-      connectTimeoutMS: 10000,
+      serverSelectionTimeoutMS: 3000, // Fail fast in 3s instead of hanging serverless function
+      socketTimeoutMS: 30000,      // Close inactive sockets cleanly
+      connectTimeoutMS: 5000,
     };
 
     cached!.promise = mongoose.connect(uri, opts).then((mongooseInstance) => {

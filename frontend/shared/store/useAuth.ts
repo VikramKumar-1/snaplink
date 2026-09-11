@@ -13,6 +13,9 @@ interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  isAuthModalOpen: boolean;
+  openAuthModal: () => void;
+  closeAuthModal: () => void;
   login: (user: User) => void;
   logout: () => void;
   checkAuth: () => Promise<void>;
@@ -21,8 +24,12 @@ interface AuthState {
 export const useAuth = create<AuthState>((set) => ({
   user: null,
   isAuthenticated: false,
-  isLoading: true, // Initially loading while we check session
-  
+  isLoading: false,
+  isAuthModalOpen: false,
+
+  openAuthModal: () => set({ isAuthModalOpen: true }),
+  closeAuthModal: () => set({ isAuthModalOpen: false }),
+
   login: (user) => set({ user, isAuthenticated: true, isLoading: false }),
   
   logout: async () => {
@@ -35,7 +42,6 @@ export const useAuth = create<AuthState>((set) => ({
   },
 
   checkAuth: async () => {
-    set({ isLoading: true });
     try {
       const res = await fetch("/api/auth/me");
       if (res.ok) {
@@ -46,7 +52,7 @@ export const useAuth = create<AuthState>((set) => ({
         }
       }
       set({ user: null, isAuthenticated: false, isLoading: false });
-    } catch (error) {
+    } catch {
       set({ user: null, isAuthenticated: false, isLoading: false });
     }
   },

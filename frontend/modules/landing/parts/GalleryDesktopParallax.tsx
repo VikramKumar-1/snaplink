@@ -21,7 +21,7 @@ export const GalleryDesktopParallax: React.FC = memo(() => {
   const yFarRight = useTransform(smooth, [0, 1], [60, -80]);
 
   return (
-    <div ref={ref} className="hidden sm:flex items-center justify-center gap-3 sm:gap-4 md:gap-5 min-h-[380px] sm:min-h-[450px]">
+    <div ref={ref} className="hidden sm:flex items-center justify-center gap-2 sm:gap-2.5 md:gap-3 lg:gap-4 xl:gap-5 min-h-[380px] sm:min-h-[450px]">
       <motion.div style={{ y: yFarLeft }} className="shrink-0 transform-gpu"><GalleryYouTubeCard /></motion.div>
       <motion.div style={{ y: yLeft }} className="shrink-0 transform-gpu"><GalleryInstagramCard /></motion.div>
       <motion.div style={{ y: yCenter }} className="shrink-0 transform-gpu z-20"><GalleryCenterHero /></motion.div>

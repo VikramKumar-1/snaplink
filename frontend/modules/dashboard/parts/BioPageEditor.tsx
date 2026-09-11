@@ -122,17 +122,17 @@ export const BioPageEditor: React.FC = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
       {/* LEFT: Editor Form */}
-      <div className="lg:col-span-7 space-y-6">
-        <form onSubmit={handleSave} className="space-y-5">
+      <div className="lg:col-span-7 space-y-4">
+        <form onSubmit={handleSave} className="space-y-4">
           {/* Header Action Bar */}
-          <div className="p-5 rounded-[24px] bento-card-light flex items-center justify-between gap-4 flex-wrap">
+          <div className="p-4 rounded-[20px] bento-card-light flex items-center justify-between gap-3 flex-wrap">
             <div>
-              <h2 className="text-[18px] font-black text-[#121316] uppercase tracking-tight">
+              <h2 className="text-[16px] font-black text-[#121316] uppercase tracking-tight">
                 Profile & Bio Settings
               </h2>
-              <p className="text-[12px] text-zinc-500 font-mono">
+              <p className="text-[11px] text-zinc-500 font-mono">
                 {username ? `${BRAND_CONFIG.shortDomain}/@${username}` : "Claim your personal handle"}
               </p>
             </div>
@@ -142,7 +142,7 @@ export const BioPageEditor: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleCopyLink}
-                  className="px-3.5 py-2 rounded-xl bg-white border border-[#e7e5dc] hover:border-[#2c35af] text-zinc-700 text-xs font-bold flex items-center gap-1.5 transition cursor-pointer"
+                  className="px-3 py-1.5 rounded-xl bg-white border border-[#e7e5dc] hover:border-[#2c35af] text-zinc-700 text-xs font-bold flex items-center gap-1.5 transition cursor-pointer"
                 >
                   {copied ? <Check className="h-3.5 w-3.5 text-emerald-600" /> : <Copy className="h-3.5 w-3.5" />}
                   <span>{copied ? "Copied!" : "Copy URL"}</span>
@@ -152,7 +152,7 @@ export const BioPageEditor: React.FC = () => {
               <button
                 type="submit"
                 disabled={saving}
-                className="px-5 py-2 rounded-xl btn-bento-primary text-xs font-black uppercase tracking-wider flex items-center gap-1.5 cursor-pointer shadow-md disabled:opacity-50"
+                className="px-4 py-1.5 rounded-xl btn-bento-primary text-xs font-black uppercase tracking-wider flex items-center gap-1.5 cursor-pointer shadow-md disabled:opacity-50"
               >
                 <Save className="h-3.5 w-3.5" />
                 <span>{saving ? "Saving..." : "Save Bio"}</span>
@@ -209,6 +209,8 @@ export const BioPageEditor: React.FC = () => {
         bioText={bioText}
         avatarUrl={avatarUrl}
         customLinks={customLinks}
+        socialLinks={socialLinks}
+        theme={theme}
       />
     </div>
   );

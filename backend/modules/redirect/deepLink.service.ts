@@ -1,34 +1,15 @@
+import { findPlatformByUrl } from "./platformRegistry";
+
 export interface DeepLinkInfo {
-  platform: "youtube" | "instagram" | "telegram" | "amazon" | "spotify" | "whatsapp" | "myntra" | "other";
+  platform: string;
   deepLinkAndroid?: string;
   deepLinkIos?: string;
   fallbackUrl: string;
 }
 
-export function detectPlatform(url: string): DeepLinkInfo["platform"] {
-  const lowerUrl = url.toLowerCase();
-  if (lowerUrl.includes("youtube.com") || lowerUrl.includes("youtu.be")) {
-    return "youtube";
-  }
-  if (lowerUrl.includes("instagram.com")) {
-    return "instagram";
-  }
-  if (lowerUrl.includes("t.me") || lowerUrl.includes("telegram.me")) {
-    return "telegram";
-  }
-  if (lowerUrl.includes("amazon.in") || lowerUrl.includes("amazon.com") || lowerUrl.includes("amzn.to")) {
-    return "amazon";
-  }
-  if (lowerUrl.includes("myntra.com")) {
-    return "myntra";
-  }
-  if (lowerUrl.includes("spotify.com")) {
-    return "spotify";
-  }
-  if (lowerUrl.includes("wa.me") || lowerUrl.includes("api.whatsapp.com")) {
-    return "whatsapp";
-  }
-  return "other";
+export function detectPlatform(url: string): string {
+  const platform = findPlatformByUrl(url);
+  return platform ? platform.id : "other";
 }
 
 export function parseDevice(
@@ -94,7 +75,7 @@ export function parseDevice(
     browser = "Firefox";
   }
 
-  // 4. Referrer Source Attribution (HTTP Referer prioritized, UserAgent fallback)
+  // 4. Referrer Source Attribution
   let referrerSource: "instagram" | "whatsapp" | "facebook" | "twitter" | "telegram" | "youtube" | "linkedin" | "tiktok" | "direct" | "other" = "direct";
 
   if (ref.includes("instagram.com")) referrerSource = "instagram";
@@ -106,7 +87,6 @@ export function parseDevice(
   else if (ref.includes("tiktok.com")) referrerSource = "tiktok";
   else if (ref.includes("telegram.org") || ref.includes("t.me")) referrerSource = "telegram";
   else if (inAppBrowser) {
-    // Fallback: Infer from In-App Webview signature if Referer header was stripped by mobile OS
     if (ua.includes("instagram")) referrerSource = "instagram";
     else if (ua.includes("fban") || ua.includes("fbav") || ua.includes("facebook")) referrerSource = "facebook";
     else if (ua.includes("twitter")) referrerSource = "twitter";
@@ -122,92 +102,38 @@ export function parseDevice(
 }
 
 export function generateDeepLink(url: string): DeepLinkInfo {
-  const platform = detectPlatform(url);
   const cleanUrl = url.trim();
+  const platformDef = findPlatformByUrl(cleanUrl);
 
-  switch (platform) {
-    case "youtube": {
-      let videoId = "";
-      if (cleanUrl.includes("youtu.be/")) {
-        videoId = cleanUrl.split("youtu.be/")[1]?.split("?")[0] || "";
-      } else if (cleanUrl.includes("v=")) {
-        videoId = cleanUrl.split("v=")[1]?.split("&")[0] || "";
-      }
-
-      if (videoId) {
-        return {
-          platform: "youtube",
-          deepLinkAndroid: `intent://www.youtube.com/watch?v=${videoId}#Intent;package=com.google.android.youtube;scheme=https;end`,
-          deepLinkIos: `vnd.youtube://watch?v=${videoId}`,
-          fallbackUrl: cleanUrl,
-        };
-      }
-
-      const stripped = cleanUrl.replace(/^https?:\/\//, "");
-      return {
-        platform: "youtube",
-        deepLinkAndroid: `intent://${stripped}#Intent;package=com.google.android.youtube;scheme=https;end`,
-        deepLinkIos: `vnd.youtube://${stripped}`,
-        fallbackUrl: cleanUrl,
-      };
-    }
-
-    case "instagram": {
-      return {
-        platform: "instagram",
-        deepLinkAndroid: `intent://${cleanUrl.replace(/^https?:\/\//, "")}#Intent;package=com.instagram.android;scheme=https;end`,
-        deepLinkIos: cleanUrl.replace("https://www.instagram.com/", "instagram://").replace("https://instagram.com/", "instagram://"),
-        fallbackUrl: cleanUrl,
-      };
-    }
-
-    case "telegram": {
-      let username = "";
-      if (cleanUrl.includes("t.me/")) {
-        username = cleanUrl.split("t.me/")[1]?.split("?")[0]?.split("/")[0] || "";
-      }
-      return {
-        platform: "telegram",
-        deepLinkAndroid: username ? `tg://resolve?domain=${username}` : `intent://${cleanUrl.replace(/^https?:\/\//, "")}#Intent;package=org.telegram.messenger;scheme=https;end`,
-        deepLinkIos: username ? `tg://resolve?domain=${username}` : cleanUrl,
-        fallbackUrl: cleanUrl,
-      };
-    }
-
-    case "amazon": {
-      const stripped = cleanUrl.replace(/^https?:\/\//, "");
-      return {
-        platform: "amazon",
-        deepLinkAndroid: `intent://${stripped}#Intent;package=in.amazon.mShop.android.shopping;scheme=https;end`,
-        deepLinkIos: `com.amazon.mobile.shopping.web://${stripped}`,
-        fallbackUrl: cleanUrl,
-      };
-    }
-
-    case "myntra": {
-      const stripped = cleanUrl.replace(/^https?:\/\//, "");
-      return {
-        platform: "myntra",
-        deepLinkAndroid: `intent://${stripped}#Intent;package=com.myntra.android;scheme=https;end`,
-        deepLinkIos: `myntra://${stripped}`,
-        fallbackUrl: cleanUrl,
-      };
-    }
-
-    case "spotify": {
-      return {
-        platform: "spotify",
-        deepLinkAndroid: `intent://${cleanUrl.replace(/^https?:\/\//, "")}#Intent;package=com.spotify.music;scheme=https;end`,
-        deepLinkIos: cleanUrl.replace("https://open.spotify.com/", "spotify://"),
-        fallbackUrl: cleanUrl,
-      };
-    }
-
-    default: {
-      return {
-        platform: "other",
-        fallbackUrl: cleanUrl,
-      };
-    }
+  if (!platformDef) {
+    return {
+      platform: "other",
+      fallbackUrl: cleanUrl,
+    };
   }
+
+  const stripped = cleanUrl.replace(/^https?:\/\//, "");
+
+  // Build Android Intent
+  let deepLinkAndroid: string | undefined = undefined;
+  if (platformDef.customAndroidIntent) {
+    deepLinkAndroid = platformDef.customAndroidIntent(cleanUrl);
+  } else if (platformDef.androidPackage) {
+    deepLinkAndroid = `intent://${stripped}#Intent;package=${platformDef.androidPackage};scheme=https;end`;
+  }
+
+  // Build iOS Deep Link Scheme
+  let deepLinkIos: string | undefined = undefined;
+  if (platformDef.customIosDeepLink) {
+    deepLinkIos = platformDef.customIosDeepLink(cleanUrl);
+  } else if (platformDef.iosSchemePrefix) {
+    deepLinkIos = `${platformDef.iosSchemePrefix}${stripped}`;
+  }
+
+  return {
+    platform: platformDef.id,
+    deepLinkAndroid,
+    deepLinkIos,
+    fallbackUrl: cleanUrl,
+  };
 }

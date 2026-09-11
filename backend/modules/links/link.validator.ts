@@ -145,5 +145,22 @@ export const VerifyPasswordSchema = z.object({
   password: z.string().min(1, "Password is required."),
 });
 
+export const BulkCreateLinkSchema = z.object({
+  urls: z
+    .array(
+      z
+        .string({ required_error: "URL is required" })
+        .trim()
+        .url("Please provide a valid URL")
+        .refine(
+          (url) => url.startsWith("http://") || url.startsWith("https://"),
+          "Only http:// and https:// URLs are allowed."
+        )
+    )
+    .min(1, "Provide at least 1 URL")
+    .max(20, "Maximum 20 URLs allowed per batch"),
+});
+
 export type CreateLinkInput = z.infer<typeof CreateLinkSchema>;
 export type VerifyPasswordInput = z.infer<typeof VerifyPasswordSchema>;
+export type BulkCreateLinkInput = z.infer<typeof BulkCreateLinkSchema>;

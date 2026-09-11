@@ -9,6 +9,7 @@ export interface IUser extends Document {
   refreshToken?: string; // For long-lived sessions
   plan: "free" | "creator" | "enterprise";
   role: "user" | "admin";
+  persona: "creator" | "brand" | "agency" | "user"; // Persona tracking
   createdAt: Date;
   updatedAt: Date;
 }
@@ -29,6 +30,11 @@ const UserSchema = new Schema<IUser>(
     role: {
       type: String,
       enum: ["user", "admin"],
+      default: "user",
+    },
+    persona: {
+      type: String,
+      enum: ["creator", "brand", "agency", "user"],
       default: "user",
     },
   },

@@ -17,7 +17,7 @@ export const SmartRedirectCard: React.FC<Props> = ({
   deepLinkInfo,
   device,
 }) => {
-  const [countdown, setCountdown] = useState(link.ctaOverlay?.enabled ? 2 : 1);
+  const [countdown, setCountdown] = useState(1);
 
   const targetAppUrl =
     device === "android"
@@ -27,27 +27,44 @@ export const SmartRedirectCard: React.FC<Props> = ({
       : link.originalUrl;
 
   const triggerOpen = () => {
-    // 1. Immediately launch native app intent
-    window.location.href = targetAppUrl;
-
-    // 2. Safe Fallback: if native app does not open within 1.5s, open standard web page
-    setTimeout(() => {
-      window.location.href = link.originalUrl;
-    }, 1500);
+    try {
+      window.location.replace(targetAppUrl);
+    } catch {
+      window.location.href = targetAppUrl;
+    }
   };
 
   useEffect(() => {
-    // INSTANT: Fire the native intent immediately at 0.00s!
     triggerOpen();
 
-    const delayMs = link.ctaOverlay?.enabled ? 2000 : 1000;
-    const timer = setTimeout(() => {
+    let fallbackTimer: NodeJS.Timeout | null = setTimeout(() => {
       setCountdown(0);
-      window.location.href = link.originalUrl;
-    }, delayMs);
+      try {
+        window.location.replace(link.originalUrl);
+      } catch {
+        window.location.href = link.originalUrl;
+      }
+    }, 600);
 
-    return () => clearTimeout(timer);
-  }, []);
+    const cancelFallback = () => {
+      if (fallbackTimer) {
+        clearTimeout(fallbackTimer);
+        fallbackTimer = null;
+      }
+    };
+
+    window.addEventListener("pagehide", cancelFallback);
+    window.addEventListener("blur", cancelFallback);
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) cancelFallback();
+    });
+
+    return () => {
+      cancelFallback();
+      window.removeEventListener("pagehide", cancelFallback);
+      window.removeEventListener("blur", cancelFallback);
+    };
+  }, [targetAppUrl, link.originalUrl]);
 
   return (
     <>

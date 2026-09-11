@@ -17,6 +17,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [persona, setPersona] = useState<"creator" | "brand" | "agency" | "user">("user");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -57,7 +58,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
     setLoading(true);
 
     const endpoint = isLogin ? "/api/auth/login" : "/api/auth/register";
-    const payload = isLogin ? { email, password } : { name, email, password };
+    const payload = isLogin ? { email, password } : { name, email, password, persona };
 
     try {
       const res = await fetch(endpoint, {
@@ -103,14 +104,18 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
               <X className="w-5 h-5 text-gray-500" />
             </button>
 
-            <div className="mb-8">
+            <div className="mb-6">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#f5f4ef] border border-[#e7e5dc] text-[10.5px] font-black uppercase tracking-wider text-zinc-600 mb-2.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#2c35af]" />
+                <span>SnapLink Workspace</span>
+              </div>
               <h2 className="text-2xl font-black tracking-tight text-[#121316]">
-                {isLogin ? "Welcome Back" : "Create Account"}
+                {isLogin ? "Sign In to Workspace" : "Create Your Workspace"}
               </h2>
-              <p className="text-gray-500 text-sm font-medium mt-1">
+              <p className="text-zinc-500 text-[13px] font-medium mt-1.5 leading-relaxed">
                 {isLogin
-                  ? "Log in to manage your deep links and analytics."
-                  : "Start creating branded smart links in seconds."}
+                  ? "Access your live click analytics, edit destination URLs anytime, and manage all your smart links in one central place."
+                  : "Join creators & enterprises to create instant deep links, custom domains, and view live click analytics."}
               </p>
             </div>
 
@@ -119,7 +124,6 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
               <GoogleLogin
                 onSuccess={handleGoogleSuccess}
                 onError={() => setError("Google Sign-In was unsuccessful")}
-                useOneTap
                 theme="outline"
                 shape="pill"
                 size="large"
@@ -138,10 +142,38 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
             <form onSubmit={handleSubmit} className="space-y-4">
               {!isLogin && (
-                <div>
-                  <label className="block text-[11px] font-black text-gray-500 uppercase tracking-widest mb-1.5 ml-1">
-                    Full Name
-                  </label>
+                <>
+                  <div className="mb-4">
+                    <label className="block text-[11px] font-black text-gray-500 uppercase tracking-widest mb-2 ml-1">
+                      I am a...
+                    </label>
+                    <div className="flex gap-2 p-1 bg-[#f8f7f4] rounded-2xl border-2 border-[#e7e5dc]">
+                      {[
+                        { id: "user", label: "Individual" },
+                        { id: "creator", label: "Creator" },
+                        { id: "brand", label: "Brand" },
+                        { id: "agency", label: "Agency" },
+                      ].map((tab) => (
+                        <button
+                          key={tab.id}
+                          type="button"
+                          onClick={() => setPersona(tab.id as any)}
+                          className={`flex-1 py-2 px-2 text-[12px] font-bold rounded-xl transition-all duration-200 ${
+                            persona === tab.id
+                              ? "bg-white text-[#2c35af] shadow-sm border border-black/5"
+                              : "text-gray-500 hover:text-gray-800"
+                          }`}
+                        >
+                          {tab.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-black text-gray-500 uppercase tracking-widest mb-1.5 ml-1">
+                      Full Name / Brand Name
+                    </label>
                   <div className="relative group">
                     <User className="absolute left-4 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-gray-400 group-focus-within:text-[#2c35af] transition-colors duration-300" />
                     <input
@@ -154,6 +186,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                     />
                   </div>
                 </div>
+              </>
               )}
 
               <div>

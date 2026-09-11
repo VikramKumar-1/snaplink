@@ -25,7 +25,13 @@ export const QRCodeModal: React.FC = () => {
 
   if (!activeQrLink) return null;
 
-  const fullUrl = `${getBaseUrl()}/${activeQrLink.shortCode}`;
+  const fullUrl = activeQrLink.customDomain
+    ? `https://${activeQrLink.customDomain}/${activeQrLink.shortCode}`
+    : `${getBaseUrl()}/${activeQrLink.shortCode}`;
+
+  const isLocalhost =
+    typeof window !== "undefined" &&
+    (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
 
   const copyLink = () => {
     navigator.clipboard.writeText(fullUrl);
@@ -53,42 +59,35 @@ export const QRCodeModal: React.FC = () => {
   const downloadPNG = () => {
     const svgElement = qrRef.current?.querySelector("svg");
     if (!svgElement) return;
-
     const svgData = new XMLSerializer().serializeToString(svgElement);
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
     const img = new Image();
-
     canvas.width = 1200;
     canvas.height = 1200;
-
     img.onload = () => {
-      if (ctx) {
-        ctx.fillStyle = "#ffffff";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img, 100, 100, 1000, 1000);
-        const pngFile = canvas.toDataURL("image/png");
-        const downloadLink = document.createElement("a");
-        downloadLink.download = `${BRAND_CONFIG.name.toLowerCase()}-${activeQrLink.shortCode}-qr.png`;
-        downloadLink.href = pngFile;
-        downloadLink.click();
-      }
+      if (!ctx) return;
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, 1200, 1200);
+      ctx.drawImage(img, 100, 100, 1000, 1000);
+      const link = document.createElement("a");
+      link.download = `${BRAND_CONFIG.name.toLowerCase()}-${activeQrLink.shortCode}-qr.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
     };
-
     img.src = "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgData)));
   };
 
   const downloadSVG = () => {
     const svgElement = qrRef.current?.querySelector("svg");
     if (!svgElement) return;
-
     const svgData = new XMLSerializer().serializeToString(svgElement);
     const blob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
     const url = URL.createObjectURL(blob);
-    const downloadLink = document.createElement("a");
-    downloadLink.download = `${BRAND_CONFIG.name.toLowerCase()}-${activeQrLink.shortCode}-vector.svg`;
-    downloadLink.href = url;
-    downloadLink.click();
+    const link = document.createElement("a");
+    link.download = `${BRAND_CONFIG.name.toLowerCase()}-${activeQrLink.shortCode}-vector.svg`;
+    link.href = url;
+    link.click();
     URL.revokeObjectURL(url);
   };
 
@@ -140,6 +139,12 @@ export const QRCodeModal: React.FC = () => {
             }
           />
         </div>
+
+        {isLocalhost && (
+          <div className="mb-3 px-3 py-1.5 rounded-xl bg-amber-50/90 border border-amber-200/80 text-[10.5px] text-amber-800 leading-snug">
+            <span className="font-bold">📱 Local Wi-Fi Scan:</span> Connect phone to same Wi-Fi and open SnapLink via your local IP (e.g. <code className="bg-amber-100 px-1 py-0.5 rounded font-mono text-[9.5px]">http://192.168.x.x:3000</code>) so your phone can reach this server.
+          </div>
+        )}
 
         {/* Color Customizer */}
         <div className="mb-4">

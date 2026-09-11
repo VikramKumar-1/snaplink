@@ -3,11 +3,10 @@
 import { useAuth } from "../store/useAuth";
 
 export function useCloudSync() {
-  const { isAuthenticated } = useAuth();
-
   const syncLocalLinks = async () => {
-    // Only sync if user is logged in
-    if (!isAuthenticated) return;
+    // Read fresh auth state directly from Zustand
+    const isAuth = useAuth.getState().isAuthenticated;
+    if (!isAuth) return;
 
     try {
       // 1. Get recent links from localStorage (supports both keys)

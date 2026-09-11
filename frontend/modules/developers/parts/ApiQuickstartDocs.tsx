@@ -40,57 +40,57 @@ function verifySnaplinkWebhook(rawBody, signatureHeader, secret) {
 }`;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Overview Card */}
-      <div className="rounded-2xl border border-zinc-800 bg-zinc-900/40 p-5 space-y-2">
-        <div className="flex items-center gap-2 text-white font-bold text-sm">
-          <Terminal className="h-4 w-4 text-violet-400" />
+      <div className="rounded-2xl bento-card-light p-5 space-y-2">
+        <div className="flex items-center gap-2 text-[#121316] font-bold text-sm">
+          <Terminal className="h-4 w-4 text-[#2c35af]" />
           <span>REST API Authentication</span>
         </div>
-        <p className="text-xs text-zinc-400 leading-relaxed">
-          Authenticate programmatic requests by including your secret API key in the <code className="text-zinc-300">Authorization</code> header:
+        <p className="text-xs text-zinc-600 leading-relaxed">
+          Authenticate programmatic requests by including your secret API key in the <code className="px-1.5 py-0.5 rounded bg-[#f5f4ef] border border-[#e7e5dc] text-[#2c35af] font-bold font-mono">Authorization</code> header:
         </p>
-        <div className="p-3 bg-zinc-950 rounded-xl font-mono text-xs text-violet-300 border border-zinc-800">
-          Authorization: Bearer snk_live_...
+        <div className="p-3 bg-[#121316] rounded-xl font-mono text-xs text-[#ccff00] border border-zinc-800 shadow-inner">
+          Authorization: Bearer snk_live_your_secret_key
         </div>
       </div>
 
       {/* Code Snippet: Create Link */}
-      <div className="rounded-2xl border border-zinc-800 bg-zinc-900/40 overflow-hidden">
-        <div className="flex items-center justify-between px-4 py-3 bg-zinc-950/80 border-b border-zinc-800 text-xs">
+      <div className="rounded-2xl border border-[#e7e5dc] bg-[#121316] overflow-hidden shadow-sm">
+        <div className="flex items-center justify-between px-4 py-2.5 bg-zinc-900 border-b border-zinc-800 text-xs">
           <div className="flex items-center gap-2 font-mono text-zinc-300">
             <Code2 className="h-3.5 w-3.5 text-emerald-400" />
             <span>POST /api/v1/links (Create Smart Link)</span>
           </div>
           <button
             onClick={() => copyCode(curlExample, "curl")}
-            className="flex items-center gap-1 text-[11px] text-violet-400 hover:text-violet-300 transition"
+            className="flex items-center gap-1 text-[11px] font-bold text-[#ccff00] hover:underline transition cursor-pointer"
           >
             {copiedKey === "curl" ? <Check className="h-3 w-3 text-emerald-400" /> : <Copy className="h-3 w-3" />}
             <span>{copiedKey === "curl" ? "Copied" : "Copy cURL"}</span>
           </button>
         </div>
-        <pre className="p-4 font-mono text-xs text-zinc-300 overflow-x-auto bg-zinc-950/40 leading-relaxed">
+        <pre className="p-4 font-mono text-xs text-zinc-200 overflow-x-auto bg-[#121316] leading-relaxed">
           {curlExample}
         </pre>
       </div>
 
       {/* Code Snippet: Verify Webhook */}
-      <div className="rounded-2xl border border-zinc-800 bg-zinc-900/40 overflow-hidden">
-        <div className="flex items-center justify-between px-4 py-3 bg-zinc-950/80 border-b border-zinc-800 text-xs">
+      <div className="rounded-2xl border border-[#e7e5dc] bg-[#121316] overflow-hidden shadow-sm">
+        <div className="flex items-center justify-between px-4 py-2.5 bg-zinc-900 border-b border-zinc-800 text-xs">
           <div className="flex items-center gap-2 font-mono text-zinc-300">
-            <ShieldCheck className="h-3.5 w-3.5 text-violet-400" />
+            <ShieldCheck className="h-3.5 w-3.5 text-blue-400" />
             <span>Verify Webhook Signature (Node.js HMAC-SHA256)</span>
           </div>
           <button
             onClick={() => copyCode(webhookVerifyNode, "node")}
-            className="flex items-center gap-1 text-[11px] text-violet-400 hover:text-violet-300 transition"
+            className="flex items-center gap-1 text-[11px] font-bold text-[#ccff00] hover:underline transition cursor-pointer"
           >
             {copiedKey === "node" ? <Check className="h-3 w-3 text-emerald-400" /> : <Copy className="h-3 w-3" />}
             <span>{copiedKey === "node" ? "Copied" : "Copy Code"}</span>
           </button>
         </div>
-        <pre className="p-4 font-mono text-xs text-zinc-300 overflow-x-auto bg-zinc-950/40 leading-relaxed">
+        <pre className="p-4 font-mono text-xs text-zinc-200 overflow-x-auto bg-[#121316] leading-relaxed">
           {webhookVerifyNode}
         </pre>
       </div>

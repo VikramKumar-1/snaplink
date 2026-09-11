@@ -1,8 +1,9 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
 export interface ISocialLink {
-  platform: "youtube" | "instagram" | "twitter" | "tiktok" | "telegram" | "spotify" | "github" | "linkedin" | "website";
+  platform: "youtube" | "instagram" | "x" | "tiktok" | "telegram" | "spotify" | "github" | "linkedin" | "facebook" | "website";
   url: string;
+  handle?: string;
 }
 
 export interface ICustomBioLink {
@@ -32,6 +33,7 @@ const SocialLinkSchema = new Schema<ISocialLink>(
   {
     platform: { type: String, required: true },
     url: { type: String, required: true, trim: true },
+    handle: { type: String, trim: true },
   },
   { _id: false }
 );
@@ -67,11 +69,12 @@ const BioPageSchema = new Schema<IBioPage>(
       type: String,
       required: true,
       trim: true,
+      maxlength: 32,
     },
     bio: {
       type: String,
       trim: true,
-      maxlength: 250,
+      maxlength: 90,
       default: "",
     },
     avatarUrl: {

@@ -61,56 +61,77 @@ export const EnterpriseSsoSection: React.FC<Props> = ({ workspaceId, initialSso,
 
   return (
     <div className="space-y-6">
-      <div className="bg-zinc-900/40 p-4 rounded-2xl border border-zinc-800">
-        <h3 className="text-sm font-bold text-white flex items-center gap-2">
-          <Lock className="h-4 w-4 text-violet-400" />
-          Enterprise Single Sign-On (SSO / SAML 2.0)
-        </h3>
-        <p className="text-xs text-zinc-400 mt-0.5">Enforce company identity provider login for all team members.</p>
+      <div className="bento-card-light p-5 rounded-2xl border border-[#e7e5dc] bg-white/80 backdrop-blur-md shadow-sm">
+        <div className="flex items-center gap-3">
+          <div className="h-9 w-9 rounded-xl bg-[#2c35af]/10 flex items-center justify-center text-[#2c35af] shrink-0">
+            <Lock className="h-4.5 w-4.5" />
+          </div>
+          <div>
+            <h3 className="text-sm font-bold text-[#121316]">
+              Enterprise Single Sign-On (SSO / SAML 2.0)
+            </h3>
+            <p className="text-xs text-[#525866] mt-0.5">
+              Enforce corporate identity provider authentication for all workspace team members.
+            </p>
+          </div>
+        </div>
       </div>
 
       {message && (
-        <div className={`p-3 rounded-xl border text-xs flex items-center gap-2 ${
-          message.type === "success" ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-300" : "bg-rose-500/10 border-rose-500/20 text-rose-300"
+        <div className={`p-3.5 rounded-xl border text-xs flex items-center gap-2 font-medium ${
+          message.type === "success" 
+            ? "bg-emerald-50 border-emerald-200 text-emerald-800" 
+            : "bg-rose-50 border-rose-200 text-rose-800"
         }`}>
-          {message.type === "success" ? <CheckCircle2 className="h-4 w-4 text-emerald-400" /> : <AlertCircle className="h-4 w-4 text-rose-400" />}
+          {message.type === "success" ? <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" /> : <AlertCircle className="h-4 w-4 text-rose-600 shrink-0" />}
           <span>{message.text}</span>
         </div>
       )}
 
       {/* Service Provider Metadata */}
-      <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-4 space-y-3 text-xs">
-        <div className="font-semibold text-zinc-300 flex items-center gap-1.5">
-          <ShieldCheck className="h-4 w-4 text-emerald-400" />
+      <div className="rounded-2xl border border-[#e7e5dc] bg-[#faf9f5] p-5 space-y-3.5 text-xs shadow-xs">
+        <div className="font-bold text-[#121316] flex items-center gap-2 text-sm">
+          <ShieldCheck className="h-4 w-4 text-emerald-600" />
           <span>SnapLink SAML 2.0 Service Provider Endpoints</span>
         </div>
+        <p className="text-[12px] text-[#525866]">
+          Configure these SP endpoints in your identity provider (Okta, Azure AD, or Google Workspace).
+        </p>
 
-        <div className="space-y-2">
-          <div className="flex items-center justify-between bg-zinc-950 p-2.5 rounded-lg border border-zinc-800">
-            <span className="text-zinc-500 font-mono">ACS URL: <span className="text-zinc-200">{acsUrl}</span></span>
-            <button onClick={() => copyText(acsUrl, "acs")} className="text-violet-400 hover:text-violet-300 text-[11px] flex items-center gap-1">
-              {copiedKey === "acs" ? <Check className="h-3 w-3 text-emerald-400" /> : <Copy className="h-3 w-3" />}
+        <div className="space-y-2.5 pt-1">
+          <div className="flex items-center justify-between bg-white p-3 rounded-xl border border-[#e7e5dc] shadow-2xs">
+            <span className="text-[#525866] font-mono text-xs">ACS URL: <span className="text-[#121316] font-semibold">{acsUrl}</span></span>
+            <button 
+              onClick={() => copyText(acsUrl, "acs")} 
+              className="text-[#2c35af] hover:text-[#1e247a] text-xs font-semibold flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#2c35af]/5 hover:bg-[#2c35af]/10 transition"
+            >
+              {copiedKey === "acs" ? <Check className="h-3.5 w-3.5 text-emerald-600" /> : <Copy className="h-3.5 w-3.5" />}
               <span>{copiedKey === "acs" ? "Copied" : "Copy"}</span>
             </button>
           </div>
 
-          <div className="flex items-center justify-between bg-zinc-950 p-2.5 rounded-lg border border-zinc-800">
-            <span className="text-zinc-500 font-mono">Entity ID: <span className="text-zinc-200">{entityId}</span></span>
-            <button onClick={() => copyText(entityId, "entity")} className="text-violet-400 hover:text-violet-300 text-[11px] flex items-center gap-1">
-              {copiedKey === "entity" ? <Check className="h-3 w-3 text-emerald-400" /> : <Copy className="h-3 w-3" />}
+          <div className="flex items-center justify-between bg-white p-3 rounded-xl border border-[#e7e5dc] shadow-2xs">
+            <span className="text-[#525866] font-mono text-xs">Entity ID: <span className="text-[#121316] font-semibold">{entityId}</span></span>
+            <button 
+              onClick={() => copyText(entityId, "entity")} 
+              className="text-[#2c35af] hover:text-[#1e247a] text-xs font-semibold flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#2c35af]/5 hover:bg-[#2c35af]/10 transition"
+            >
+              {copiedKey === "entity" ? <Check className="h-3.5 w-3.5 text-emerald-600" /> : <Copy className="h-3.5 w-3.5" />}
               <span>{copiedKey === "entity" ? "Copied" : "Copy"}</span>
             </button>
           </div>
         </div>
       </div>
 
-      <form onSubmit={handleSave} className="space-y-4 rounded-xl border border-zinc-800 bg-zinc-900/40 p-4">
+      <form onSubmit={handleSave} className="space-y-4 rounded-2xl border border-[#e7e5dc] bg-white/80 backdrop-blur-md p-5 shadow-sm">
         <div>
-          <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-1.5">Identity Provider</label>
+          <label className="block text-[11px] font-bold text-[#525866] uppercase tracking-wider mb-1.5">
+            Identity Provider
+          </label>
           <select
             value={provider}
             onChange={(e) => setProvider(e.target.value as any)}
-            className="w-full rounded-xl border border-zinc-800 bg-zinc-900 px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-violet-500 cursor-pointer"
+            className="w-full rounded-xl border border-[#e7e5dc] bg-[#faf9f5] px-3.5 py-2.5 text-sm text-[#121316] font-medium focus:outline-none focus:border-[#2c35af] focus:bg-white transition cursor-pointer"
           >
             <option value="okta">Okta SSO</option>
             <option value="azure_ad">Microsoft Entra ID (Azure AD)</option>
@@ -119,14 +140,16 @@ export const EnterpriseSsoSection: React.FC<Props> = ({ workspaceId, initialSso,
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-1.5">Corporate Email Domain</label>
+          <label className="block text-[11px] font-bold text-[#525866] uppercase tracking-wider mb-1.5">
+            Corporate Email Domain
+          </label>
           <input
             type="text"
             required
             placeholder="acmecorp.com"
             value={domain}
             onChange={(e) => setDomain(e.target.value)}
-            className="w-full rounded-xl border border-zinc-800 bg-zinc-900 px-3.5 py-2.5 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-violet-500"
+            className="w-full rounded-xl border border-[#e7e5dc] bg-[#faf9f5] px-3.5 py-2.5 text-sm text-[#121316] placeholder-[#8c92a4] focus:outline-none focus:border-[#2c35af] focus:bg-white transition"
           />
         </div>
 
@@ -135,18 +158,20 @@ export const EnterpriseSsoSection: React.FC<Props> = ({ workspaceId, initialSso,
             type="checkbox"
             checked={enabled}
             onChange={(e) => setEnabled(e.target.checked)}
-            className="rounded border-zinc-800 text-violet-600 focus:ring-violet-500"
+            className="rounded border-[#d1cfc7] text-[#2c35af] focus:ring-[#2c35af] h-4 w-4"
           />
-          <span className="text-xs text-zinc-300 font-medium">Enforce SAML SSO login for this domain</span>
+          <span className="text-xs text-[#121316] font-medium">Enforce SAML SSO login for this domain</span>
         </label>
 
-        <button
-          type="submit"
-          disabled={saving || !domain.trim()}
-          className="rounded-xl bg-violet-600 px-4 py-2 text-xs font-semibold text-white hover:bg-violet-500 disabled:opacity-50 transition cursor-pointer"
-        >
-          {saving ? "Saving..." : "Save Configuration"}
-        </button>
+        <div className="pt-2">
+          <button
+            type="submit"
+            disabled={saving || !domain.trim()}
+            className="rounded-xl bg-[#2c35af] px-5 py-2.5 text-xs font-bold text-white hover:bg-[#232a8f] disabled:opacity-50 transition cursor-pointer shadow-sm"
+          >
+            {saving ? "Saving..." : "Save Configuration"}
+          </button>
+        </div>
       </form>
     </div>
   );

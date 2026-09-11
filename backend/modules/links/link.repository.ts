@@ -5,15 +5,30 @@ const memoryLinks = new Map<string, any>();
 
 export class LinkRepository {
   static async findByShortCode(shortCode: string, customDomain?: string): Promise<ILink | any | null> {
+    const cacheKey = customDomain ? `${customDomain}:${shortCode}` : shortCode;
+    const cached = memoryLinks.get(cacheKey);
+    if (cached && Date.now() - (cached._cachedAt || 0) < 60000) {
+      return cached;
+    }
+
     try {
       await connectToDatabase();
+      let doc = null;
       if (customDomain) {
-        const scoped = await Link.findOne({ shortCode, customDomain: customDomain.toLowerCase() });
-        if (scoped) return scoped;
+        doc = await Link.findOne({ shortCode, customDomain: customDomain.toLowerCase() });
       }
-      return await Link.findOne({ shortCode });
+      if (!doc) {
+        doc = await Link.findOne({ shortCode });
+      }
+      if (doc) {
+        const plain: any = doc.toObject ? doc.toObject() : doc;
+        plain._cachedAt = Date.now();
+        memoryLinks.set(cacheKey, plain);
+        memoryLinks.set(shortCode, plain);
+      }
+      return doc;
     } catch {
-      return memoryLinks.get(shortCode) || null;
+      return memoryLinks.get(cacheKey) || memoryLinks.get(shortCode) || null;
     }
   }
 
@@ -30,7 +45,14 @@ export class LinkRepository {
   static async create(linkData: Partial<ILink>): Promise<ILink | any> {
     try {
       await connectToDatabase();
-      return await Link.create(linkData);
+      const created = await Link.create(linkData);
+      const plain: any = created.toObject ? created.toObject() : created;
+      plain._cachedAt = Date.now();
+      if (linkData.customDomain) {
+        memoryLinks.set(`${linkData.customDomain.toLowerCase()}:${linkData.shortCode}`, plain);
+      }
+      memoryLinks.set(linkData.shortCode!, plain);
+      return created;
     } catch (err: any) {
       // Re-throw duplicate key collision error so service layer can handle retry
       if (err.code === 11000) {
@@ -45,9 +67,56 @@ export class LinkRepository {
         clicks: 0,
         createdAt: new Date(),
         updatedAt: new Date(),
+        _cachedAt: Date.now(),
       };
+      if (linkData.customDomain) {
+        memoryLinks.set(`${linkData.customDomain.toLowerCase()}:${linkData.shortCode}`, fallback);
+      }
       memoryLinks.set(linkData.shortCode!, fallback);
       return fallback;
+    }
+  }
+
+  static async insertMany(linksData: Partial<ILink>[]): Promise<ILink[] | any[]> {
+    try {
+      await connectToDatabase();
+      // ordered: false ensures that if one insertion fails (e.g., duplicate slug collision),
+      // the rest will still succeed.
+      const result = await Link.insertMany(linksData, { ordered: false });
+      
+      // Update memory cache
+      result.forEach((doc: any) => {
+        const plain: any = doc.toObject ? doc.toObject() : doc;
+        plain._cachedAt = Date.now();
+        memoryLinks.set(plain.shortCode, plain);
+      });
+      return result;
+    } catch (err: any) {
+      // In case of ordered:false, Mongoose throws a BulkWriteError but err.insertedDocs contains the successful ones.
+      if (err.insertedDocs && err.insertedDocs.length > 0) {
+        err.insertedDocs.forEach((doc: any) => {
+          const plain: any = doc.toObject ? doc.toObject() : doc;
+          plain._cachedAt = Date.now();
+          memoryLinks.set(plain.shortCode, plain);
+        });
+        return err.insertedDocs;
+      }
+      
+      console.warn("MongoDB connection not active or bulk failed entirely, persisting to memory cache.");
+      const fallbacks = linksData.map((data) => {
+        const fallbackId = String(data._id || "mem_" + Date.now() + Math.random());
+        const fallback = {
+          ...data,
+          _id: fallbackId,
+          clicks: 0,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          _cachedAt: Date.now(),
+        };
+        memoryLinks.set(data.shortCode!, fallback);
+        return fallback;
+      });
+      return fallbacks;
     }
   }
 
@@ -87,15 +156,27 @@ export class LinkRepository {
   static async updateByShortCode(shortCode: string, updateData: Partial<ILink>): Promise<ILink | any | null> {
     try {
       await connectToDatabase();
-      return await Link.findOneAndUpdate(
+      const updated = await Link.findOneAndUpdate(
         { shortCode },
         { $set: { ...updateData, updatedAt: new Date() } },
         { new: true }
       );
+      if (updated) {
+        const plain: any = updated.toObject ? updated.toObject() : updated;
+        plain._cachedAt = Date.now();
+        if (plain.customDomain) {
+          memoryLinks.set(`${plain.customDomain.toLowerCase()}:${shortCode}`, plain);
+        }
+        memoryLinks.set(shortCode, plain);
+      }
+      return updated;
     } catch {
       const item = memoryLinks.get(shortCode);
       if (item) {
-        const updated = { ...item, ...updateData, updatedAt: new Date() };
+        const updated = { ...item, ...updateData, updatedAt: new Date(), _cachedAt: Date.now() };
+        if (item.customDomain) {
+          memoryLinks.set(`${item.customDomain.toLowerCase()}:${shortCode}`, updated);
+        }
         memoryLinks.set(shortCode, updated);
         return updated;
       }
@@ -104,12 +185,17 @@ export class LinkRepository {
   }
 
   static async deleteByShortCode(shortCode: string): Promise<boolean> {
+    const item = memoryLinks.get(shortCode);
+    if (item?.customDomain) {
+      memoryLinks.delete(`${item.customDomain.toLowerCase()}:${shortCode}`);
+    }
+    memoryLinks.delete(shortCode);
     try {
       await connectToDatabase();
       const res = await Link.deleteOne({ shortCode });
       return res.deletedCount > 0;
     } catch {
-      return memoryLinks.delete(shortCode);
+      return true;
     }
   }
 

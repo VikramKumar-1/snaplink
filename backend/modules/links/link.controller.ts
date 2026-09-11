@@ -22,6 +22,21 @@ export class LinkController {
     );
   });
 
+  static handleCreateBulkLinks = apiHandler(async (req: NextRequest, userId?: string | null) => {
+    const ip = req.headers.get("x-forwarded-for")?.split(",")[0] || "127.0.0.1";
+    const body = await req.json();
+
+    const { links, remaining, message } = await LinkService.processBulkCreateLinks(ip, body, userId);
+
+    return NextResponse.json(
+      { success: true, links, message },
+      {
+        status: 201,
+        headers: { "X-RateLimit-Remaining": String(remaining) },
+      }
+    );
+  });
+
   static handleGetRecent = apiHandler(async (_req: NextRequest, userId?: string | null) => {
     const links = await LinkService.getRecentLinks(50, userId);
     return NextResponse.json({ links });

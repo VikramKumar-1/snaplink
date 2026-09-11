@@ -12,7 +12,7 @@ import { GalleryDesktopParallax } from "./parts/GalleryDesktopParallax";
  * -------------------------------------------------------------
  */
 export const FloatingGalleryParallax: React.FC = memo(() => (
-  <section className="w-full max-w-6xl mx-auto py-8 sm:py-16 px-4 overflow-hidden">
+  <section className="w-full max-w-7xl mx-auto py-8 sm:py-16 px-2 sm:px-4">
     {/* 1. Mobile Touch Carousel (Zero Horizontal Spilling) */}
     <GalleryMobileSnapTrack />
 
