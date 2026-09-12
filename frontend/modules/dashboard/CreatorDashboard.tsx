@@ -121,9 +121,37 @@ export const CreatorDashboard: React.FC = () => {
   const currentConfig = TAB_CONFIG[dashboardTab as keyof typeof TAB_CONFIG];
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 py-8 sm:py-12 flex flex-col md:flex-row gap-8 lg:gap-12">
-      {/* LEFT SIDEBAR (Desktop) */}
-      <aside className="w-full md:w-64 shrink-0 space-y-8">
+    <div className="w-full max-w-7xl mx-auto px-3.5 sm:px-4 py-5 sm:py-12 flex flex-col md:flex-row gap-6 md:gap-8 lg:gap-12">
+      {/* MOBILE HORIZONTAL PILL NAV */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 -mx-3.5 px-3.5 md:hidden scrollbar-none">
+        {([
+          { id: "links", label: "Links Hub", icon: Link2 },
+          { id: "bio", label: "Bio Studio", icon: User },
+          { id: "domains", label: "Domains", icon: Globe },
+          { id: "team", label: "Team", icon: Building2 },
+          { id: "developers", label: "API & Webhooks", icon: Code2 },
+        ] as const).map((tab) => {
+          const Icon = tab.icon;
+          const isActive = dashboardTab === tab.id;
+          return (
+            <button
+              key={tab.id}
+              onClick={() => setDashboardTab(tab.id)}
+              className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-[12px] font-bold shrink-0 transition-all cursor-pointer ${
+                isActive
+                  ? "bg-[#121316] text-white shadow-xs"
+                  : "bg-white text-zinc-600 border border-[#e7e5dc] hover:text-black"
+              }`}
+            >
+              <Icon className={`h-3.5 w-3.5 ${isActive ? "text-[#ccff00]" : "text-zinc-500"}`} />
+              <span>{tab.label}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* LEFT SIDEBAR (Desktop Only) */}
+      <aside className="hidden md:block md:w-64 shrink-0 space-y-8">
         {/* Creator Tools Section */}
         <div>
           <h3 className="text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-3 ml-2">
@@ -132,7 +160,7 @@ export const CreatorDashboard: React.FC = () => {
           <div className="space-y-1">
             <button
               onClick={() => setDashboardTab("links")}
-              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl text-[13px] font-bold transition-all ${
+              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl text-[13px] font-bold transition-all cursor-pointer ${
                 dashboardTab === "links"
                   ? "bg-[#121316] text-white shadow-md"
                   : "text-zinc-600 hover:bg-[#f5f4ef] hover:text-black border border-transparent hover:border-[#e7e5dc]"
@@ -143,7 +171,7 @@ export const CreatorDashboard: React.FC = () => {
             </button>
             <button
               onClick={() => setDashboardTab("bio")}
-              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl text-[13px] font-bold transition-all ${
+              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl text-[13px] font-bold transition-all cursor-pointer ${
                 dashboardTab === "bio"
                   ? "bg-[#121316] text-white shadow-md"
                   : "text-zinc-600 hover:bg-[#f5f4ef] hover:text-black border border-transparent hover:border-[#e7e5dc]"
@@ -163,7 +191,7 @@ export const CreatorDashboard: React.FC = () => {
           <div className="space-y-1">
             <button
               onClick={() => setDashboardTab("domains")}
-              className={`w-full flex items-center justify-between px-4 py-2.5 rounded-2xl text-[13px] font-bold transition-all ${
+              className={`w-full flex items-center justify-between px-4 py-2.5 rounded-2xl text-[13px] font-bold transition-all cursor-pointer ${
                 dashboardTab === "domains"
                   ? "bg-[#121316] text-white shadow-md"
                   : "text-zinc-600 hover:bg-[#f5f4ef] hover:text-black border border-transparent hover:border-[#e7e5dc]"
@@ -176,7 +204,7 @@ export const CreatorDashboard: React.FC = () => {
             </button>
             <button
               onClick={() => setDashboardTab("team")}
-              className={`w-full flex items-center justify-between px-4 py-2.5 rounded-2xl text-[13px] font-bold transition-all ${
+              className={`w-full flex items-center justify-between px-4 py-2.5 rounded-2xl text-[13px] font-bold transition-all cursor-pointer ${
                 dashboardTab === "team"
                   ? "bg-[#121316] text-white shadow-md"
                   : "text-zinc-600 hover:bg-[#f5f4ef] hover:text-black border border-transparent hover:border-[#e7e5dc]"
@@ -198,7 +226,7 @@ export const CreatorDashboard: React.FC = () => {
           <div className="space-y-1">
             <button
               onClick={() => setDashboardTab("developers")}
-              className={`w-full flex items-center justify-between px-4 py-2.5 rounded-2xl text-[13px] font-bold transition-all ${
+              className={`w-full flex items-center justify-between px-4 py-2.5 rounded-2xl text-[13px] font-bold transition-all cursor-pointer ${
                 dashboardTab === "developers"
                   ? "bg-[#121316] text-white shadow-md"
                   : "text-zinc-600 hover:bg-[#f5f4ef] hover:text-black border border-transparent hover:border-[#e7e5dc]"
@@ -216,34 +244,34 @@ export const CreatorDashboard: React.FC = () => {
       {/* RIGHT MAIN CONTENT */}
       <div className="flex-1 min-w-0">
         {/* Dynamic Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 mb-6 sm:mb-8">
           <div>
-            <div className="inline-flex items-center gap-2 mb-1.5">
-              <span className="text-[#2c35af] text-[18px] font-black leading-none">
+            <div className="inline-flex items-center gap-2 mb-1">
+              <span className="text-[#2c35af] text-[16px] sm:text-[18px] font-black leading-none">
                 {currentConfig.icon}
               </span>
-              <span className="text-[11.5px] font-mono font-black uppercase tracking-widest text-[#2c35af]">
+              <span className="text-[10.5px] sm:text-[11.5px] font-mono font-black uppercase tracking-widest text-[#2c35af]">
                 {currentConfig.subtitle}
               </span>
             </div>
-            <h1 className="text-[28px] sm:text-[38px] font-black tracking-tight text-[#121316] uppercase leading-tight">
+            <h1 className="text-[22px] sm:text-[38px] font-black tracking-tight text-[#121316] uppercase leading-tight">
               {currentConfig.title}
             </h1>
           </div>
 
           {dashboardTab === "links" && (
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2.5 w-full sm:w-auto">
               <button
                 onClick={fetchData}
                 disabled={refreshing}
-                className="p-3 rounded-2xl bg-white border border-[#e7e5dc] hover:border-[#2c35af] text-zinc-700 hover:text-black transition cursor-pointer shadow-xs disabled:opacity-50"
+                className="p-2.5 sm:p-3 rounded-xl sm:rounded-2xl bg-white border border-[#e7e5dc] hover:border-[#2c35af] text-zinc-700 hover:text-black transition cursor-pointer shadow-xs disabled:opacity-50 shrink-0"
                 title="Refresh statistics"
               >
                 <RefreshCw className={`h-4 w-4 ${refreshing ? "animate-spin text-[#2c35af]" : ""}`} />
               </button>
               <button
                 onClick={() => setShowCreator(!showCreator)}
-                className="pill-lime px-5 py-3 text-[13px] font-black uppercase tracking-wider flex items-center gap-2 cursor-pointer shadow-sm"
+                className="flex-1 sm:flex-initial pill-lime px-4 sm:px-5 py-2.5 sm:py-3 text-[12px] sm:text-[13px] font-black uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer shadow-sm"
               >
                 <Plus className="h-4 w-4 stroke-[3]" />
                 <span>{showCreator ? "Close Form" : "Create New Link"}</span>
