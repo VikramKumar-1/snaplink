@@ -4,7 +4,7 @@ import React, { memo } from "react";
 import { TelegramLogo } from "@/frontend/shared/icons/PlatformIcons";
 
 export const GalleryTelegramCard: React.FC = memo(() => (
-  <div className="w-[170px] sm:w-36 md:w-40 lg:w-44 xl:w-48 h-[290px] sm:h-[320px] lg:h-[340px] rounded-2xl bg-white border border-[#e4e2d8] p-3.5 sm:p-4 flex flex-col justify-between shadow-[0_8px_20px_-6px_rgba(0,0,0,0.06)] shrink-0 relative hover:border-sky-400 transition-colors snap-center">
+  <div className="w-[170px] sm:w-36 md:w-40 lg:w-44 xl:w-48 h-[290px] sm:h-[320px] lg:h-[340px] rounded-2xl bg-white border border-[#e4e2d8] p-3.5 sm:p-4 flex flex-col justify-between shadow-[0_8px_20px_-6px_rgba(0,0,0,0.06)] shrink-0 relative sm:hover:border-sky-400 transition-colors snap-center">
     <div className="flex items-center justify-between">
       <div className="h-8 w-8 rounded-xl bg-[#229ed9] text-white flex items-center justify-center shadow-xs shrink-0">
         <TelegramLogo className="h-5 w-5" />

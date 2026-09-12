@@ -155,16 +155,17 @@ export default async function RedirectPage({ params }: Props) {
     notFound();
   }
 
-  // 3. ZERO-DELAY INSTANT REDIRECT: Immediate HTTP 307 for all standard traffic (Desktop, Mobile, QR Scanners)
+  // 3. ZERO-DELAY INSTANT REDIRECT for Desktop & Generic Web Links
   const effectiveUrl = result.effectiveUrl || result.link.originalUrl;
   const hasCtaOverlay = Boolean(result.link.ctaOverlay?.enabled && result.link.ctaOverlay?.headline);
   const hasRetargeting = Boolean(result.link?.retargeting?.metaPixelId || result.link?.retargeting?.googleAnalyticsId);
+  const isMobile = result.device === "android" || result.device === "ios";
+  const isAppPlatform = result.deepLinkInfo.platform !== "other";
 
-  // If there is NO promotional CTA banner, NO retargeting pixel to fire,
-  // and the user is NOT trapped inside an in-app browser webview (Instagram, TikTok, etc.):
-  // REDIRECT IMMEDIATELY (<15ms) via HTTP 307!
-  // On iOS (Universal Links) & Android (App Links), the mobile OS directly launches YouTube, Instagram, Amazon, etc.!
-  if (!hasCtaOverlay && !hasRetargeting && !result.inAppBrowser) {
+  // Desktop users and non-app URLs (no native mobile app to launch):
+  // If NO promotional CTA banner, NO retargeting pixel, and NOT an in-app webview:
+  // REDIRECT IMMEDIATELY (<10ms) via HTTP 307!
+  if (!hasCtaOverlay && !hasRetargeting && (!isMobile || !isAppPlatform) && !result.inAppBrowser) {
     redirect(effectiveUrl);
   }
 

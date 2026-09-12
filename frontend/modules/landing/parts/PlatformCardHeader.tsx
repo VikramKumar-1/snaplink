@@ -26,7 +26,7 @@ export const PlatformCardHeader: React.FC<HeaderProps> = ({
       </span>
     </div>
 
-    <h3 className="text-[16px] sm:text-[19px] font-bold text-[#121316] tracking-tight group-hover:text-[#2c35af] transition-colors mb-1">
+    <h3 className="text-[16px] sm:text-[19px] font-bold text-[#121316] tracking-tight md:group-hover:text-[#2c35af] transition-colors mb-1">
       {name}
     </h3>
     <p className="text-[11.5px] sm:text-[12.5px] text-zinc-500 font-medium leading-relaxed">

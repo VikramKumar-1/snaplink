@@ -5,7 +5,7 @@ import { InstagramLogo } from "@/frontend/shared/icons/PlatformIcons";
 import { Heart } from "lucide-react";
 
 export const GalleryInstagramCard: React.FC = memo(() => (
-  <div className="w-[185px] sm:w-40 md:w-44 lg:w-48 xl:w-52 h-[330px] sm:h-[360px] lg:h-[390px] rounded-2xl bg-white border border-[#e4e2d8] p-3.5 sm:p-5 flex flex-col justify-between shadow-[0_10px_24px_-6px_rgba(0,0,0,0.07)] shrink-0 relative hover:border-pink-400 transition-colors snap-center">
+  <div className="w-[185px] sm:w-40 md:w-44 lg:w-48 xl:w-52 h-[330px] sm:h-[360px] lg:h-[390px] rounded-2xl bg-white border border-[#e4e2d8] p-3.5 sm:p-5 flex flex-col justify-between shadow-[0_10px_24px_-6px_rgba(0,0,0,0.07)] shrink-0 relative sm:hover:border-pink-400 transition-colors snap-center">
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-2">
         <InstagramLogo className="h-8 w-8 shrink-0 rounded-xl shadow-xs" />

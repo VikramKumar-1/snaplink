@@ -10,7 +10,7 @@ interface ComparisonTableRowProps {
 
 export const ComparisonTableRow: React.FC<ComparisonTableRowProps> = memo(({ row }) => {
   return (
-    <tr className="hover:bg-[#faf9f5]/70 transition-colors border-b border-[#f0eee6] last:border-b-0">
+    <tr className="sm:hover:bg-[#faf9f5]/70 transition-colors border-b border-[#f0eee6] last:border-b-0">
       <td className="py-2.5 sm:py-4 px-2 sm:px-6 text-black font-bold text-[10.5px] sm:text-[13.5px] leading-tight">
         <span className="hidden sm:inline">{row.feature}</span>
         <span className="sm:hidden inline">{row.mobileFeature || row.feature}</span>

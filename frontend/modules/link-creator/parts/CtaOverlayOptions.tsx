@@ -111,21 +111,21 @@ export const CtaOverlayOptions: React.FC<Props> = ({
             <label className="text-[12px] font-bold text-slate-700 block mb-1.5">
               Banner Theme
             </label>
-            <div className="flex items-center gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
               {THEME_OPTIONS.map((t) => (
                 <button
                   key={t.id}
                   type="button"
                   onClick={() => setCta((prev) => ({ ...prev, theme: t.id }))}
-                  className={`px-3 py-1.5 rounded-xl text-[11.5px] font-bold flex items-center gap-1.5 border transition cursor-pointer ${
+                  className={`w-full px-2.5 sm:px-3 py-2 sm:py-1.5 rounded-xl text-[11px] sm:text-[11.5px] font-bold flex items-center justify-center gap-1.5 border transition cursor-pointer ${
                     cta.theme === t.id
                       ? "border-[#2c35af] bg-indigo-50 text-[#2c35af] ring-2 ring-[#2c35af]/20"
                       : "border-zinc-200 bg-white text-zinc-600 hover:border-zinc-300"
                   }`}
                 >
-                  <span className={`h-2.5 w-2.5 rounded-full ${t.bg}`} />
-                  {t.label}
-                  {cta.theme === t.id && <Check className="h-3 w-3 ml-0.5" />}
+                  <span className={`h-2.5 w-2.5 rounded-full ${t.bg} shrink-0`} />
+                  <span className="truncate">{t.label}</span>
+                  {cta.theme === t.id && <Check className="h-3 w-3 ml-0.5 shrink-0" />}
                 </button>
               ))}
             </div>

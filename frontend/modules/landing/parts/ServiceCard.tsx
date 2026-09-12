@@ -27,7 +27,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = memo(({ item, idx }) => {
         <span className="text-[10.5px] font-mono font-bold uppercase tracking-wider bg-[#f5f4ef]/90 text-zinc-700 px-3 py-1 rounded-full border border-white/80 shadow-2xs mb-2.5">
           {item.badge}
         </span>
-        <h3 className="text-[17px] sm:text-[18px] font-bold text-[#121316] tracking-tight mb-2 group-hover:text-[#2c35af] transition-colors">
+        <h3 className="text-[17px] sm:text-[18px] font-bold text-[#121316] tracking-tight mb-2 sm:group-hover:text-[#2c35af] transition-colors">
           {item.title}
         </h3>
         <p className="text-[13px] sm:text-[13.5px] text-zinc-600 font-medium leading-relaxed mb-4">

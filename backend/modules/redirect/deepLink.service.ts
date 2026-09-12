@@ -2,9 +2,13 @@ import { findPlatformByUrl } from "./platformRegistry";
 
 export interface DeepLinkInfo {
   platform: string;
+  appName: string;
   deepLinkAndroid?: string;
   deepLinkIos?: string;
   fallbackUrl: string;
+  playStoreUrl?: string;
+  appStoreUrl?: string;
+  androidPackage?: string;
 }
 
 export function detectPlatform(url: string): string {
@@ -108,18 +112,24 @@ export function generateDeepLink(url: string): DeepLinkInfo {
   if (!platformDef) {
     return {
       platform: "other",
+      appName: "Website",
       fallbackUrl: cleanUrl,
     };
   }
 
   const stripped = cleanUrl.replace(/^https?:\/\//, "");
 
-  // Build Android Intent
+  // Build Android Intent with guaranteed S.browser_fallback_url
   let deepLinkAndroid: string | undefined = undefined;
   if (platformDef.customAndroidIntent) {
     deepLinkAndroid = platformDef.customAndroidIntent(cleanUrl);
   } else if (platformDef.androidPackage) {
-    deepLinkAndroid = `intent://${stripped}#Intent;package=${platformDef.androidPackage};scheme=https;end`;
+    deepLinkAndroid = `intent://${stripped}#Intent;package=${platformDef.androidPackage};scheme=https;S.browser_fallback_url=${encodeURIComponent(cleanUrl)};end`;
+  }
+
+  // Ensure any custom intent also includes S.browser_fallback_url before ;end
+  if (deepLinkAndroid && deepLinkAndroid.includes("#Intent;") && !deepLinkAndroid.includes("S.browser_fallback_url")) {
+    deepLinkAndroid = deepLinkAndroid.replace(/;end$/, `;S.browser_fallback_url=${encodeURIComponent(cleanUrl)};end`);
   }
 
   // Build iOS Deep Link Scheme
@@ -130,10 +140,22 @@ export function generateDeepLink(url: string): DeepLinkInfo {
     deepLinkIos = `${platformDef.iosSchemePrefix}${stripped}`;
   }
 
+  const playStoreUrl = platformDef.androidPackage
+    ? `https://play.google.com/store/apps/details?id=${platformDef.androidPackage}`
+    : undefined;
+
+  const appStoreUrl = platformDef.appStoreId
+    ? `https://apps.apple.com/app/id${platformDef.appStoreId}`
+    : undefined;
+
   return {
     platform: platformDef.id,
+    appName: platformDef.name,
     deepLinkAndroid,
     deepLinkIos,
     fallbackUrl: cleanUrl,
+    playStoreUrl,
+    appStoreUrl,
+    androidPackage: platformDef.androidPackage,
   };
 }

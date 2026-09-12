@@ -3,6 +3,7 @@ export interface PlatformDefinition {
   name: string;
   domains: string[];
   androidPackage?: string;
+  appStoreId?: string;
   iosSchemePrefix?: string;
   customAndroidIntent?: (cleanUrl: string) => string;
   customIosDeepLink?: (cleanUrl: string) => string;
@@ -17,6 +18,7 @@ export const PLATFORM_REGISTRY: PlatformDefinition[] = [
     name: "YouTube",
     domains: ["youtube.com", "youtu.be"],
     androidPackage: "com.google.android.youtube",
+    appStoreId: "544007664",
     customAndroidIntent: (cleanUrl) => {
       let videoId = "";
       if (cleanUrl.includes("youtu.be/")) {
@@ -43,6 +45,7 @@ export const PLATFORM_REGISTRY: PlatformDefinition[] = [
     name: "Instagram",
     domains: ["instagram.com"],
     androidPackage: "com.instagram.android",
+    appStoreId: "389801252",
     iosSchemePrefix: "instagram://",
     customIosDeepLink: (cleanUrl) =>
       cleanUrl.replace("https://www.instagram.com/", "instagram://").replace("https://instagram.com/", "instagram://"),
@@ -52,6 +55,7 @@ export const PLATFORM_REGISTRY: PlatformDefinition[] = [
     name: "X (Twitter)",
     domains: ["twitter.com", "x.com", "t.co"],
     androidPackage: "com.twitter.android",
+    appStoreId: "333903271",
     iosSchemePrefix: "twitter://",
   },
   {
@@ -59,6 +63,7 @@ export const PLATFORM_REGISTRY: PlatformDefinition[] = [
     name: "LinkedIn",
     domains: ["linkedin.com"],
     androidPackage: "com.linkedin.android",
+    appStoreId: "288429040",
     iosSchemePrefix: "linkedin://",
   },
   {
@@ -66,6 +71,7 @@ export const PLATFORM_REGISTRY: PlatformDefinition[] = [
     name: "Facebook",
     domains: ["facebook.com", "fb.me", "fb.watch"],
     androidPackage: "com.facebook.katana",
+    appStoreId: "284882215",
     iosSchemePrefix: "fb://",
   },
   {
@@ -73,6 +79,7 @@ export const PLATFORM_REGISTRY: PlatformDefinition[] = [
     name: "Reddit",
     domains: ["reddit.com", "redd.it"],
     androidPackage: "com.reddit.frontpage",
+    appStoreId: "1064216828",
     iosSchemePrefix: "reddit://",
   },
   {
@@ -80,6 +87,7 @@ export const PLATFORM_REGISTRY: PlatformDefinition[] = [
     name: "Snapchat",
     domains: ["snapchat.com"],
     androidPackage: "com.snapchat.android",
+    appStoreId: "447188370",
     iosSchemePrefix: "snapchat://",
   },
   {
@@ -87,6 +95,7 @@ export const PLATFORM_REGISTRY: PlatformDefinition[] = [
     name: "Discord",
     domains: ["discord.com", "discord.gg"],
     androidPackage: "com.discord",
+    appStoreId: "985746746",
     iosSchemePrefix: "discord://",
   },
   {
@@ -94,6 +103,7 @@ export const PLATFORM_REGISTRY: PlatformDefinition[] = [
     name: "Pinterest",
     domains: ["pinterest.com", "pin.it"],
     androidPackage: "com.pinterest",
+    appStoreId: "429047995",
     iosSchemePrefix: "pinterest://",
   },
   {
@@ -101,6 +111,7 @@ export const PLATFORM_REGISTRY: PlatformDefinition[] = [
     name: "Threads",
     domains: ["threads.net"],
     androidPackage: "com.instagram.barcelona",
+    appStoreId: "6446901476",
     iosSchemePrefix: "barcelona://",
   },
   {
@@ -108,6 +119,7 @@ export const PLATFORM_REGISTRY: PlatformDefinition[] = [
     name: "Telegram",
     domains: ["t.me", "telegram.me"],
     androidPackage: "org.telegram.messenger",
+    appStoreId: "686449807",
     customAndroidIntent: (cleanUrl) => {
       const username = cleanUrl.includes("t.me/") ? cleanUrl.split("t.me/")[1]?.split("?")[0]?.split("/")[0] : "";
       return username ? `tg://resolve?domain=${username}` : `intent://${cleanUrl.replace(/^https?:\/\//, "")}#Intent;package=org.telegram.messenger;scheme=https;end`;
@@ -122,6 +134,7 @@ export const PLATFORM_REGISTRY: PlatformDefinition[] = [
     name: "WhatsApp",
     domains: ["wa.me", "api.whatsapp.com"],
     androidPackage: "com.whatsapp",
+    appStoreId: "310633997",
     iosSchemePrefix: "whatsapp://",
   },
 
@@ -133,6 +146,7 @@ export const PLATFORM_REGISTRY: PlatformDefinition[] = [
     name: "Amazon",
     domains: ["amazon.in", "amazon.com", "amzn.to"],
     androidPackage: "in.amazon.mShop.android.shopping",
+    appStoreId: "297606951",
     customIosDeepLink: (cleanUrl) => `com.amazon.mobile.shopping.web://${cleanUrl.replace(/^https?:\/\//, "")}`,
   },
   {
@@ -140,6 +154,7 @@ export const PLATFORM_REGISTRY: PlatformDefinition[] = [
     name: "Flipkart",
     domains: ["flipkart.com", "dl.flipkart.com"],
     androidPackage: "com.flipkart.android",
+    appStoreId: "742044692",
     iosSchemePrefix: "flipkart://",
   },
   {
@@ -147,6 +162,7 @@ export const PLATFORM_REGISTRY: PlatformDefinition[] = [
     name: "Myntra",
     domains: ["myntra.com"],
     androidPackage: "com.myntra.android",
+    appStoreId: "907394059",
     iosSchemePrefix: "myntra://",
   },
   {
@@ -154,6 +170,7 @@ export const PLATFORM_REGISTRY: PlatformDefinition[] = [
     name: "Meesho",
     domains: ["meesho.com"],
     androidPackage: "com.meesho.supply",
+    appStoreId: "1457958492",
     iosSchemePrefix: "meesho://",
   },
   {
@@ -161,6 +178,7 @@ export const PLATFORM_REGISTRY: PlatformDefinition[] = [
     name: "Ajio",
     domains: ["ajio.com"],
     androidPackage: "com.ril.ajio",
+    appStoreId: "1113425388",
     iosSchemePrefix: "ajio://",
   },
   {
@@ -168,6 +186,7 @@ export const PLATFORM_REGISTRY: PlatformDefinition[] = [
     name: "Nykaa",
     domains: ["nykaa.com"],
     androidPackage: "com.fsn.nykaa",
+    appStoreId: "1670078864",
     iosSchemePrefix: "nykaa://",
   },
   {
@@ -175,6 +194,7 @@ export const PLATFORM_REGISTRY: PlatformDefinition[] = [
     name: "Swiggy",
     domains: ["swiggy.com"],
     androidPackage: "in.swiggy.android",
+    appStoreId: "989506690",
     iosSchemePrefix: "swiggy://",
   },
   {
@@ -182,6 +202,7 @@ export const PLATFORM_REGISTRY: PlatformDefinition[] = [
     name: "Zomato",
     domains: ["zomato.com"],
     androidPackage: "com.application.zomato",
+    appStoreId: "434613896",
     iosSchemePrefix: "zomato://",
   },
 
@@ -193,6 +214,7 @@ export const PLATFORM_REGISTRY: PlatformDefinition[] = [
     name: "Spotify",
     domains: ["spotify.com"],
     androidPackage: "com.spotify.music",
+    appStoreId: "324684580",
     customIosDeepLink: (cleanUrl) => cleanUrl.replace("https://open.spotify.com/", "spotify://"),
   },
   {
@@ -200,6 +222,7 @@ export const PLATFORM_REGISTRY: PlatformDefinition[] = [
     name: "Apple Music",
     domains: ["music.apple.com"],
     androidPackage: "com.apple.android.music",
+    appStoreId: "1108187390",
     iosSchemePrefix: "music://",
   },
   {
@@ -207,6 +230,7 @@ export const PLATFORM_REGISTRY: PlatformDefinition[] = [
     name: "JioSaavn",
     domains: ["jiosaavn.com"],
     androidPackage: "com.jio.media.jiobeats",
+    appStoreId: "441813332",
     iosSchemePrefix: "jiosaavn://",
   },
   {
@@ -214,6 +238,7 @@ export const PLATFORM_REGISTRY: PlatformDefinition[] = [
     name: "Gaana",
     domains: ["gaana.com"],
     androidPackage: "com.gaana",
+    appStoreId: "585270521",
     iosSchemePrefix: "gaana://",
   },
   {
@@ -221,6 +246,7 @@ export const PLATFORM_REGISTRY: PlatformDefinition[] = [
     name: "SoundCloud",
     domains: ["soundcloud.com"],
     androidPackage: "com.soundcloud.android",
+    appStoreId: "336353151",
     iosSchemePrefix: "soundcloud://",
   },
 
@@ -232,6 +258,7 @@ export const PLATFORM_REGISTRY: PlatformDefinition[] = [
     name: "GitHub",
     domains: ["github.com"],
     androidPackage: "com.github.android",
+    appStoreId: "1477376905",
     iosSchemePrefix: "github://",
   },
   {
@@ -254,6 +281,7 @@ export const PLATFORM_REGISTRY: PlatformDefinition[] = [
     name: "Medium",
     domains: ["medium.com"],
     androidPackage: "com.medium.reader",
+    appStoreId: "828256236",
     iosSchemePrefix: "medium://",
   },
 ];
