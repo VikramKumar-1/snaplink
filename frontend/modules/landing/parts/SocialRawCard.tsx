@@ -17,7 +17,9 @@ export const SocialRawCard: React.FC<{ platform: SocialPlatform }> = React.memo(
         </span>
       </div>
 
-      <SocialRawMockup platform={platform} />
+      <div className="h-[220px] w-full flex flex-col justify-center">
+        <SocialRawMockup platform={platform} />
+      </div>
 
       <div className="space-y-1.5 text-[12px] text-zinc-600 font-medium mb-3">
         <div className="flex items-center gap-2">

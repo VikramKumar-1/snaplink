@@ -54,9 +54,21 @@ export class RedirectController {
       };
     }
 
-    LinkRepository.incrementClicks(shortCode).catch(console.error);
-
     const parsed = parseDevice(userAgent, referer, geo);
+    
+    let genericDevice: "desktop" | "mobile" | "tablet" = "desktop";
+    if (parsed.device === "android" || parsed.device === "ios") {
+      genericDevice = "mobile";
+    }
+
+    LinkRepository.incrementClicks(shortCode, {
+      device: genericDevice,
+      os: parsed.os,
+      browser: parsed.browser,
+      referrer: parsed.referrerSource,
+      country: parsed.country,
+    }).catch(console.error);
+
     AnalyticsRepository.logClick({
       shortCode,
       linkId: link._id,

@@ -15,6 +15,7 @@ import {
   ExternalLink,
 } from "lucide-react";
 import { BRAND_CONFIG } from "@/frontend/shared/config/brand";
+import { AnalyticsCharts } from "../dashboard/AnalyticsCharts";
 
 export const AnalyticsModal: React.FC = () => {
   const { activeAnalyticsCode, closeAnalyticsModal } = useLinkStore();
@@ -152,125 +153,8 @@ export const AnalyticsModal: React.FC = () => {
               </div>
             </div>
 
-            {/* Device Distribution Progress */}
-            <div className="p-4 rounded-2xl bg-white border border-[#e7e5dc]">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-[11px] font-black uppercase text-zinc-500 tracking-wider flex items-center gap-1.5">
-                  <Smartphone className="w-3.5 h-3.5" />
-                  <span>Platform OS Distribution</span>
-                </span>
-                <span className="text-[11px] font-mono font-bold text-zinc-600">
-                  Android {androidPct}% &middot; iOS {iosPct}% &middot; PC {desktopPct}%
-                </span>
-              </div>
-              <div className="h-3 w-full rounded-full bg-zinc-100 flex overflow-hidden p-0.5 border border-zinc-200">
-                <div
-                  style={{ width: `${androidPct}%` }}
-                  className="bg-[#2c35af] rounded-l-full transition-all duration-500"
-                  title={`Android: ${androidPct}%`}
-                />
-                <div
-                  style={{ width: `${iosPct}%` }}
-                  className="bg-[#ccff00] transition-all duration-500"
-                  title={`iOS: ${iosPct}%`}
-                />
-                <div
-                  style={{ width: `${desktopPct}%` }}
-                  className="bg-zinc-400 rounded-r-full transition-all duration-500"
-                  title={`Desktop: ${desktopPct}%`}
-                />
-              </div>
-            </div>
-
-            {/* Traffic Sources & Geographic Breakdown Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {/* Traffic Sources */}
-              <div className="p-4 rounded-2xl bg-white border border-[#e7e5dc]">
-                <div className="text-[11px] font-black uppercase text-zinc-500 tracking-wider mb-3 flex items-center gap-1.5">
-                  <Share2 className="w-3.5 h-3.5" />
-                  <span>Referral Attribution</span>
-                </div>
-                {referrers.length === 0 ? (
-                  <div className="text-[12px] text-zinc-400 py-3">No referral data logged yet</div>
-                ) : (
-                  <div className="space-y-2">
-                    {referrers.map(([source, count]: any) => {
-                      const pct = total > 0 ? Math.round((count / total) * 100) : 0;
-                      return (
-                        <div key={source} className="flex items-center justify-between text-[12.5px]">
-                          <span className="font-bold capitalize text-zinc-800">{source}</span>
-                          <span className="font-mono text-zinc-500 font-semibold">
-                            {count} ({pct}%)
-                          </span>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-
-              {/* Geographic Breakdown */}
-              <div className="p-4 rounded-2xl bg-white border border-[#e7e5dc]">
-                <div className="text-[11px] font-black uppercase text-zinc-500 tracking-wider mb-3 flex items-center gap-1.5">
-                  <Globe className="w-3.5 h-3.5" />
-                  <span>Top Geographic Markets</span>
-                </div>
-                {countries.length === 0 ? (
-                  <div className="text-[12px] text-zinc-400 py-3">No geographic data logged yet</div>
-                ) : (
-                  <div className="space-y-2">
-                    {countries.slice(0, 5).map((c: any) => (
-                      <div key={c.country} className="space-y-1">
-                        <div className="flex items-center justify-between text-[12px]">
-                          <span className="font-bold text-zinc-800">
-                            {c.country === "IN" ? "🇮🇳 India" : c.country === "US" ? "🇺🇸 United States" : c.country}
-                          </span>
-                          <span className="font-mono text-zinc-500 font-semibold">
-                            {c.count} ({c.percentage}%)
-                          </span>
-                        </div>
-                        <div className="h-1.5 w-full bg-zinc-100 rounded-full overflow-hidden">
-                          <div
-                            className="h-full bg-[#2c35af] rounded-full"
-                            style={{ width: `${c.percentage}%` }}
-                          />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* 24-Hour Velocity Timeline */}
-            {timeline.length > 0 && (
-              <div className="p-4 rounded-2xl bg-white border border-[#e7e5dc]">
-                <div className="text-[11px] font-black uppercase text-zinc-500 tracking-wider mb-3 flex items-center gap-1.5">
-                  <Clock className="w-3.5 h-3.5" />
-                  <span>24-Hour Traffic Velocity</span>
-                </div>
-                <div className="flex items-end gap-1.5 h-16 pt-2">
-                  {timeline.map((t: any, idx: number) => {
-                    const max = Math.max(...timeline.map((item: any) => item.count), 1);
-                    const heightPct = Math.round((t.count / max) * 100);
-                    return (
-                      <div
-                        key={idx}
-                        className="flex-1 flex flex-col items-center gap-1 group relative cursor-pointer"
-                      >
-                        <div
-                          style={{ height: `${Math.max(heightPct, 8)}%` }}
-                          className="w-full bg-[#2c35af] group-hover:bg-[#ccff00] rounded-sm transition-all"
-                        />
-                        <span className="text-[8.5px] font-mono text-zinc-400 opacity-0 group-hover:opacity-100 absolute -top-5 bg-black text-white px-1 rounded z-10">
-                          {t.count}
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
+            {/* Recharts Analytics UI */}
+            <AnalyticsCharts analytics={data} />
           </div>
         ) : null}
       </div>

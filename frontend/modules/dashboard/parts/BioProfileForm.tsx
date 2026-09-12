@@ -12,8 +12,8 @@ interface Props {
   setAvatarUrl: (v: string) => void;
   bioText: string;
   setBioText: (v: string) => void;
-  theme: "royal_blue" | "glass_dark" | "clay_light" | "emerald" | "sunset";
-  setTheme: (v: "royal_blue" | "glass_dark" | "clay_light" | "emerald" | "sunset") => void;
+  theme: "royal_blue" | "glass_dark" | "clay_light" | "emerald" | "sunset" | "midnight_glow" | "cyberpunk";
+  setTheme: (v: "royal_blue" | "glass_dark" | "clay_light" | "emerald" | "sunset" | "midnight_glow" | "cyberpunk") => void;
 }
 
 const THEMES = [
@@ -22,6 +22,8 @@ const THEMES = [
   { id: "clay_light", label: "Clay Light", color: "bg-[#f5f4ef] border border-zinc-300" },
   { id: "emerald", label: "Emerald", color: "bg-emerald-700" },
   { id: "sunset", label: "Sunset", color: "bg-gradient-to-r from-rose-600 to-amber-600" },
+  { id: "midnight_glow", label: "Midnight Glow", color: "bg-indigo-950" },
+  { id: "cyberpunk", label: "Cyberpunk", color: "bg-black border border-yellow-500" },
 ] as const;
 
 export const BioProfileForm: React.FC<Props> = ({

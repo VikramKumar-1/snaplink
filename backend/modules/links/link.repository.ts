@@ -120,17 +120,46 @@ export class LinkRepository {
     }
   }
 
-  static async incrementClicks(shortCode: string): Promise<ILink | any | null> {
+  static async incrementClicks(
+    shortCode: string,
+    analytics?: {
+      device?: "desktop" | "mobile" | "tablet";
+      os?: string;
+      browser?: string;
+      referrer?: string;
+      country?: string;
+    }
+  ): Promise<ILink | any | null> {
     try {
       await connectToDatabase();
+      
+      const incPayload: Record<string, number> = { clicks: 1 };
+      
+      if (analytics) {
+        if (analytics.device) incPayload[`deviceStats.${analytics.device}`] = 1;
+        if (analytics.os) incPayload[`osStats.${analytics.os}`] = 1;
+        if (analytics.browser) incPayload[`browserStats.${analytics.browser}`] = 1;
+        if (analytics.referrer) incPayload[`referrerStats.${analytics.referrer}`] = 1;
+        if (analytics.country) incPayload[`countryStats.${analytics.country}`] = 1;
+      }
+
       return await Link.findOneAndUpdate(
         { shortCode },
-        { $inc: { clicks: 1 } },
+        { $inc: incPayload },
         { new: true }
       );
     } catch {
       const item = memoryLinks.get(shortCode);
-      if (item) item.clicks += 1;
+      if (item) {
+        item.clicks += 1;
+        // Basic memory increment for analytics (not required for persistent memory, but good for local dev)
+        if (analytics) {
+          if (analytics.device) {
+            item.deviceStats = item.deviceStats || { desktop: 0, mobile: 0, tablet: 0 };
+            item.deviceStats[analytics.device] += 1;
+          }
+        }
+      }
       return item;
     }
   }

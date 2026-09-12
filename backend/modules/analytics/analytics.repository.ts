@@ -1,5 +1,6 @@
 import { connectToDatabase } from "@/backend/config/db";
 import { ClickAnalytics, IClickAnalytics } from "./analytics.model";
+import { Link } from "@/backend/modules/links/link.model";
 
 const memoryClicks: any[] = [];
 
@@ -19,8 +20,9 @@ export class AnalyticsRepository {
    */
   static async logClick(data: Partial<IClickAnalytics>): Promise<void> {
     try {
-      await connectToDatabase();
-      await ClickAnalytics.create(data);
+      // O(1) space: We rely solely on Link schema $inc counters now!
+      // await connectToDatabase();
+      // await ClickAnalytics.create(data);
     } catch {
       memoryClicks.push({
         ...data,
@@ -36,95 +38,39 @@ export class AnalyticsRepository {
   static async getAggregatedMetrics(shortCode: string): Promise<AggregatedStats> {
     try {
       await connectToDatabase();
+      
+      const link = await Link.findOne({ shortCode }).lean();
+      if (!link) throw new Error("Link not found");
 
-      const [result] = await ClickAnalytics.aggregate([
-        { $match: { shortCode } },
-        {
-          $facet: {
-            totalClicks: [{ $count: "count" }],
-            deviceBreakdown: [
-              { $group: { _id: "$device", count: { $sum: 1 } } },
-              { $sort: { count: -1 } },
-            ],
-            referrerBreakdown: [
-              { $group: { _id: "$referrerSource", count: { $sum: 1 } } },
-              { $sort: { count: -1 } },
-            ],
-            countryBreakdown: [
-              { $group: { _id: "$country", count: { $sum: 1 } } },
-              { $sort: { count: -1 } },
-              { $limit: 10 },
-            ],
-            browserBreakdown: [
-              { $group: { _id: "$browser", count: { $sum: 1 } } },
-              { $sort: { count: -1 } },
-            ],
-            hourlyTimeline: [
-              {
-                $group: {
-                  _id: {
-                    $dateToString: { format: "%Y-%m-%d %H:00", date: "$timestamp" },
-                  },
-                  count: { $sum: 1 },
-                },
-              },
-              { $sort: { _id: -1 } },
-              { $limit: 24 },
-            ],
-            recentClicks: [
-              { $sort: { timestamp: -1 } },
-              { $limit: 20 },
-              {
-                $project: {
-                  device: 1,
-                  inAppBrowser: 1,
-                  referrerSource: 1,
-                  country: 1,
-                  city: 1,
-                  browser: 1,
-                  os: 1,
-                  timestamp: 1,
-                },
-              },
-            ],
-          },
-        },
-      ]);
+      const total = link.clicks || 0;
 
-      const total = result?.totalClicks?.[0]?.count || 0;
-
-      const deviceMap: Record<string, number> = {
-        android: 0,
-        ios: 0,
-        windows: 0,
-        mac: 0,
-        linux: 0,
-        other: 0,
+      // Extract O(1) Pre-aggregated stats
+      const deviceMap = {
+        desktop: link.deviceStats?.desktop || 0,
+        mobile: link.deviceStats?.mobile || 0,
+        tablet: link.deviceStats?.tablet || 0,
       };
-      (result?.deviceBreakdown || []).forEach((d: any) => {
-        if (d._id) deviceMap[d._id] = d.count;
-      });
 
-      const referrerMap: Record<string, number> = {};
-      (result?.referrerBreakdown || []).forEach((r: any) => {
-        if (r._id) referrerMap[r._id] = r.count;
-      });
+      const osMap: Record<string, number> = link.osStats || {};
+      const browserMap: Record<string, number> = link.browserStats || {};
+      const referrerMap: Record<string, number> = link.referrerStats || {};
+      
+      const countryStats = link.countryStats || {};
+      const countries = Object.entries(countryStats)
+        .sort((a: any, b: any) => b[1] - a[1])
+        .slice(0, 10)
+        .map(([country, count]: any) => ({
+          country,
+          count,
+          percentage: total > 0 ? Math.round((count / total) * 100) : 0,
+        }));
 
-      const browserMap: Record<string, number> = {};
-      (result?.browserBreakdown || []).forEach((b: any) => {
-        if (b._id) browserMap[b._id] = b.count;
-      });
-
-      const countries = (result?.countryBreakdown || []).map((c: any) => ({
-        country: c._id || "Unknown",
-        count: c.count,
-        percentage: total > 0 ? Math.round((c.count / total) * 100) : 0,
-      }));
-
-      const timeline = (result?.hourlyTimeline || []).map((t: any) => ({
-        hour: t._id,
-        count: t.count,
-      })).reverse();
+      // Fetch last 10 raw clicks from ClickAnalytics for the "Recent Activity" feed
+      const recentClicks = await ClickAnalytics.find({ shortCode })
+        .sort({ timestamp: -1 })
+        .limit(10)
+        .select("device inAppBrowser referrerSource country city browser os timestamp")
+        .lean();
 
       return {
         totalClicks: total,
@@ -132,8 +78,8 @@ export class AnalyticsRepository {
         referrerBreakdown: referrerMap,
         countryBreakdown: countries,
         browserBreakdown: browserMap,
-        hourlyTimeline: timeline,
-        recentClicks: result?.recentClicks || [],
+        hourlyTimeline: [], // Removed heavy timeline aggregation to save DB stress
+        recentClicks,
       };
     } catch {
       // Memory Fallback

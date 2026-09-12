@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, ChevronUp, ChevronDown } from "lucide-react";
 
 export interface CustomBioLinkItem {
   id: string;
@@ -60,13 +60,49 @@ export const BioLinksEditor: React.FC<Props> = ({
                 placeholder="Link Title (e.g. My Gear List)"
                 className="w-full bento-input px-2.5 py-1.5 text-xs font-bold text-[#121316] bg-white focus:outline-none"
               />
-              <button
-                type="button"
-                onClick={() => removeCustomLink(link.id)}
-                className="p-1 text-zinc-400 hover:text-red-600 transition cursor-pointer"
-              >
-                <Trash2 className="h-3.5 w-3.5" />
-              </button>
+              <div className="flex items-center gap-0.5 shrink-0">
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (idx === 0) return;
+                    const updated = [...customLinks];
+                    const temp = updated[idx - 1];
+                    updated[idx - 1] = updated[idx];
+                    updated[idx] = temp;
+                    setCustomLinks(updated);
+                  }}
+                  disabled={idx === 0}
+                  className="p-1 text-zinc-400 hover:text-black disabled:opacity-30 transition cursor-pointer"
+                  title="Move Up"
+                >
+                  <ChevronUp className="h-4 w-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (idx === customLinks.length - 1) return;
+                    const updated = [...customLinks];
+                    const temp = updated[idx + 1];
+                    updated[idx + 1] = updated[idx];
+                    updated[idx] = temp;
+                    setCustomLinks(updated);
+                  }}
+                  disabled={idx === customLinks.length - 1}
+                  className="p-1 text-zinc-400 hover:text-black disabled:opacity-30 transition cursor-pointer"
+                  title="Move Down"
+                >
+                  <ChevronDown className="h-4 w-4" />
+                </button>
+                <div className="w-[1px] h-4 bg-zinc-200 mx-0.5" />
+                <button
+                  type="button"
+                  onClick={() => removeCustomLink(link.id)}
+                  className="p-1 text-zinc-400 hover:text-red-600 transition cursor-pointer"
+                  title="Delete"
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                </button>
+              </div>
             </div>
 
             <div className="flex items-center gap-2.5">

@@ -14,4 +14,19 @@ export const RATE_LIMIT_CONFIG = {
     WINDOW_SECONDS: 60, // 1 minute
     MESSAGE: "High traffic detected. Please slow down.",
   },
+  CREATE_DOMAIN: {
+    MAX_ATTEMPTS: 10,
+    WINDOW_SECONDS: 60 * 60, // 1 hour
+    MESSAGE: "Domain registration limit reached. Please try again later.",
+  },
+  VERIFY_DOMAIN: {
+    MAX_ATTEMPTS: 15,
+    WINDOW_SECONDS: 60 * 60, // 1 hour
+    MESSAGE: "Too many DNS verification attempts. Please wait for DNS propagation.",
+  },
+  WORKSPACE_INVITE: {
+    MAX_ATTEMPTS: 20,
+    WINDOW_SECONDS: 60 * 60, // 1 hour
+    MESSAGE: "Too many invites sent from this IP. Please try again later.",
+  },
 };

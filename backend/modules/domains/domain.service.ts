@@ -3,12 +3,20 @@ import { promises as dns } from "dns";
 import { DomainRepository } from "./domain.repository";
 import { CreateDomainSchema } from "./domain.validator";
 import { IDomain, DomainStatus } from "./domain.model";
+import { checkRateLimit } from "@/backend/shared/middlewares/rateLimiter";
 
 export class DomainService {
   /**
    * Registers a new custom domain and issues DNS verification credentials
    */
-  static async createDomain(rawBody: any, userId?: string | null): Promise<IDomain> {
+  static async createDomain(rawBody: any, userId?: string | null, ip: string = "unknown"): Promise<IDomain> {
+    const rateCheck = checkRateLimit(ip, "CREATE_DOMAIN");
+    if (!rateCheck.allowed) {
+      const err: any = new Error(rateCheck.message || "Too many requests");
+      err.statusCode = 429;
+      throw err;
+    }
+
     const validated = CreateDomainSchema.parse(rawBody);
     const domain = validated.domain.toLowerCase();
 
@@ -38,7 +46,14 @@ export class DomainService {
   /**
    * Queries public DNS records (CNAME & TXT) to verify domain ownership
    */
-  static async verifyDomain(domainId: string, userId?: string | null) {
+  static async verifyDomain(domainId: string, userId?: string | null, ip: string = "unknown") {
+    const rateCheck = checkRateLimit(ip, "VERIFY_DOMAIN");
+    if (!rateCheck.allowed) {
+      const err: any = new Error(rateCheck.message || "Too many requests");
+      err.statusCode = 429;
+      throw err;
+    }
+
     const domain = await DomainRepository.findById(domainId);
     if (!domain) {
       const err: any = new Error("Domain not found.");

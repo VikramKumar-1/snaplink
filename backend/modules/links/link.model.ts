@@ -53,6 +53,11 @@ export interface ILink extends Document {
   customDomain?: string;
   smartRules?: ISmartRule[];
   clicks: number;
+  deviceStats?: { desktop: number; mobile: number; tablet: number };
+  osStats?: Record<string, number>;
+  browserStats?: Record<string, number>;
+  referrerStats?: Record<string, number>;
+  countryStats?: Record<string, number>;
   userId?: mongoose.Types.ObjectId; // Link to User model (optional for anonymous links)
   createdAt: Date;
   updatedAt: Date;
@@ -139,6 +144,15 @@ const LinkSchema: Schema<ILink> = new Schema(
       type: Number,
       default: 0,
     },
+    deviceStats: {
+      desktop: { type: Number, default: 0 },
+      mobile: { type: Number, default: 0 },
+      tablet: { type: Number, default: 0 },
+    },
+    osStats: { type: Map, of: Number, default: {} },
+    browserStats: { type: Map, of: Number, default: {} },
+    referrerStats: { type: Map, of: Number, default: {} },
+    countryStats: { type: Map, of: Number, default: {} },
     userId: {
       type: Schema.Types.ObjectId,
       ref: "User",

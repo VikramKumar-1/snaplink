@@ -18,7 +18,9 @@ export const SocialRichCard: React.FC<{ platform: SocialPlatform }> = memo(({ pl
         </span>
       </div>
 
-      <SocialRichMockup platform={platform} />
+      <div className="h-[220px] w-full flex flex-col justify-center">
+        <SocialRichMockup platform={platform} />
+      </div>
 
       <div className="space-y-1.5 text-[12px] text-zinc-700 font-medium mb-3">
         <div className="flex items-center gap-2">

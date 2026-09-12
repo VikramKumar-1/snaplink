@@ -31,7 +31,7 @@ export interface BioPageProps {
     displayName: string;
     bio?: string;
     avatarUrl?: string;
-    theme?: "royal_blue" | "glass_dark" | "clay_light" | "emerald" | "sunset";
+    theme?: "royal_blue" | "glass_dark" | "clay_light" | "emerald" | "sunset" | "midnight_glow" | "cyberpunk";
     socialLinks: Array<{ platform: string; url: string; handle?: string }>;
     customLinks: Array<{
       id: string;
@@ -83,6 +83,22 @@ const THEMES = {
     badge: "bg-rose-500 text-white",
     avatarRing: "ring-1 ring-rose-800/30",
     socialBtn: "bg-white/[0.06] hover:bg-white/[0.1] border-white/10 text-rose-200 shadow-xs",
+  },
+  midnight_glow: {
+    bg: "bg-[#050511] text-indigo-50",
+    card: "bg-indigo-950/30 hover:bg-indigo-900/40 border-indigo-500/20 text-indigo-100 shadow-xs",
+    cardHighlight: "bg-indigo-600 hover:bg-indigo-500 border-transparent text-white shadow-sm font-semibold shadow-indigo-500/20",
+    badge: "bg-indigo-500 text-white",
+    avatarRing: "ring-1 ring-indigo-500/50",
+    socialBtn: "bg-indigo-950/30 hover:bg-indigo-900/50 border-indigo-500/20 text-indigo-200 shadow-xs",
+  },
+  cyberpunk: {
+    bg: "bg-[#09090b] text-yellow-500",
+    card: "bg-black hover:bg-zinc-950 border-yellow-500/30 text-yellow-500 shadow-xs",
+    cardHighlight: "bg-yellow-500 hover:bg-yellow-400 border-transparent text-black shadow-sm font-black uppercase tracking-widest",
+    badge: "bg-yellow-500 text-black font-black",
+    avatarRing: "ring-1 ring-yellow-500",
+    socialBtn: "bg-black hover:bg-zinc-900 border-yellow-500/30 text-yellow-500 shadow-xs",
   },
 };
 

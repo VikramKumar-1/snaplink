@@ -76,7 +76,7 @@ export const SaveBioPageSchema = z.object({
 
   bio: z.string().trim().max(90, "Bio cannot exceed 90 characters.").optional().default(""),
   avatarUrl: z.string().trim().optional().default(""),
-  theme: z.enum(["royal_blue", "glass_dark", "clay_light", "emerald", "sunset"]).default("royal_blue"),
+  theme: z.enum(["royal_blue", "glass_dark", "clay_light", "emerald", "sunset", "midnight_glow", "cyberpunk"]).default("royal_blue"),
   socialLinks: z.array(SocialLinkValidator).default([]),
   customLinks: z.array(CustomLinkValidator).default([]),
 });

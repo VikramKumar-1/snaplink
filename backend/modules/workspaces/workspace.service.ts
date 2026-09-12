@@ -8,6 +8,7 @@ import {
 import { WorkspaceRepository } from "./workspace.repository";
 import { IWorkspace, WorkspaceRole } from "./workspace.model";
 import { AuditLogService } from "@/backend/modules/audit-logs/audit-log.service";
+import { checkRateLimit } from "@/backend/shared/middlewares/rateLimiter";
 
 export class WorkspaceService {
   private static async verifyPermission(
@@ -103,8 +104,15 @@ export class WorkspaceService {
     userId: string,
     rawInput: unknown,
     userEmail?: string,
-    ip?: string
+    ip: string = "unknown"
   ): Promise<boolean> {
+    const rateCheck = checkRateLimit(ip, "WORKSPACE_INVITE");
+    if (!rateCheck.allowed) {
+      const err: any = new Error(rateCheck.message || "Too many requests");
+      err.statusCode = 429;
+      throw err;
+    }
+
     const data = InviteMemberSchema.parse(rawInput);
     await this.verifyPermission(data.workspaceId, userId, ["owner", "admin"]);
 

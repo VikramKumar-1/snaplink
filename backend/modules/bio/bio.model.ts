@@ -20,7 +20,7 @@ export interface IBioPage extends Document {
   displayName: string;
   bio?: string;
   avatarUrl?: string;
-  theme: "royal_blue" | "glass_dark" | "clay_light" | "emerald" | "sunset";
+  theme: "royal_blue" | "glass_dark" | "clay_light" | "emerald" | "sunset" | "midnight_glow" | "cyberpunk";
   socialLinks: ISocialLink[];
   customLinks: ICustomBioLink[];
   views: number;
@@ -84,7 +84,7 @@ const BioPageSchema = new Schema<IBioPage>(
     },
     theme: {
       type: String,
-      enum: ["royal_blue", "glass_dark", "clay_light", "emerald", "sunset"],
+      enum: ["royal_blue", "glass_dark", "clay_light", "emerald", "sunset", "midnight_glow", "cyberpunk"],
       default: "royal_blue",
     },
     socialLinks: {

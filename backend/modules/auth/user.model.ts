@@ -7,9 +7,14 @@ export interface IUser extends Document {
   authProvider: "local" | "google";
   avatar?: string;
   refreshToken?: string; // For long-lived sessions
-  plan: "free" | "creator" | "enterprise";
+  plan: "free" | "pro" | "team";
   role: "user" | "admin";
   persona: "creator" | "brand" | "agency" | "user"; // Persona tracking
+  stripeCustomerId?: string;
+  razorpayCustomerId?: string;
+  subscriptionId?: string;
+  planStatus: "active" | "past_due" | "canceled" | "none";
+  currentPeriodEnd?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -24,7 +29,7 @@ const UserSchema = new Schema<IUser>(
     refreshToken: { type: String },
     plan: {
       type: String,
-      enum: ["free", "creator", "enterprise"],
+      enum: ["free", "pro", "team"],
       default: "free",
     },
     role: {
@@ -37,6 +42,15 @@ const UserSchema = new Schema<IUser>(
       enum: ["creator", "brand", "agency", "user"],
       default: "user",
     },
+    stripeCustomerId: { type: String, trim: true },
+    razorpayCustomerId: { type: String, trim: true },
+    subscriptionId: { type: String, trim: true },
+    planStatus: {
+      type: String,
+      enum: ["active", "past_due", "canceled", "none"],
+      default: "none",
+    },
+    currentPeriodEnd: { type: Date },
   },
   { timestamps: true }
 );

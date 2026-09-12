@@ -41,7 +41,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
       });
       const data = await res.json();
       if (data.success) {
-        handleSuccess(data.user);
+        await handleSuccess(data.user);
       } else {
         setError(data.error || "Google login failed");
       }
@@ -58,7 +58,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
     setLoading(true);
 
     const endpoint = isLogin ? "/api/auth/login" : "/api/auth/register";
-    const payload = isLogin ? { email, password } : { name, email, password, persona };
+    const payload = isLogin ? { email, password } : { name, email, password };
 
     try {
       const res = await fetch(endpoint, {
@@ -69,7 +69,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
       const data = await res.json();
 
       if (data.success) {
-        handleSuccess(data.user);
+        await handleSuccess(data.user);
       } else {
         setError(data.error || "Authentication failed");
       }
@@ -95,17 +95,17 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white rounded-3xl shadow-2xl z-[1000] overflow-hidden border border-black/5 p-6 sm:p-8"
+            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white rounded-3xl shadow-2xl z-[1000] max-h-[90vh] overflow-y-auto border border-black/5 p-5 sm:p-6"
           >
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-colors"
+              className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-colors z-10"
             >
               <X className="w-5 h-5 text-gray-500" />
             </button>
 
-            <div className="mb-6">
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#f5f4ef] border border-[#e7e5dc] text-[10.5px] font-black uppercase tracking-wider text-zinc-600 mb-2.5">
+            <div className="mb-5">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#f5f4ef] border border-[#e7e5dc] text-[10.5px] font-black uppercase tracking-wider text-zinc-600 mb-2">
                 <span className="h-1.5 w-1.5 rounded-full bg-[#2c35af]" />
                 <span>SnapLink Workspace</span>
               </div>
@@ -120,7 +120,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
             </div>
 
             {/* Google Login Button */}
-            <div className="flex justify-center mb-6">
+            <div className="flex justify-center mb-5">
               <GoogleLogin
                 onSuccess={handleGoogleSuccess}
                 onError={() => setError("Google Sign-In was unsuccessful")}
@@ -132,7 +132,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
               />
             </div>
 
-            <div className="relative flex items-center py-4 mb-2">
+            <div className="relative flex items-center py-3 mb-2">
               <div className="flex-grow border-t border-gray-200"></div>
               <span className="flex-shrink-0 mx-4 text-gray-400 text-xs font-bold uppercase tracking-wider">
                 Or continue with email
@@ -140,40 +140,12 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
               <div className="flex-grow border-t border-gray-200"></div>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-3.5">
               {!isLogin && (
-                <>
-                  <div className="mb-4">
-                    <label className="block text-[11px] font-black text-gray-500 uppercase tracking-widest mb-2 ml-1">
-                      I am a...
-                    </label>
-                    <div className="flex gap-2 p-1 bg-[#f8f7f4] rounded-2xl border-2 border-[#e7e5dc]">
-                      {[
-                        { id: "user", label: "Individual" },
-                        { id: "creator", label: "Creator" },
-                        { id: "brand", label: "Brand" },
-                        { id: "agency", label: "Agency" },
-                      ].map((tab) => (
-                        <button
-                          key={tab.id}
-                          type="button"
-                          onClick={() => setPersona(tab.id as any)}
-                          className={`flex-1 py-2 px-2 text-[12px] font-bold rounded-xl transition-all duration-200 ${
-                            persona === tab.id
-                              ? "bg-white text-[#2c35af] shadow-sm border border-black/5"
-                              : "text-gray-500 hover:text-gray-800"
-                          }`}
-                        >
-                          {tab.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-[11px] font-black text-gray-500 uppercase tracking-widest mb-1.5 ml-1">
-                      Full Name / Brand Name
-                    </label>
+                <div>
+                  <label className="block text-[11px] font-black text-gray-500 uppercase tracking-widest mb-1.5 ml-1">
+                    Full Name / Brand Name
+                  </label>
                   <div className="relative group">
                     <User className="absolute left-4 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-gray-400 group-focus-within:text-[#2c35af] transition-colors duration-300" />
                     <input
@@ -181,12 +153,11 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                       required
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="w-full bg-[#f8f7f4] border-2 border-[#e7e5dc] rounded-2xl pl-11 pr-4 py-3.5 text-[15px] font-bold text-[#121316] placeholder:text-gray-400 focus:outline-none focus:bg-white focus:border-[#2c35af] focus:ring-4 focus:ring-[#2c35af]/10 transition-all duration-300"
+                      className="w-full bg-[#f8f7f4] border-2 border-[#e7e5dc] rounded-2xl pl-11 pr-4 py-3 text-[14px] font-bold text-[#121316] placeholder:text-gray-400 focus:outline-none focus:bg-white focus:border-[#2c35af] focus:ring-4 focus:ring-[#2c35af]/10 transition-all duration-300"
                       placeholder="Jane Doe"
                     />
                   </div>
                 </div>
-              </>
               )}
 
               <div>
@@ -200,7 +171,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full bg-[#f8f7f4] border-2 border-[#e7e5dc] rounded-2xl pl-11 pr-4 py-3.5 text-[15px] font-bold text-[#121316] placeholder:text-gray-400 focus:outline-none focus:bg-white focus:border-[#2c35af] focus:ring-4 focus:ring-[#2c35af]/10 transition-all duration-300"
+                    className="w-full bg-[#f8f7f4] border-2 border-[#e7e5dc] rounded-2xl pl-11 pr-4 py-3 text-[14px] font-bold text-[#121316] placeholder:text-gray-400 focus:outline-none focus:bg-white focus:border-[#2c35af] focus:ring-4 focus:ring-[#2c35af]/10 transition-all duration-300"
                     placeholder="you@company.com"
                   />
                 </div>
@@ -224,7 +195,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full bg-[#f8f7f4] border-2 border-[#e7e5dc] rounded-2xl pl-11 pr-4 py-3.5 text-[15px] font-bold text-[#121316] placeholder:text-gray-400 focus:outline-none focus:bg-white focus:border-[#2c35af] focus:ring-4 focus:ring-[#2c35af]/10 transition-all duration-300"
+                    className="w-full bg-[#f8f7f4] border-2 border-[#e7e5dc] rounded-2xl pl-11 pr-4 py-3 text-[14px] font-bold text-[#121316] placeholder:text-gray-400 focus:outline-none focus:bg-white focus:border-[#2c35af] focus:ring-4 focus:ring-[#2c35af]/10 transition-all duration-300"
                     placeholder="••••••••"
                   />
                 </div>
@@ -240,14 +211,14 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[#121316] hover:bg-[#2c35af] text-white py-4 rounded-2xl text-[15px] font-black tracking-wide flex items-center justify-center gap-2 mt-8 transition-colors duration-300 shadow-md shadow-black/10 disabled:opacity-70"
+                className="w-full bg-[#121316] hover:bg-[#2c35af] text-white py-3.5 rounded-2xl text-[14px] font-black tracking-wide flex items-center justify-center gap-2 mt-4 transition-colors duration-300 shadow-md shadow-black/10 disabled:opacity-70"
               >
                 {loading ? "Please wait..." : isLogin ? "Sign In" : "Create Account"}
                 {!loading && <ArrowRight className="w-5 h-5" />}
               </button>
             </form>
 
-            <div className="mt-8 text-center">
+            <div className="mt-5 text-center">
               <button
                 onClick={() => {
                   setIsLogin(!isLogin);

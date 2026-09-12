@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Trash2 } from "lucide-react";
+import { Trash2, ChevronUp, ChevronDown } from "lucide-react";
 import {
   InstagramLogo,
   YoutubeLogo,
@@ -97,15 +97,47 @@ export const BioSocialEditor: React.FC<Props> = ({
           const platDef = PLATFORMS.find((p) => p.id === s.platform);
           return (
             <div key={idx} className="flex flex-col gap-2 p-2.5 bg-white border border-[#e7e5dc] rounded-xl relative shadow-xs">
-              <button
-                type="button"
-                onClick={() => removeSocialLink(s.platform)}
-                className="absolute top-2.5 right-2.5 p-1 text-zinc-400 hover:text-red-600 transition bg-white border border-[#e7e5dc] rounded-md shadow-xs"
-              >
-                <Trash2 className="h-3 w-3" />
-              </button>
+              <div className="absolute top-2.5 right-2.5 flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (idx === 0) return;
+                    const updated = [...socialLinks];
+                    const temp = updated[idx - 1];
+                    updated[idx - 1] = updated[idx];
+                    updated[idx] = temp;
+                    setSocialLinks(updated);
+                  }}
+                  disabled={idx === 0}
+                  className="p-1 text-zinc-400 hover:text-black disabled:opacity-30 transition bg-white border border-[#e7e5dc] rounded-md shadow-xs"
+                >
+                  <ChevronUp className="h-3 w-3" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (idx === socialLinks.length - 1) return;
+                    const updated = [...socialLinks];
+                    const temp = updated[idx + 1];
+                    updated[idx + 1] = updated[idx];
+                    updated[idx] = temp;
+                    setSocialLinks(updated);
+                  }}
+                  disabled={idx === socialLinks.length - 1}
+                  className="p-1 text-zinc-400 hover:text-black disabled:opacity-30 transition bg-white border border-[#e7e5dc] rounded-md shadow-xs"
+                >
+                  <ChevronDown className="h-3 w-3" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => removeSocialLink(s.platform)}
+                  className="p-1 text-zinc-400 hover:text-red-600 transition bg-white border border-[#e7e5dc] rounded-md shadow-xs"
+                >
+                  <Trash2 className="h-3 w-3" />
+                </button>
+              </div>
 
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-1.5 pr-20">
                 <span className="flex items-center justify-center w-6 h-6 rounded-md bg-[#f8f7f4] border border-[#e7e5dc] shadow-xs shrink-0">
                   {platDef ? platDef.icon : <span className="text-[9px] font-bold">{s.platform.charAt(0).toUpperCase()}</span>}
                 </span>

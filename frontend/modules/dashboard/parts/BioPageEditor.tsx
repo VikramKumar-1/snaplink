@@ -20,7 +20,7 @@ export const BioPageEditor: React.FC = () => {
   const [displayName, setDisplayName] = useState("");
   const [bioText, setBioText] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
-  const [theme, setTheme] = useState<"royal_blue" | "glass_dark" | "clay_light" | "emerald" | "sunset">("royal_blue");
+  const [theme, setTheme] = useState<"royal_blue" | "glass_dark" | "clay_light" | "emerald" | "sunset" | "midnight_glow" | "cyberpunk">("royal_blue");
   const [socialLinks, setSocialLinks] = useState<SocialLink[]>([]);
   const [customLinks, setCustomLinks] = useState<CustomBioLinkItem[]>([]);
 
