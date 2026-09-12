@@ -18,7 +18,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = memo(({ item, idx }) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: idx * 0.05 }}
-      className="p-5 sm:p-7 rounded-[22px] sm:rounded-[28px] clay-glass-hybrid flex flex-col items-center text-center justify-between group transform-gpu"
+      className="w-[270px] sm:w-[300px] md:w-auto shrink-0 md:shrink snap-center p-5 sm:p-7 rounded-[22px] sm:rounded-[28px] clay-glass-hybrid flex flex-col items-center text-center justify-between group transform-gpu"
     >
       <div className="w-full flex flex-col items-center">
         <div className="mb-3.5 p-3.5 clay-center-icon flex items-center justify-center">

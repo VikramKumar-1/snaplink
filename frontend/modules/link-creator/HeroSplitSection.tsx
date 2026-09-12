@@ -7,12 +7,12 @@ import { CreatorCard } from "./parts/CreatorCard";
 import { useLinkStore } from "@/frontend/shared/store/useLinkStore";
 
 export const HeroSplitSection: React.FC = memo(() => {
-  const [activeTab, setActiveTab] = useState<"link" | "qr" | "bulk">("link");
+  const [activeTab, setActiveTab] = useState<"link" | "qr" | "bulk" | "cta">("link");
   const openQrModal = useLinkStore((s) => s.openQrModal);
   const creator = useLinkCreator();
 
   const handleQrTabChange = useCallback(
-    (tab: "link" | "qr" | "bulk") => {
+    (tab: "link" | "qr" | "bulk" | "cta") => {
       setActiveTab(tab);
       if (tab === "qr" && creator.createdResult) {
         openQrModal(creator.createdResult as any);

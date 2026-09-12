@@ -21,40 +21,42 @@ export function Navbar() {
   const closeMobileMenu = useCallback(() => setIsMobileMenuOpen(false), []);
 
   return (
-    <header className="w-full sticky top-0 z-50 backdrop-blur-xl bg-[#f5f4ef]/80 border-b border-[#e7e5dc]/80 shadow-[0_4px_24px_-4px_rgba(0,0,0,0.03)] transition-all">
-      <div className="max-w-6xl mx-auto h-16 flex items-center justify-between px-4 sm:px-6">
-        <div className="flex items-center gap-3">
-          {/* Mobile Menu Toggle Button */}
-          <button
-            onClick={toggleMobileMenu}
-            aria-label="Toggle Navigation Menu"
-            className="md:hidden p-2 rounded-xl bg-white border border-[#e7e5dc] text-zinc-700 hover:text-black cursor-pointer shadow-2xs"
-          >
-            {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
-          <NavbarBrand />
+    <>
+      <header className="w-full sticky top-0 z-50 backdrop-blur-xl bg-[#f5f4ef]/80 border-b border-[#e7e5dc]/80 shadow-[0_4px_24px_-4px_rgba(0,0,0,0.03)] transition-all">
+        <div className="max-w-6xl mx-auto h-16 flex items-center justify-between px-4 sm:px-6">
+          <div className="flex items-center gap-3">
+            {/* Mobile Menu Toggle Button */}
+            <button
+              onClick={toggleMobileMenu}
+              aria-label="Toggle Navigation Menu"
+              className="md:hidden p-2 rounded-xl bg-white border border-[#e7e5dc] text-zinc-700 hover:text-black cursor-pointer shadow-2xs"
+            >
+              {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+            <NavbarBrand />
+          </div>
+
+          <NavbarLinks />
+
+          <NavbarActions
+            isAuthenticated={isAuthenticated}
+            isLoading={isLoading}
+            user={user}
+            onOpenAuth={openAuthModal}
+            onLogout={logout}
+          />
         </div>
 
-        <NavbarLinks />
-
-        <NavbarActions
+        {/* Mobile Drawer */}
+        <NavbarMobileDrawer
+          isOpen={isMobileMenuOpen}
+          onClose={closeMobileMenu}
           isAuthenticated={isAuthenticated}
-          isLoading={isLoading}
-          user={user}
           onOpenAuth={openAuthModal}
-          onLogout={logout}
         />
-      </div>
-
-      {/* Mobile Drawer */}
-      <NavbarMobileDrawer
-        isOpen={isMobileMenuOpen}
-        onClose={closeMobileMenu}
-        isAuthenticated={isAuthenticated}
-        onOpenAuth={openAuthModal}
-      />
+      </header>
 
       <AuthModal isOpen={isAuthModalOpen} onClose={closeAuthModal} />
-    </header>
+    </>
   );
 }

@@ -6,7 +6,7 @@ import { SocialPlatform } from "./SocialPreviewHeader";
 import { SocialRichMockup } from "./SocialRichMockup";
 
 export const SocialRichCard: React.FC<{ platform: SocialPlatform }> = memo(({ platform }) => (
-  <div className="w-[280px] sm:w-[320px] md:w-auto shrink-0 md:shrink snap-center p-4 sm:p-6 md:p-7 rounded-[22px] sm:rounded-[28px] clay-glass-hybrid border-indigo-200/90 shadow-[inset_0_2px_2px_rgba(255,255,255,1),0_18px_40px_-10px_rgba(44,53,175,0.12)] flex flex-col justify-between group transition-all duration-300 hover:-translate-y-1.5 transform-gpu">
+  <div className="w-[280px] sm:w-[320px] md:w-auto shrink-0 md:shrink snap-center p-4 sm:p-6 md:p-7 rounded-[22px] sm:rounded-[28px] clay-glass-hybrid border-indigo-200/90 shadow-[inset_0_2px_2px_rgba(255,255,255,1),0_18px_40px_-10px_rgba(44,53,175,0.12)] flex flex-col justify-between group transition-all duration-300 md:hover:-translate-y-1.5 transform-gpu">
     <div>
       <div className="flex items-center justify-between mb-4">
         <span className="text-xs font-bold uppercase tracking-wider text-[#2c35af] flex items-center gap-2">

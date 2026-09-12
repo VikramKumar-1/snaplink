@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { WhatsAppLogo, TelegramLogo } from "@/frontend/shared/icons/PlatformIcons";
+import { WhatsAppLogo, TelegramLogo, TwitterXLogo } from "@/frontend/shared/icons/PlatformIcons";
 
 export type SocialPlatform = "whatsapp" | "telegram" | "x";
 
@@ -12,7 +12,7 @@ interface HeaderProps {
 
 export const SocialPreviewHeader: React.FC<HeaderProps> = ({ activeTab, onSelectTab }) => (
   <div className="flex flex-col items-center text-center mb-8 sm:mb-10">
-    <h2 className="text-[24px] sm:text-[34px] font-bold tracking-tight text-[#121316] uppercase leading-tight max-w-4xl mx-auto mb-3.5">
+    <h2 className="text-[clamp(12px,3.7vw,20px)] sm:text-[26px] md:text-[34px] font-bold tracking-tight text-[#121316] uppercase leading-tight max-w-4xl mx-auto mb-3.5 whitespace-nowrap">
       Rich WhatsApp & <span className="text-[#2c35af]">Social Previews</span>
     </h2>
 
@@ -41,7 +41,8 @@ export const SocialPreviewHeader: React.FC<HeaderProps> = ({ activeTab, onSelect
           activeTab === "x" ? "bg-[#121316] text-white shadow-xs" : "text-zinc-600 hover:text-black"
         }`}
       >
-        <span className="font-mono text-xs font-black">𝕏</span> <span><span className="hidden xs:inline sm:inline">Twitter / </span>X</span>
+        <TwitterXLogo className="h-3.5 w-3.5 shrink-0" />
+        <span>Twitter<span className="hidden sm:inline"> / X</span></span>
       </button>
     </div>
   </div>

@@ -123,7 +123,7 @@ export const LinkCreatorForm: React.FC = () => {
                 </div>
               ) : (
                 <>
-                  Create Smart Deep Link
+                  Shorten Link
                   <div className="bg-white/15 p-1 rounded-md">
                     <CornerDownLeft className="h-3 w-3" />
                   </div>

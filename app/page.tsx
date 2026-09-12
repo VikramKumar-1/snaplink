@@ -30,7 +30,7 @@ export default function Home() {
         </div>
 
         {/* 2.5 Infinite Service Marquee */}
-        <div className="w-full max-w-6xl mx-auto px-4">
+        <div className="w-full sm:max-w-6xl sm:mx-auto px-0 sm:px-4">
           <ServiceMarquee />
         </div>
 

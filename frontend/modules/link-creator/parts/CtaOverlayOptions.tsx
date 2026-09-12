@@ -34,23 +34,7 @@ export const CtaOverlayOptions: React.FC<Props> = ({
 }) => {
   return (
     <div className="pt-1">
-      <button
-        type="button"
-        onClick={() => setShowCta(!showCta)}
-        className="text-[13px] font-semibold text-slate-600 hover:text-[#2c35af] flex items-center gap-2 transition cursor-pointer"
-      >
-        <Megaphone className="h-4 w-4 text-[#2c35af]" />
-        Attach CTA Overlay (Floating Action Banner)
-        {cta.enabled && (
-          <span className="text-[10px] font-mono font-bold bg-[#ccff00] text-black px-2 py-0.5 rounded-full uppercase">
-            Active
-          </span>
-        )}
-        {showCta ? <ChevronUp className="h-4 w-4 text-slate-400" /> : <ChevronDown className="h-4 w-4 text-slate-400" />}
-      </button>
-
-      {showCta && (
-        <div className="mt-3 p-4 rounded-2xl glass-clay-subcard space-y-3.5 bg-white/90 border border-[#e7e5dc]">
+      <div className="p-4 rounded-2xl glass-clay-subcard space-y-3.5 bg-white/90 border border-[#e7e5dc]">
           <div className="flex items-center justify-between pb-2 border-b border-zinc-200">
             <div>
               <span className="text-[12.5px] font-bold text-slate-800 block">Enable CTA Banner</span>
@@ -146,8 +130,65 @@ export const CtaOverlayOptions: React.FC<Props> = ({
               ))}
             </div>
           </div>
+          {/* LIVE PREVIEW PANE */}
+          <div className="mt-4 pt-4 border-t border-zinc-200">
+            <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest block mb-3 flex items-center gap-1.5">
+              Live Preview <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            </label>
+            
+            <div className="relative w-full rounded-2xl bg-zinc-900 border border-zinc-800 p-4 sm:p-5 overflow-hidden">
+              {/* Fake Background UI */}
+              <div className="absolute inset-0 opacity-20 pointer-events-none">
+                <div className="w-full h-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-indigo-500/20 via-zinc-900 to-zinc-900"></div>
+              </div>
+              
+              <div className="text-center opacity-40 blur-[1px] select-none pointer-events-none">
+                <div className="mx-auto mb-3 h-10 w-10 rounded-xl bg-indigo-500/30"></div>
+                <div className="h-3 w-3/4 mx-auto bg-zinc-700 rounded-full mb-2"></div>
+                <div className="h-2 w-1/2 mx-auto bg-zinc-700 rounded-full mb-6"></div>
+                <div className="h-8 w-full bg-zinc-800 rounded-lg"></div>
+              </div>
+
+              {/* The CTA Overlay Preview */}
+              <div className="relative mt-4">
+                {(() => {
+                  const themeKey = cta.theme || "blue";
+                  const THEME_STYLES = {
+                    blue: { wrapper: "bg-gradient-to-r from-[#2c35af] to-[#1e2580] border-[#4853db]/40 text-white", badge: "bg-white/20 text-[#ccff00] border-white/20", button: "bg-[#ccff00] text-black", iconColor: "text-[#ccff00]" },
+                    dark: { wrapper: "bg-gradient-to-r from-zinc-900 to-zinc-950 border-zinc-700/60 text-white", badge: "bg-zinc-800 text-zinc-300 border-zinc-700", button: "bg-white text-black", iconColor: "text-zinc-300" },
+                    emerald: { wrapper: "bg-gradient-to-r from-emerald-800 to-emerald-950 border-emerald-500/40 text-white", badge: "bg-emerald-900/80 text-emerald-300 border-emerald-600/40", button: "bg-emerald-400 text-emerald-950", iconColor: "text-emerald-300" },
+                    amber: { wrapper: "bg-gradient-to-r from-amber-700 to-amber-950 border-amber-500/40 text-white", badge: "bg-amber-900/80 text-amber-300 border-amber-600/40", button: "bg-amber-300 text-amber-950", iconColor: "text-amber-300" },
+                  };
+                  const styles = THEME_STYLES[themeKey];
+                  
+                  return (
+                    <div className={`w-full p-3.5 rounded-2xl border shadow-xl ${styles.wrapper}`}>
+                      <div className="flex items-start justify-between gap-3 mb-2">
+                        <div className="flex items-center gap-2">
+                          <div className="p-1 rounded-md bg-white/10">
+                            <Megaphone className={`h-3 w-3 ${styles.iconColor}`} />
+                          </div>
+                          <span className={`text-[9px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${styles.badge}`}>
+                            {cta.badgeText || "Featured"}
+                          </span>
+                        </div>
+                      </div>
+                      
+                      <p className="text-[12.5px] font-bold leading-snug mb-3 text-white/95 line-clamp-2">
+                        {cta.headline || "Your headline will appear here like this."}
+                      </p>
+                      
+                      <div className={`w-full py-2 px-4 rounded-xl font-bold text-[12px] flex items-center justify-center gap-1.5 ${styles.button}`}>
+                        <span>{cta.buttonText || "Claim Deal"}</span>
+                        <ChevronUp className="h-3.5 w-3.5 rotate-45" />
+                      </div>
+                    </div>
+                  );
+                })()}
+              </div>
+            </div>
+          </div>
         </div>
-      )}
     </div>
   );
 };

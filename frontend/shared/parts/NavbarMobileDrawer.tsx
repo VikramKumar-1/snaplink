@@ -137,11 +137,12 @@ export function NavbarMobileDrawer({
         {!isAuthenticated && (
           <div className="pt-2 border-t border-zinc-100">
             <button
+              type="button"
               onClick={() => {
                 onClose();
                 onOpenAuth();
               }}
-              className="w-full py-3 rounded-xl pill-lime text-[13px] font-black uppercase tracking-wider text-black text-center flex items-center justify-center gap-1.5 shadow-sm transition cursor-pointer"
+              className="w-full py-3 rounded-xl pill-lime text-[13px] font-black uppercase tracking-wider text-black text-center flex items-center justify-center gap-1.5 shadow-sm transition cursor-pointer active:scale-98"
             >
               <span>Sign In / Workspace</span>
               <ArrowUpRight className="h-4 w-4 stroke-[2.5]" />

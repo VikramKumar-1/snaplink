@@ -108,7 +108,7 @@ export const InlineLinkCreator: React.FC<InlineLinkCreatorProps> = ({
             <span>Generating Intent Link...</span>
           ) : (
             <>
-              <span>Create Smart Deep Link</span>
+              <span>Shorten Link</span>
               <CornerDownLeft className="h-4 w-4" />
             </>
           )}

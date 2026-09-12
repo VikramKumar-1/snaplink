@@ -97,32 +97,18 @@ export const SmartRoutingRulesBuilder: React.FC<SmartRoutingRulesBuilderProps> =
 
   return (
     <div className="border border-[#e7e5dc] rounded-2xl overflow-hidden bg-[#faf9f5]">
-      <button
-        type="button"
-        onClick={() => setShowRules(!showRules)}
-        className="w-full px-4 py-3 flex items-center justify-between text-left text-zinc-700 hover:text-black transition cursor-pointer"
-      >
-        <div className="flex items-center gap-2">
-          <Compass className="h-4 w-4 text-[#2c35af]" />
-          <span className="text-[13px] font-bold">Smart Targeting (Geo, Device & Language)</span>
-          {rules.length > 0 && (
-            <span className="px-2 py-0.5 rounded-full bg-[#2c35af]/10 text-[#2c35af] text-[11px] font-bold">
-              {rules.length} {rules.length === 1 ? "rule" : "rules"}
-            </span>
-          )}
-        </div>
-        {showRules ? (
-          <ChevronUp className="h-4 w-4 text-zinc-400" />
-        ) : (
-          <ChevronDown className="h-4 w-4 text-zinc-400" />
-        )}
-      </button>
-
-      {showRules && (
-        <div className="p-4 pt-1 space-y-4 border-t border-[#e7e5dc] bg-white">
-          <p className="text-[12px] text-zinc-500">
-            Dynamically redirect visitors to different stores, localized pages, or operating systems from a single link.
-          </p>
+        <div className="p-4 pt-3 space-y-4 bg-white">
+          <div className="space-y-2.5">
+            <p className="text-[12px] text-zinc-500 leading-relaxed">
+              Dynamically redirect visitors to different stores, localized pages, or operating systems from a single link.
+            </p>
+            <div className="bg-indigo-50/50 border border-indigo-100/80 rounded-xl p-3 flex gap-2.5 items-start shadow-sm shadow-indigo-100/20">
+              <span className="text-[14px] shrink-0 leading-none mt-0.5">💡</span>
+              <p className="text-[11.5px] text-indigo-900/80 font-medium leading-relaxed">
+                <strong className="font-bold text-indigo-900">How it works:</strong> Paste your main website link above. Then add a rule here: e.g. If <span className="font-bold bg-white px-1 py-0.5 rounded border border-indigo-100 mx-0.5">Device</span> is <span className="font-bold bg-white px-1 py-0.5 rounded border border-indigo-100 mx-0.5">Apple iOS</span> ➔ redirect them to the App Store instead!
+              </p>
+            </div>
+          </div>
 
           {/* Add Rule Controls */}
           <div className="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200/70 space-y-3">
@@ -241,7 +227,6 @@ export const SmartRoutingRulesBuilder: React.FC<SmartRoutingRulesBuilderProps> =
             </div>
           )}
         </div>
-      )}
     </div>
   );
 };

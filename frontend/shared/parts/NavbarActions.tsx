@@ -24,8 +24,10 @@ export const NavbarActions: React.FC<NavbarActionsProps> = memo(
       <div className="flex items-center gap-2.5">
         {mounted && !isLoading && !isAuthenticated && (
           <button
+            type="button"
             onClick={onOpenAuth}
-            className="pill-lime px-4 py-2 text-[12.5px] font-bold flex items-center gap-1.5 shadow-sm hover:scale-102 transition cursor-pointer"
+            aria-label="Sign In to Workspace"
+            className="pill-lime px-4 py-2 text-[12.5px] font-bold flex items-center gap-1.5 shadow-sm hover:scale-102 transition cursor-pointer active:scale-98"
           >
             <span>Sign In / Workspace</span>
             <ArrowUpRight className="h-4 w-4 stroke-[2.5]" />

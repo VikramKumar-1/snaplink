@@ -20,7 +20,7 @@ export const CreatorSubmitButton: React.FC<CreatorSubmitButtonProps> = memo(({ l
       </div>
     ) : (
       <>
-        <span>Create Smart Deep Link</span>
+        <span>Shorten Link</span>
         <div className="bg-white/20 p-1 rounded-lg">
           <CornerDownLeft className="h-4 w-4" />
         </div>

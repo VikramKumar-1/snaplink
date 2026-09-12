@@ -8,8 +8,8 @@ import { useLinkCreator } from "../useLinkCreator";
 import { BulkCreatorForm } from "./BulkCreatorForm";
 
 interface CreatorCardProps {
-  activeTab: "link" | "qr" | "bulk";
-  onTabChange: (tab: "link" | "qr" | "bulk") => void;
+  activeTab: "link" | "qr" | "bulk" | "cta";
+  onTabChange: (tab: "link" | "qr" | "bulk" | "cta") => void;
   creator: ReturnType<typeof useLinkCreator>;
 }
 
@@ -33,10 +33,19 @@ export const CreatorCard: React.FC<CreatorCardProps> = memo(
               setCustomTitle={creator.setCustomTitle}
               customDescription={creator.customDescription}
               setCustomDescription={creator.setCustomDescription}
+              showCta={creator.showCta}
+              setShowCta={creator.setShowCta}
+              cta={creator.cta}
+              setCta={creator.setCta}
+              showSmartRules={creator.showSmartRules}
+              setShowSmartRules={creator.setShowSmartRules}
+              smartRules={creator.smartRules}
+              setSmartRules={creator.setSmartRules}
               badge={creator.badge}
               loading={creator.loading}
               error={creator.error}
               onSubmit={creator.handleSubmit}
+              isCtaMode={activeTab === "cta"}
             />
             {creator.createdResult && <CreatedResultCard result={creator.createdResult} />}
           </>

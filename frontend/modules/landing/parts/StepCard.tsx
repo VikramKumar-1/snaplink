@@ -14,7 +14,7 @@ interface StepCardProps {
 
 export const StepCard: React.FC<StepCardProps> = memo(({ step, index, isLast }) => (
   <div
-    className="w-[260px] sm:w-auto shrink-0 sm:shrink snap-center p-4 sm:p-6 rounded-[22px] sm:rounded-[28px] clay-card-glass flex flex-col justify-between group transition-all duration-300 hover:-translate-y-1.5 transform-gpu will-change-transform"
+    className="w-[260px] sm:w-auto shrink-0 sm:shrink snap-center p-4 sm:p-6 rounded-[22px] sm:rounded-[28px] clay-card-glass flex flex-col justify-between group transition-all duration-300 sm:hover:-translate-y-1.5 transform-gpu will-change-transform"
   >
     <div>
       <StepCardTop

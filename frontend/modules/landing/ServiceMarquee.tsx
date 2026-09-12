@@ -11,12 +11,13 @@ export const ServiceMarquee: React.FC = memo(() => {
 
   return (
     <div 
-      className="w-full overflow-hidden py-3.5 sm:py-4 my-4 relative select-none rounded-2xl bg-[#2c35af] shadow-lg shadow-indigo-950/20 border border-indigo-400/25 transform-gpu"
+      className="w-full overflow-hidden py-3.5 sm:py-4 my-2 sm:my-4 relative select-none rounded-none sm:rounded-2xl bg-[#2c35af] shadow-md sm:shadow-lg shadow-indigo-950/20 border-y sm:border border-indigo-400/25 transform-gpu"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-28 bg-gradient-to-r from-[#2c35af] to-transparent z-10 pointer-events-none" />
-      <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-28 bg-gradient-to-l from-[#2c35af] to-transparent z-10 pointer-events-none" />
+      {/* Desktop gradients (hidden on mobile so text is fully visible edge-to-edge) */}
+      <div className="hidden sm:block absolute left-0 top-0 bottom-0 w-28 bg-gradient-to-r from-[#2c35af] to-transparent z-10 pointer-events-none" />
+      <div className="hidden sm:block absolute right-0 top-0 bottom-0 w-28 bg-gradient-to-l from-[#2c35af] to-transparent z-10 pointer-events-none" />
 
       <motion.div
         className="flex items-center gap-8 sm:gap-10 w-max transform-gpu will-change-transform"

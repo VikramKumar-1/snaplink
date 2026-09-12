@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, LogIn, Mail, Lock, User, ArrowRight } from "lucide-react";
 import { GoogleLogin } from "@react-oauth/google";
@@ -8,8 +9,8 @@ import { useAuth } from "./store/useAuth";
 import { useCloudSync } from "./hooks/useCloudSync";
 
 interface AuthModalProps {
-  isOpen: boolean;
-  onClose: () => void;
+  isOpen?: boolean;
+  onClose?: () => void;
 }
 
 export function AuthModal({ isOpen, onClose }: AuthModalProps) {
@@ -20,15 +21,35 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
   const [persona, setPersona] = useState<"creator" | "brand" | "agency" | "user">("user");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  const { login } = useAuth();
+  const auth = useAuth();
+  const modalOpen = isOpen !== undefined ? isOpen : auth.isAuthModalOpen;
+  const handleClose = onClose || auth.closeAuthModal;
+
+  const { login } = auth;
   const { syncLocalLinks } = useCloudSync();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (modalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [modalOpen]);
 
   const handleSuccess = async (user: any) => {
     login(user);
     // Sync local links to cloud
     await syncLocalLinks();
-    onClose();
+    handleClose();
   };
 
   const handleGoogleSuccess = async (credentialResponse: any) => {
@@ -80,29 +101,48 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
     }
   };
 
-  return (
+  if (!mounted) return null;
+
+  return createPortal(
     <AnimatePresence>
-      {isOpen && (
-        <>
+      {modalOpen && (
+        <div className="fixed inset-0 z-[99999] overflow-y-auto">
+          {/* Backdrop with smooth fade */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={onClose}
-            className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[999]"
+            transition={{ duration: 0.2 }}
+            onClick={handleClose}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm cursor-pointer"
           />
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white rounded-3xl shadow-2xl z-[1000] max-h-[90vh] overflow-y-auto border border-black/5 p-5 sm:p-6"
+
+          {/* Centering Flex Container */}
+          <div
+            className="min-h-full flex items-center justify-center p-3 sm:p-6"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) {
+                handleClose();
+              }
+            }}
           >
-            <button
-              onClick={onClose}
-              className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-colors z-10"
+            {/* Modal Dialog Card */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 15 }}
+              transition={{ type: "spring", damping: 25, stiffness: 350 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl z-10 max-h-[90vh] overflow-y-auto border border-black/5 p-5 sm:p-6 my-auto cursor-default"
             >
-              <X className="w-5 h-5 text-gray-500" />
-            </button>
+              <button
+                type="button"
+                onClick={handleClose}
+                aria-label="Close dialog"
+                className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-colors z-20 cursor-pointer"
+              >
+                <X className="w-5 h-5 text-gray-500" />
+              </button>
 
             <div className="mb-5">
               <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#f5f4ef] border border-[#e7e5dc] text-[10.5px] font-black uppercase tracking-wider text-zinc-600 mb-2">
@@ -234,8 +274,10 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
               </button>
             </div>
           </motion.div>
-        </>
-      )}
-    </AnimatePresence>
-  );
+        </div>
+      </div>
+    )}
+  </AnimatePresence>,
+  document.body
+);
 }
