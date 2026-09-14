@@ -180,14 +180,6 @@ export default async function RedirectPage({ params }: Props) {
 
   return (
     <main className="min-h-screen bg-zinc-950 flex flex-col items-center justify-center p-4">
-      {/* 0ms INLINE INTENT TRIGGER — fires before React hydration */}
-      {targetAppUrl !== effectiveUrl && (
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `try{window.location.href="${targetAppUrl.replace(/"/g, '\\"')}";}catch(e){}`,
-          }}
-        />
-      )}
       {result.link?.retargeting && (
         <RetargetingPixelBridge
           metaPixelId={result.link.retargeting.metaPixelId}

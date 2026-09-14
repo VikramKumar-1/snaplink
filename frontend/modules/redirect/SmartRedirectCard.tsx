@@ -66,8 +66,11 @@ export const SmartRedirectCard: React.FC<Props> = ({
   }, [targetAppUrl]);
 
   useEffect(() => {
-    // 1. Immediate attempt to launch native app (0ms — no artificial delay)
-    triggerOpen();
+    // 1. Initial attempt to launch native app
+    // Note: 100ms delay is MANDATORY. Browsers (Chrome/Safari) strictly block 0ms inline or synchronous intents as anti-spam.
+    const initialLaunchTimeout = setTimeout(() => {
+      triggerOpen();
+    }, 100);
 
     // 2. Lifecycle listeners: If the app opens, browser goes to background
     const handleAppLaunched = () => {
@@ -103,6 +106,7 @@ export const SmartRedirectCard: React.FC<Props> = ({
     }, 1000);
 
     return () => {
+      clearTimeout(initialLaunchTimeout);
       clearTimeout(fallbackRevealTimeout);
       cancelTimer();
       window.removeEventListener("pagehide", handleAppLaunched);
