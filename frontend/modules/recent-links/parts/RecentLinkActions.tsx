@@ -1,7 +1,7 @@
 "use client";
 
 import React, { memo } from "react";
-import { Copy, Check, QrCode, BarChart2, ExternalLink } from "lucide-react";
+import { Copy, Check, QrCode, ExternalLink } from "lucide-react";
 import { CreatedLink } from "@/frontend/shared/store/useLinkStore";
 
 interface RecentLinkActionsProps {
@@ -29,13 +29,7 @@ export const RecentLinkActions: React.FC<RecentLinkActionsProps> = memo(
       >
         <QrCode className="h-4 w-4 text-[#2c35af]" />
       </button>
-      <button
-        onClick={() => onOpenAnalytics(link.shortCode)}
-        className="p-2.5 rounded-xl bg-[#faf9f5] border border-[#e7e5dc] hover:bg-white hover:border-[#2c35af] text-zinc-700 hover:text-black transition active:scale-95 cursor-pointer shadow-2xs"
-        title="Analytics"
-      >
-        <BarChart2 className="h-4 w-4 text-zinc-500" />
-      </button>
+
       <a
         href={`/${link.shortCode}`}
         target="_blank"

@@ -108,7 +108,7 @@ export const QrCodeGeneratorForm: React.FC = () => {
             value={inputUrl}
             onChange={(e) => setInputUrl(e.target.value)}
             placeholder="https://youtube.com/watch?v=..."
-            className="flex-1 px-3.5 py-2.5 rounded-xl bg-[#f8f7f4] border border-[#e7e5dc] text-[13px] text-[#121316] placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-[#2c35af]/30 focus:border-[#2c35af] transition font-medium"
+            className="flex-1 px-3.5 py-2.5 rounded-xl bg-[#f8f7f4] border border-[#e7e5dc] text-[16px] sm:text-[13px] text-[#121316] placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-[#2c35af]/30 focus:border-[#2c35af] transition font-medium"
           />
           <button
             onClick={handlePaste}

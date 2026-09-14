@@ -35,7 +35,7 @@ export const RecentLinks: React.FC = memo(() => {
     <div className="w-full max-w-6xl mx-auto my-4 transform-gpu">
       <RecentLinksHeader count={recentLinks.length} />
       <div className="space-y-2.5">
-        {recentLinks.map((link) => (
+        {recentLinks.slice(0, 3).map((link) => (
           <RecentLinkItem
             key={link.shortCode}
             link={link}
@@ -46,6 +46,14 @@ export const RecentLinks: React.FC = memo(() => {
           />
         ))}
       </div>
+      
+      {recentLinks.length > 3 && (
+        <div className="mt-4 text-center">
+          <a href="/dashboard" className="text-[12px] font-bold text-zinc-500 hover:text-[#2c35af] transition-colors underline decoration-zinc-300 underline-offset-4">
+            View all {recentLinks.length} links in Dashboard →
+          </a>
+        </div>
+      )}
     </div>
   );
 });
