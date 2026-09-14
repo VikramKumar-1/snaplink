@@ -170,8 +170,24 @@ export default async function RedirectPage({ params }: Props) {
   }
 
   // 4. INTERACTIVE BRIDGE: For In-App Browsers (Instagram/TikTok), CTA Banners, or Retargeting Pixels
+  // Compute the target app URL for inline 0ms script injection
+  const targetAppUrl =
+    result.device === "android"
+      ? result.deepLinkInfo.deepLinkAndroid || effectiveUrl
+      : result.device === "ios"
+      ? result.deepLinkInfo.deepLinkIos || effectiveUrl
+      : effectiveUrl;
+
   return (
     <main className="min-h-screen bg-zinc-950 flex flex-col items-center justify-center p-4">
+      {/* 0ms INLINE INTENT TRIGGER — fires before React hydration */}
+      {targetAppUrl !== effectiveUrl && (
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{window.location.href="${targetAppUrl.replace(/"/g, '\\"')}";}catch(e){}`,
+          }}
+        />
+      )}
       {result.link?.retargeting && (
         <RetargetingPixelBridge
           metaPixelId={result.link.retargeting.metaPixelId}

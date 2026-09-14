@@ -1,3 +1,4 @@
+// Cache bust for hydration fix
 import { Navbar } from "@/frontend/shared/Navbar";
 import { HeroSplitSection } from "@/frontend/modules/link-creator/HeroSplitSection";
 import { FloatingGalleryParallax } from "@/frontend/modules/landing/FloatingGalleryParallax";
@@ -7,12 +8,10 @@ import { SocialPreviewDemo } from "@/frontend/modules/landing/SocialPreviewDemo"
 import { ComparisonTable } from "@/frontend/modules/landing/ComparisonTable";
 import { FaqSection } from "@/frontend/modules/landing/FaqSection";
 import { RecentLinks } from "@/frontend/modules/recent-links/RecentLinks";
-import { QRCodeModal } from "@/frontend/modules/qr-code/QRCodeModal";
-import { AnalyticsModal } from "@/frontend/modules/analytics/AnalyticsModal";
 import AllFeaturesGrid from "@/frontend/modules/landing/AllFeaturesGrid";
 import { HowItWorksStepper } from "@/frontend/modules/landing/HowItWorksStepper";
-
 import { ServiceMarquee } from "@/frontend/modules/landing/ServiceMarquee";
+import { GlobalModals } from "@/frontend/shared/GlobalModals";
 
 export default function Home() {
   return (
@@ -88,9 +87,8 @@ export default function Home() {
         </div>
       </main>
 
-      {/* Global Modals */}
-      <QRCodeModal />
-      <AnalyticsModal />
+      {/* Global Modals (Lazy Loaded on Client) */}
+      <GlobalModals />
 
       {/* Footer */}
       <footer className="w-full border-t border-[#e7e5dc] py-8 text-center bg-[#f0eee6]">

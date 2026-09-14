@@ -1,9 +1,12 @@
 "use client";
+// Forced cache bust for hydration fix
 
 import React, { useState, useEffect, useCallback, memo } from "react";
 import { useAuth } from "./store/useAuth";
-import { AuthModal } from "./AuthModal";
+import dynamic from "next/dynamic";
 import { NavbarBrand } from "./parts/NavbarBrand";
+
+const AuthModal = dynamic(() => import("./AuthModal").then((mod) => mod.AuthModal), { ssr: false });
 import { NavbarLinks } from "./parts/NavbarLinks";
 import { NavbarActions } from "./parts/NavbarActions";
 import { NavbarMobileDrawer } from "./parts/NavbarMobileDrawer";

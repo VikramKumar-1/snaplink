@@ -4,21 +4,16 @@ import React, { useState, useCallback, memo } from "react";
 import { useLinkCreator } from "./useLinkCreator";
 import { HeroCopy } from "./parts/HeroCopy";
 import { CreatorCard } from "./parts/CreatorCard";
-import { useLinkStore } from "@/frontend/shared/store/useLinkStore";
 
 export const HeroSplitSection: React.FC = memo(() => {
-  const [activeTab, setActiveTab] = useState<"link" | "qr" | "bulk" | "cta">("link");
-  const openQrModal = useLinkStore((s) => s.openQrModal);
+  const [activeTab, setActiveTab] = useState<"link" | "qr" | "cta">("link");
   const creator = useLinkCreator();
 
-  const handleQrTabChange = useCallback(
-    (tab: "link" | "qr" | "bulk" | "cta") => {
+  const handleTabChange = useCallback(
+    (tab: "link" | "qr" | "cta") => {
       setActiveTab(tab);
-      if (tab === "qr" && creator.createdResult) {
-        openQrModal(creator.createdResult as any);
-      }
     },
-    [creator.createdResult, openQrModal]
+    []
   );
 
   return (
@@ -28,7 +23,7 @@ export const HeroSplitSection: React.FC = memo(() => {
         <div className="lg:col-span-7">
           <CreatorCard
             activeTab={activeTab}
-            onTabChange={handleQrTabChange}
+            onTabChange={handleTabChange}
             creator={creator}
           />
         </div>

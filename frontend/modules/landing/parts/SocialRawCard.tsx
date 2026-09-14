@@ -6,9 +6,9 @@ import { SocialPlatform } from "./SocialPreviewHeader";
 import { SocialRawMockup } from "./SocialRawMockup";
 
 export const SocialRawCard: React.FC<{ platform: SocialPlatform }> = React.memo(({ platform }) => (
-  <div className="w-[280px] sm:w-[320px] md:w-auto shrink-0 md:shrink snap-center p-4 sm:p-6 md:p-7 rounded-[22px] sm:rounded-[28px] bg-white/75 backdrop-blur-xl border border-rose-200/80 shadow-[inset_0_2px_2px_rgba(255,255,255,0.95),0_12px_28px_-8px_rgba(244,63,94,0.06)] flex flex-col justify-between group transform-gpu">
-    <div>
-      <div className="flex items-center justify-between mb-4">
+  <div className="w-[290px] min-[375px]:w-[320px] sm:w-[340px] md:w-auto shrink-0 md:shrink snap-center p-4 sm:p-6 md:p-7 rounded-[22px] sm:rounded-[28px] bg-white/75 backdrop-blur-xl border border-rose-200/80 shadow-[inset_0_2px_2px_rgba(255,255,255,0.95),0_12px_28px_-8px_rgba(244,63,94,0.06)] flex flex-col justify-between group transform-gpu">
+    <div className="flex-1 flex flex-col">
+      <div className="flex items-center justify-between mb-3.5 shrink-0">
         <span className="text-xs font-bold uppercase tracking-wider text-rose-600 flex items-center gap-1.5">
           <AlertTriangle className="h-4 w-4" /> Standard Raw Link
         </span>
@@ -17,7 +17,7 @@ export const SocialRawCard: React.FC<{ platform: SocialPlatform }> = React.memo(
         </span>
       </div>
 
-      <div className="h-[220px] w-full flex flex-col justify-center">
+      <div className="w-full my-2 sm:my-3">
         <SocialRawMockup platform={platform} />
       </div>
 

@@ -5,11 +5,11 @@ import { CreatorTabs } from "./CreatorTabs";
 import { CreatorForm } from "./CreatorForm";
 import { CreatedResultCard } from "./CreatedResultCard";
 import { useLinkCreator } from "../useLinkCreator";
-import { BulkCreatorForm } from "./BulkCreatorForm";
+import { QrCodeGeneratorForm } from "./QrCodeGeneratorForm";
 
 interface CreatorCardProps {
-  activeTab: "link" | "qr" | "bulk" | "cta";
-  onTabChange: (tab: "link" | "qr" | "bulk" | "cta") => void;
+  activeTab: "link" | "qr" | "cta";
+  onTabChange: (tab: "link" | "qr" | "cta") => void;
   creator: ReturnType<typeof useLinkCreator>;
 }
 
@@ -18,8 +18,8 @@ export const CreatorCard: React.FC<CreatorCardProps> = memo(
     <div id="creator-card" className="w-full bento-card-light overflow-hidden transform-gpu">
       <CreatorTabs activeTab={activeTab} onTabChange={onTabChange} />
       <div className="p-4 sm:p-7 bg-white">
-        {activeTab === "bulk" ? (
-          <BulkCreatorForm />
+        {activeTab === "qr" ? (
+          <QrCodeGeneratorForm />
         ) : (
           <>
             <CreatorForm
@@ -51,7 +51,7 @@ export const CreatorCard: React.FC<CreatorCardProps> = memo(
           </>
         )}
         <div className="mt-4 pt-3.5 border-t border-[#f0eee6] text-center text-[11px] font-mono text-zinc-400 uppercase tracking-wider">
-          Official Android & Apple Intent Protocols &middot; Zero Interstitial Ads
+          Official Android &amp; Apple Intent Protocols &middot; Zero Interstitial Ads
         </div>
       </div>
     </div>

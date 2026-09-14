@@ -66,10 +66,8 @@ export const SmartRedirectCard: React.FC<Props> = ({
   }, [targetAppUrl]);
 
   useEffect(() => {
-    // 1. Initial attempt to launch native app
-    const initialLaunchTimeout = setTimeout(() => {
-      triggerOpen();
-    }, 100);
+    // 1. Immediate attempt to launch native app (0ms — no artificial delay)
+    triggerOpen();
 
     // 2. Lifecycle listeners: If the app opens, browser goes to background
     const handleAppLaunched = () => {
@@ -105,7 +103,6 @@ export const SmartRedirectCard: React.FC<Props> = ({
     }, 1000);
 
     return () => {
-      clearTimeout(initialLaunchTimeout);
       clearTimeout(fallbackRevealTimeout);
       cancelTimer();
       window.removeEventListener("pagehide", handleAppLaunched);
