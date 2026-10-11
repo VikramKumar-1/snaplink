@@ -17,7 +17,7 @@ export const CreatorCard: React.FC<CreatorCardProps> = memo(
   ({ activeTab, onTabChange, creator }) => (
     <div id="creator-card" className="w-full bento-card-light overflow-hidden transform-gpu">
       <CreatorTabs activeTab={activeTab} onTabChange={onTabChange} />
-      <div className="p-4 sm:p-7 bg-white">
+      <div className="p-3.5 sm:p-5 bg-white">
         {activeTab === "qr" ? (
           <QrCodeGeneratorForm />
         ) : (
@@ -50,7 +50,7 @@ export const CreatorCard: React.FC<CreatorCardProps> = memo(
             {creator.createdResult && <CreatedResultCard result={creator.createdResult} />}
           </>
         )}
-        <div className="mt-4 pt-3.5 border-t border-[#f0eee6] text-center text-[11px] font-mono text-zinc-400 uppercase tracking-wider">
+        <div className="mt-2.5 pt-2 border-t border-[#f0eee6] text-center text-[10.5px] font-mono text-zinc-400 uppercase tracking-wider">
           Official Android &amp; Apple Intent Protocols &middot; Zero Interstitial Ads
         </div>
       </div>

@@ -13,7 +13,7 @@ export const CreatorTabs: React.FC<CreatorTabsProps> = memo(({ activeTab, onTabC
     <button
       type="button"
       onClick={() => onTabChange("link")}
-      className={`py-2.5 sm:py-3.5 px-1 text-[10px] min-[375px]:text-[11px] sm:text-[12.5px] font-black uppercase tracking-tighter sm:tracking-wider flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 transition-all cursor-pointer whitespace-nowrap ${
+      className={`py-2 sm:py-2.5 px-1 text-[10px] min-[375px]:text-[11px] sm:text-[12px] font-bold uppercase tracking-wider flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 transition-all cursor-pointer whitespace-nowrap ${
         activeTab === "link"
           ? "bg-white text-[#2c35af] border-b-2 border-[#2c35af]"
           : "text-zinc-500 hover:text-black"
@@ -27,7 +27,7 @@ export const CreatorTabs: React.FC<CreatorTabsProps> = memo(({ activeTab, onTabC
     <button
       type="button"
       onClick={() => onTabChange("cta")}
-      className={`py-2.5 sm:py-3.5 px-1 text-[10px] min-[375px]:text-[11px] sm:text-[12.5px] font-black uppercase tracking-tighter sm:tracking-wider flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 transition-all cursor-pointer whitespace-nowrap ${
+      className={`py-2 sm:py-2.5 px-1 text-[10px] min-[375px]:text-[11px] sm:text-[12px] font-bold uppercase tracking-wider flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 transition-all cursor-pointer whitespace-nowrap ${
         activeTab === "cta"
           ? "bg-white text-[#2c35af] border-b-2 border-[#2c35af]"
           : "text-zinc-500 hover:text-black"
@@ -42,14 +42,14 @@ export const CreatorTabs: React.FC<CreatorTabsProps> = memo(({ activeTab, onTabC
     <button
       type="button"
       onClick={() => onTabChange("qr")}
-      className={`py-2.5 sm:py-3.5 px-1 text-[10px] min-[375px]:text-[11px] sm:text-[12.5px] font-black uppercase tracking-tighter sm:tracking-wider flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 transition-all cursor-pointer whitespace-nowrap ${
+      className={`py-2 sm:py-2.5 px-1 text-[10px] min-[375px]:text-[11px] sm:text-[12px] font-bold uppercase tracking-wider flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 transition-all cursor-pointer whitespace-nowrap ${
         activeTab === "qr"
           ? "bg-white text-[#2c35af] border-b-2 border-[#2c35af]"
           : "text-zinc-500 hover:text-black"
       }`}
     >
       <QrCode className="h-4 w-4" />
-      <span>QR Code</span>
+      <span>Generate QR</span>
     </button>
   </div>
 ));

@@ -37,25 +37,25 @@ export const UrlInputField: React.FC<Props> = ({ url, setUrl, badge }) => {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-2">
-        <label className="text-[12.5px] font-bold text-slate-700 uppercase tracking-wider">
+      <div className="flex items-center justify-between mb-1.5">
+        <label className="text-[12px] font-bold text-slate-700 uppercase tracking-wider">
           Destination URL <span className="text-blue-600">*</span>
         </label>
         {badge && (
-          <div className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full border ${getBadgeStyle()}`}>
+          <div className={`text-[10.5px] font-bold px-2 py-0.5 rounded-full border ${getBadgeStyle()}`}>
             ● {badge}
           </div>
         )}
       </div>
 
-      <div className="relative flex items-center rounded-2xl bg-[#faf9f5] border-2 border-[#d6d3c7] hover:border-[#2c35af]/70 focus-within:border-[#2c35af] focus-within:bg-white focus-within:ring-4 focus-within:ring-[#2c35af]/10 shadow-[inset_0_2px_4px_rgba(0,0,0,0.03)] transition-all group">
+      <div className="relative flex items-center rounded-xl bg-[#faf9f5] border-2 border-[#d6d3c7] hover:border-[#2c35af]/70 focus-within:border-[#2c35af] focus-within:bg-white focus-within:ring-4 focus-within:ring-[#2c35af]/10 shadow-[inset_0_2px_4px_rgba(0,0,0,0.03)] transition-all group">
         <Link2 className="absolute left-3.5 h-4 w-4 text-slate-400 group-focus-within:text-blue-600 transition-colors" />
         <input
           type="text"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
           placeholder="Paste destination link (Amazon, YouTube, etc.)..."
-          className="w-full pl-9 sm:pl-10 pr-20 sm:pr-24 py-3.5 bg-transparent text-[16px] sm:text-[13.5px] text-slate-900 placeholder-slate-400 focus:outline-none"
+          className="w-full pl-9 sm:pl-10 pr-20 sm:pr-24 py-2.5 sm:py-3 bg-transparent text-[16px] sm:text-[13.5px] text-slate-900 placeholder-slate-400 focus:outline-none"
         />
         <button
           type="button"

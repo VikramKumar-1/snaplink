@@ -9,8 +9,11 @@ import {
   Trash2,
   Upload,
   ClipboardPaste,
+  CheckCircle2,
+  ArrowRight,
+  AlertCircle,
 } from "lucide-react";
-import { BRAND_CONFIG } from "@/frontend/shared/config/brand";
+import { downloadQrPNG, downloadQrSVG } from "./qrDownload.util";
 
 const BRAND_COLORS = [
   { label: "Classic Black", hex: "#121316" },
@@ -20,22 +23,35 @@ const BRAND_COLORS = [
   { label: "Crimson Red", hex: "#dc2626" },
 ];
 
-const DEFAULT_QR_VALUE = "https://snaplink.to";
-
 export const QrCodeGeneratorForm: React.FC = () => {
   const [inputUrl, setInputUrl] = useState("");
+  const [generatedUrl, setGeneratedUrl] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState("#121316");
   const [customLogo, setCustomLogo] = useState<string | null>(null);
   const qrRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const qrValue = inputUrl.trim() || DEFAULT_QR_VALUE;
-  const hasInput = inputUrl.trim().length > 0;
+  const isGenerated = Boolean(generatedUrl && generatedUrl.length > 0);
+  const isDirty = Boolean(isGenerated && inputUrl.trim() !== generatedUrl);
+
+  const handleGenerate = useCallback(() => {
+    const trimmed = inputUrl.trim();
+    if (!trimmed) {
+      setError("Please paste or enter a link first before generating.");
+      return;
+    }
+    setError(null);
+    setGeneratedUrl(trimmed);
+  }, [inputUrl]);
 
   const handlePaste = useCallback(async () => {
     try {
       const text = await navigator.clipboard.readText();
-      if (text) setInputUrl(text);
+      if (text) {
+        setInputUrl(text);
+        setError(null);
+      }
     } catch {
       /* clipboard permission denied — no-op */
     }
@@ -56,185 +72,221 @@ export const QrCodeGeneratorForm: React.FC = () => {
     []
   );
 
-  const downloadPNG = useCallback(() => {
-    const svgElement = qrRef.current?.querySelector("svg");
-    if (!svgElement) return;
-    const svgData = new XMLSerializer().serializeToString(svgElement);
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-    const img = new Image();
-    canvas.width = 1200;
-    canvas.height = 1200;
-    img.onload = () => {
-      if (!ctx) return;
-      ctx.fillStyle = "#ffffff";
-      ctx.fillRect(0, 0, 1200, 1200);
-      ctx.drawImage(img, 100, 100, 1000, 1000);
-      const link = document.createElement("a");
-      link.download = `${BRAND_CONFIG.name.toLowerCase()}-qr-code.png`;
-      link.href = canvas.toDataURL("image/png");
-      link.click();
-    };
-    img.src =
-      "data:image/svg+xml;base64," +
-      btoa(unescape(encodeURIComponent(svgData)));
+  const onDownloadPNG = useCallback(() => {
+    downloadQrPNG(qrRef.current?.querySelector("svg"));
   }, []);
 
-  const downloadSVG = useCallback(() => {
-    const svgElement = qrRef.current?.querySelector("svg");
-    if (!svgElement) return;
-    const svgData = new XMLSerializer().serializeToString(svgElement);
-    const blob = new Blob([svgData], {
-      type: "image/svg+xml;charset=utf-8",
-    });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.download = `${BRAND_CONFIG.name.toLowerCase()}-qr-vector.svg`;
-    link.href = url;
-    link.click();
-    URL.revokeObjectURL(url);
+  const onDownloadSVG = useCallback(() => {
+    downloadQrSVG(qrRef.current?.querySelector("svg"));
   }, []);
 
   return (
-    <div className="space-y-4">
-      {/* URL/Text Input */}
+    <div className="space-y-2.5">
+      {/* 1. URL Input Row with Paste & Manual Generate Trigger */}
       <div>
-        <label className="block text-[11px] font-black uppercase text-zinc-500 tracking-wider mb-1.5">
-          Enter URL or Text
+        <label className="block text-[11px] font-bold uppercase text-zinc-500 tracking-wider mb-1">
+          Paste Your Destination Link
         </label>
-        <div className="flex items-center gap-2">
-          <input
-            type="text"
-            value={inputUrl}
-            onChange={(e) => setInputUrl(e.target.value)}
-            placeholder="https://youtube.com/watch?v=..."
-            className="flex-1 px-3.5 py-2.5 rounded-xl bg-[#f8f7f4] border border-[#e7e5dc] text-[16px] sm:text-[13px] text-[#121316] placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-[#2c35af]/30 focus:border-[#2c35af] transition font-medium"
-          />
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-1.5">
+          <div className="flex-1 flex items-center gap-1.5 bg-[#f8f7f4] border border-[#e7e5dc] rounded-xl px-2 focus-within:border-[#2c35af] focus-within:ring-2 focus-within:ring-[#2c35af]/20 transition">
+            <input
+              type="text"
+              value={inputUrl}
+              onChange={(e) => {
+                setInputUrl(e.target.value);
+                if (error) setError(null);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  handleGenerate();
+                }
+              }}
+              placeholder="e.g., https://youtube.com/watch?v=..."
+              className="flex-1 py-2 px-1 bg-transparent text-[16px] sm:text-[13px] text-[#121316] placeholder:text-zinc-400 focus:outline-none font-medium"
+            />
+            <button
+              type="button"
+              onClick={handlePaste}
+              className="p-1 rounded-lg text-zinc-400 hover:text-[#2c35af] hover:bg-zinc-200/60 transition cursor-pointer shrink-0"
+              title="Paste from clipboard"
+            >
+              <ClipboardPaste className="h-4 w-4" />
+            </button>
+          </div>
+
           <button
-            onClick={handlePaste}
-            className="p-2.5 rounded-xl bg-[#f8f7f4] border border-[#e7e5dc] hover:border-[#2c35af] text-zinc-500 hover:text-[#2c35af] transition cursor-pointer"
-            title="Paste from clipboard"
+            type="button"
+            onClick={handleGenerate}
+            className="py-2 px-4 rounded-xl bg-[#2c35af] hover:bg-[#232a8f] text-white text-[12px] font-bold flex items-center justify-center gap-1.5 transition cursor-pointer shadow-xs active:scale-95 shrink-0"
           >
-            <ClipboardPaste className="h-4 w-4" />
+            <QrCode className="h-3.5 w-3.5" />
+            <span>{isDirty ? "Update QR" : "Generate QR"}</span>
+            <ArrowRight className="h-3.5 w-3.5" />
           </button>
         </div>
+
+        {error && (
+          <div className="mt-1 flex items-center gap-1.5 text-[11px] font-bold text-red-600 animate-fade-in">
+            <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+            <span>{error}</span>
+          </div>
+        )}
       </div>
 
-      {/* Live QR Preview */}
-      <div
-        ref={qrRef}
-        className="flex justify-center p-5 bg-[#f8f7f4] border border-[#e7e5dc] rounded-2xl mx-auto w-fit shadow-inner"
-      >
-        <QRCodeSVG
-          value={qrValue}
-          size={160}
-          level="H"
-          fgColor={selectedColor}
-          bgColor="#ffffff"
-          includeMargin={true}
-          imageSettings={
-            customLogo
-              ? {
-                  src: customLogo,
-                  height: 36,
-                  width: 36,
-                  excavate: true,
+      {/* 2. Before Generation: Layman Guidance Placeholder */}
+      {!isGenerated ? (
+        <div className="p-4 sm:p-5 rounded-2xl bg-[#faf9f5] border border-dashed border-[#d6d3c7] text-center flex flex-col items-center justify-center transition-all animate-fade-in">
+          <div className="w-10 h-10 rounded-xl bg-white border border-[#e7e5dc] flex items-center justify-center text-zinc-400 mb-1.5 shadow-xs">
+            <QrCode className="h-5 w-5 stroke-[1.5]" />
+          </div>
+          <p className="text-[12.5px] font-bold text-slate-800 mb-0.5">
+            Your QR Code will appear here
+          </p>
+          <p className="text-[11px] text-zinc-500 max-w-xs leading-relaxed">
+            Paste any link above and tap <span className="font-bold text-[#2c35af]">Generate QR</span> to create your customized code.
+          </p>
+        </div>
+      ) : (
+        /* 3. After Generation: Compact Live QR Code + Controls + Downloads */
+        <div className="space-y-2 animate-fade-in">
+          {/* Active Status Badge */}
+          <div className="flex items-center justify-between py-1 px-2.5 rounded-lg bg-emerald-50 border border-emerald-200/80 text-[11px] text-emerald-800 font-bold">
+            <div className="flex items-center gap-1.5 truncate">
+              <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+              <span className="truncate">
+                QR for: <span className="font-mono text-[10.5px]">{generatedUrl}</span>
+              </span>
+            </div>
+            <span className="text-[9px] font-mono uppercase bg-emerald-100 text-emerald-900 px-1.5 py-0.5 rounded-full shrink-0">
+              Ready
+            </span>
+          </div>
+
+          {/* Compact QR Graphic + Live Controls Row */}
+          <div className="p-2.5 rounded-xl bg-[#faf9f5] border border-[#e7e5dc] flex items-center justify-between gap-3">
+            {/* QR Code */}
+            <div
+              ref={qrRef}
+              className="p-1.5 bg-white border border-[#e7e5dc] rounded-xl shadow-xs shrink-0"
+            >
+              <QRCodeSVG
+                value={generatedUrl!}
+                size={105}
+                level="H"
+                fgColor={selectedColor}
+                bgColor="#ffffff"
+                includeMargin={true}
+                imageSettings={
+                  customLogo
+                    ? {
+                        src: customLogo,
+                        height: 24,
+                        width: 24,
+                        excavate: true,
+                      }
+                    : undefined
                 }
-              : undefined
-          }
-        />
-      </div>
-
-      {/* Color Picker */}
-      <div>
-        <label className="block text-[11px] font-black uppercase text-zinc-500 tracking-wider mb-2">
-          QR Color
-        </label>
-        <div className="flex items-center gap-2.5">
-          {BRAND_COLORS.map((c) => (
-            <button
-              key={c.hex}
-              onClick={() => setSelectedColor(c.hex)}
-              className={`w-7 h-7 rounded-full border-2 transition-all cursor-pointer ${
-                selectedColor === c.hex
-                  ? "scale-110 border-black ring-2 ring-black/10"
-                  : "border-transparent hover:scale-105"
-              }`}
-              style={{ backgroundColor: c.hex }}
-              title={c.label}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Logo Upload */}
-      <div className="p-3 rounded-xl bg-[#f8f7f4] border border-[#e7e5dc] flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-white border border-[#e7e5dc] flex items-center justify-center text-zinc-600">
-            <ImageIcon className="w-4 h-4" />
-          </div>
-          <div>
-            <div className="text-[12px] font-bold text-[#121316]">
-              Center Logo
+              />
             </div>
-            <div className="text-[10.5px] text-zinc-500">
-              Auto-centered with excavation
+
+            {/* Colors & Logo Controls */}
+            <div className="flex-1 space-y-2">
+              {/* Color Swatches */}
+              <div>
+                <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block mb-1">
+                  QR Color
+                </span>
+                <div className="flex items-center gap-1.5">
+                  {BRAND_COLORS.map((c) => (
+                    <button
+                      key={c.hex}
+                      type="button"
+                      onClick={() => setSelectedColor(c.hex)}
+                      className={`w-5 h-5 rounded-full border-2 transition-all cursor-pointer ${
+                        selectedColor === c.hex
+                          ? "scale-110 border-black ring-1.5 ring-black/10"
+                          : "border-transparent hover:scale-105"
+                      }`}
+                      style={{ backgroundColor: c.hex }}
+                      title={c.label}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Logo Upload */}
+              <div>
+                <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block mb-1">
+                  Center Logo
+                </span>
+                <div className="flex items-center gap-1.5">
+                  {customLogo ? (
+                    <button
+                      type="button"
+                      onClick={() => setCustomLogo(null)}
+                      className="px-2 py-0.5 rounded-md text-red-600 hover:bg-red-50 text-[10.5px] font-bold transition flex items-center gap-1 cursor-pointer border border-red-200"
+                    >
+                      <Trash2 className="w-3 h-3" />
+                      <span>Remove</span>
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="px-2.5 py-1 rounded-md bg-white border border-[#e7e5dc] hover:border-[#2c35af] text-[10.5px] font-bold text-[#121316] transition cursor-pointer flex items-center gap-1 shadow-xs"
+                    >
+                      <Upload className="w-3 h-3 text-[#2c35af]" />
+                      <span>Upload Logo</span>
+                    </button>
+                  )}
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleLogoUpload}
+                    className="hidden"
+                  />
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="flex items-center gap-2">
-          {customLogo ? (
-            <button
-              onClick={() => setCustomLogo(null)}
-              className="p-1.5 rounded-lg text-red-600 hover:bg-red-50 text-[12px] font-bold transition flex items-center gap-1 cursor-pointer"
-              title="Remove Logo"
-            >
-              <Trash2 className="w-3.5 h-3.5" />
-            </button>
-          ) : (
-            <button
-              onClick={() => fileInputRef.current?.click()}
-              className="px-3 py-1.5 rounded-lg bg-white border border-[#e7e5dc] hover:border-[#2c35af] text-[11.5px] font-bold text-[#121316] transition cursor-pointer flex items-center gap-1.5 shadow-xs"
-            >
-              <Upload className="w-3 h-3 text-[#2c35af]" />
-              <span>Upload</span>
-            </button>
-          )}
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            onChange={handleLogoUpload}
-            className="hidden"
-          />
-        </div>
-      </div>
 
-      {/* Download Buttons */}
-      <div className="grid grid-cols-2 gap-2.5 pt-1">
-        <button
-          onClick={downloadPNG}
-          disabled={!hasInput}
-          className="w-full py-3 rounded-xl bg-[#121316] hover:bg-[#2c35af] disabled:opacity-40 disabled:cursor-not-allowed text-white text-[12.5px] font-bold flex items-center justify-center gap-2 transition cursor-pointer shadow-sm"
-        >
-          <Download className="h-4 w-4" />
-          <span>1200px PNG</span>
-        </button>
-        <button
-          onClick={downloadSVG}
-          disabled={!hasInput}
-          className="w-full py-3 rounded-xl bg-white border border-[#e7e5dc] hover:border-[#2c35af] disabled:opacity-40 disabled:cursor-not-allowed text-[#121316] text-[12.5px] font-bold flex items-center justify-center gap-2 transition cursor-pointer shadow-xs"
-        >
-          <Download className="h-4 w-4" />
-          <span>Vector SVG</span>
-        </button>
-      </div>
+          {/* 4. Layman Download Options */}
+          <div className="grid grid-cols-2 gap-2 pt-0.5">
+            {/* PNG Download */}
+            <button
+              type="button"
+              onClick={onDownloadPNG}
+              className="py-2 px-3 rounded-xl bg-[#121316] hover:bg-[#2c35af] text-white flex items-center justify-center gap-1.5 transition cursor-pointer shadow-xs active:scale-95 group"
+            >
+              <Download className="h-3.5 w-3.5" />
+              <div className="text-left">
+                <span className="text-[11.5px] font-bold block leading-tight">Download PNG</span>
+                <span className="text-[9px] text-zinc-400 group-hover:text-white/80 block leading-tight">Image format</span>
+              </div>
+            </button>
 
-      {/* Info Badge */}
-      <div className="flex items-center justify-center gap-1.5 text-[10.5px] text-zinc-400">
-        <QrCode className="h-3 w-3" />
-        <span>Client-side generation · No data stored · Error Correction H (30%)</span>
-      </div>
+            {/* SVG Download */}
+            <button
+              type="button"
+              onClick={onDownloadSVG}
+              className="py-2 px-3 rounded-xl bg-white border border-[#e7e5dc] hover:border-[#2c35af] text-[#121316] flex items-center justify-center gap-1.5 transition cursor-pointer shadow-xs active:scale-95 group"
+            >
+              <Download className="h-3.5 w-3.5 text-[#2c35af]" />
+              <div className="text-left">
+                <span className="text-[11.5px] font-bold block leading-tight text-slate-800">Download SVG</span>
+                <span className="text-[9px] text-zinc-400 group-hover:text-[#2c35af] block leading-tight">Vector format</span>
+              </div>
+            </button>
+          </div>
+
+          {/* Layman Tip */}
+          <div className="text-center text-[10.5px] text-zinc-500 pt-0.5">
+            💡 <strong className="text-slate-700">How to use:</strong> Point any phone camera at this QR code to test-scan it before printing.
+          </div>
+        </div>
+      )}
     </div>
   );
 };

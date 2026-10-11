@@ -11,7 +11,7 @@ export const CreatorSubmitButton: React.FC<CreatorSubmitButtonProps> = memo(({ l
   <button
     type="submit"
     disabled={loading}
-    className="w-full py-3.5 px-6 btn-bento-primary text-[14.5px] flex items-center justify-center gap-2.5 disabled:opacity-50 cursor-pointer shadow-md uppercase tracking-wider"
+    className="w-full py-2.5 sm:py-3 px-5 btn-bento-primary text-[13.5px] font-bold flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer shadow-md uppercase tracking-wider"
   >
     {loading ? (
       <div className="flex items-center gap-2">

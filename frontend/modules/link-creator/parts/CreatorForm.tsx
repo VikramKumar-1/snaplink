@@ -1,7 +1,7 @@
 "use client";
 
 import React, { memo, useState } from "react";
-import { Sparkles, Megaphone, Compass, Link2 } from "lucide-react";
+import { Layers, Megaphone, Compass, Link2 } from "lucide-react";
 import { UrlInputField } from "./UrlInputField";
 import { CustomAliasField } from "./CustomAliasField";
 import { SocialPreviewOptions } from "./SocialPreviewOptions";
@@ -37,6 +37,7 @@ interface CreatorFormProps {
 
 export const CreatorForm: React.FC<CreatorFormProps> = memo((props) => {
   const [activePane, setActivePane] = useState<"none" | "social" | "routing">("none");
+  const [showAliasInCta, setShowAliasInCta] = useState(false);
 
   // If we switch into CTA Mode, ensure the banner is enabled for preview
   React.useEffect(() => {
@@ -53,25 +54,43 @@ export const CreatorForm: React.FC<CreatorFormProps> = memo((props) => {
   };
 
   return (
-    <form onSubmit={props.onSubmit} className="space-y-4">
+    <form onSubmit={props.onSubmit} className="space-y-2.5">
       <UrlInputField url={props.url} setUrl={props.setUrl} badge={props.badge} />
-      <CustomAliasField customSlug={props.customSlug} setCustomSlug={props.setCustomSlug} />
       
-      {/* CTA MODE: Force render CTA Options without pills */}
+      {/* CTA MODE: Streamlined layout without bulky unused alias input */}
       {props.isCtaMode ? (
-        <div className="animate-fade-in border-t border-zinc-100 pt-2">
-          <CtaOverlayOptions
-            showCta={props.showCta}
-            setShowCta={props.setShowCta}
-            cta={props.cta}
-            setCta={props.setCta}
-          />
-        </div>
+        <>
+          {showAliasInCta || props.customSlug ? (
+            <div className="animate-fade-in">
+              <CustomAliasField customSlug={props.customSlug} setCustomSlug={props.setCustomSlug} />
+            </div>
+          ) : (
+            <div className="flex justify-end -mt-1">
+              <button
+                type="button"
+                onClick={() => setShowAliasInCta(true)}
+                className="text-[11px] font-bold text-[#2c35af] hover:underline flex items-center gap-1 cursor-pointer"
+              >
+                <span>+ Custom Alias (optional)</span>
+              </button>
+            </div>
+          )}
+
+          <div className="animate-fade-in border-t border-zinc-100 pt-1.5">
+            <CtaOverlayOptions
+              showCta={props.showCta}
+              setShowCta={props.setShowCta}
+              cta={props.cta}
+              setCta={props.setCta}
+            />
+          </div>
+        </>
       ) : (
         <>
+          <CustomAliasField customSlug={props.customSlug} setCustomSlug={props.setCustomSlug} />
           {/* NORMAL SHORTEN MODE: Render other power-ups as pills */}
           <div className="pt-2 animate-fade-in">
-            <label className="text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-2 block">Power-Ups (Optional)</label>
+            <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-2 block">Power-Ups (Optional)</label>
             <div className="flex flex-wrap items-center gap-2">
               <button
                 type="button"
@@ -80,7 +99,7 @@ export const CreatorForm: React.FC<CreatorFormProps> = memo((props) => {
                   activePane === "social" ? "bg-indigo-100 text-indigo-700" : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
                 }`}
               >
-                <Sparkles className="h-3 w-3" /> Social Preview
+                <Layers className="h-3 w-3" /> Social Preview
               </button>
               
               <button
